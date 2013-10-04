@@ -92,7 +92,7 @@ public class GammaStrategyGameControllerTest {
 	 * - +-----+-----+-----+-----+-----+-----+
 	 *   |  0  |  1  |  2  |  3  |  4  |  5  |
 	 */
-	
+
 	// Locations for testing (in the middle of the board)
 	private final Location L02 = new Location2D(0, 2);
 	private final Location L12 = new Location2D(1, 2);
@@ -126,7 +126,7 @@ public class GammaStrategyGameControllerTest {
 
 	// Choke point
 	private final Piece chokePoint = new Piece(PieceType.CHOKE_POINT, null);
-	
+
 	//Piecs + locations
 	private final PieceLocationDescriptor redFlagAtLocation = new PieceLocationDescriptor( redFlag, L01);
 	private final PieceLocationDescriptor blueFlagAtLocation = new PieceLocationDescriptor( blueFlag, L34);
@@ -147,9 +147,10 @@ public class GammaStrategyGameControllerTest {
 
 	@BeforeClass
 	public static void setupBefore(){
-		System.out.println(GameVersion.GAMMA);
+		@SuppressWarnings("unused")
+		GameVersion gameVersion = (GameVersion.GAMMA);	
 	}
-	
+
 	/**
 	 * Method setup.
 	 * @throws StrategyException
@@ -253,14 +254,14 @@ public class GammaStrategyGameControllerTest {
 		badConfig.add(new PieceLocationDescriptor( redFlag, L01));
 		factory.makeGammaStrategyGame(badConfig, validBlueConfiguration);
 	}
-	
+
 	@Test(expected=StrategyException.class)
 	public void redConfigurationHasTooFewItem() throws StrategyException
 	{ 
 		validRedConfiguration.remove(0);
 		factory.makeGammaStrategyGame(validRedConfiguration, validBlueConfiguration);
 	}
-	
+
 
 	/**
 	 * Method tooManyPiecesForRedConfigurationWithOnlyFlag.
@@ -474,12 +475,12 @@ public class GammaStrategyGameControllerTest {
 		assertSame(redLieutenant, game.getPieceAt(new Location3D(0,0,3)));
 		assertTrue(true);// no exception thrown
 	}
-	
+
 	@Test(expected=StrategyRuntimeException.class)
 	public void getPieceAtThrowsExceptionWhenItCantUseALocation(){
 		game.getPieceAt(new Location1D(1));		
 	}
-		
+
 	@Test
 	public void initialPositionHasCorrectREDPiecesPlaced() {
 		final Iterator<PieceLocationDescriptor> redIter = validRedConfiguration.iterator();
@@ -540,7 +541,7 @@ public class GammaStrategyGameControllerTest {
 		assertSame(chokePoint.getType(), game.getPieceAt(L22_cp).getType() );
 		assertSame(chokePoint.getType(), game.getPieceAt(L23_cp).getType() );
 	}
-	
+
 
 	//////////// MOVEMENT
 	/**
@@ -640,8 +641,8 @@ public class GammaStrategyGameControllerTest {
 	public void moveChokePoint() throws StrategyException {
 		game.move(PieceType.CHOKE_POINT, L32_cp , L31);
 	}
-	
-	
+
+
 	/**
 	 * Method moveWrongPiece.
 	 * @throws StrategyException
@@ -723,7 +724,7 @@ public class GammaStrategyGameControllerTest {
 	public void redMovesOntoChokePoint() throws StrategyException{
 		assertSame(game.move(PieceType.COLONEL,    L21,      L22_cp).getStatus(), MoveResultStatus.OK );
 	}
-	
+
 	/**
 	 * Method gameEndsAfterSIXMoves.
 	 * @throws StrategyException
@@ -755,7 +756,7 @@ public class GammaStrategyGameControllerTest {
 		game.move(PieceType.SERGEANT, L25, L24);
 		game.move(PieceType.MARSHAL, L04, L14);//RED
 		game.move(PieceType.SERGEANT, L24, L14);//////////////
-		
+
 		game.move(PieceType.SERGEANT, L52, L53);//RED
 		game.move(PieceType.SERGEANT, L54, L53);
 		game.move(PieceType.MARSHAL, L24, L25);//RED
@@ -848,7 +849,7 @@ public class GammaStrategyGameControllerTest {
 		assertSame(game.move(PieceType.SERGEANT, L02,    L01).getStatus(), MoveResultStatus.BLUE_WINS );
 
 	}	
-	
+
 	/**
 	 * Method battle3_SergeantDraw.
 	 * @throws StrategyException
@@ -871,7 +872,7 @@ public class GammaStrategyGameControllerTest {
 		game.move(PieceType.SERGEANT, L25, L24);
 		game.move(PieceType.MARSHAL, L04, L14);//RED
 		game.move(PieceType.SERGEANT, L24, L14);//////////////
-		
+
 		game.move(PieceType.SERGEANT, L52, L53);//RED
 		game.move(PieceType.SERGEANT, L54, L53);
 		game.move(PieceType.MARSHAL, L24, L25);//RED
@@ -943,7 +944,7 @@ public class GammaStrategyGameControllerTest {
 		game.move(PieceType.MARSHAL, L21, L31); //red
 		assertSame(game.move(PieceType.MARSHAL, L41, L31).getStatus(), MoveResultStatus.DRAW);//BLUE
 	}
-	
+
 	@Test
 	public void fullGame_blueWins_redCantMove() throws StrategyException {
 		game.move(PieceType.MARSHAL, L11, L12);      //RED

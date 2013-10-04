@@ -11,6 +11,7 @@
 package strategy.game.version.alpha;
 
 import static org.junit.Assert.*;
+
 import org.junit.*;
 
 import strategy.common.*;
@@ -37,7 +38,8 @@ public class AlphaStrategyMasterTest
 	
 	@BeforeClass
 	public static void setupBefore(){
-		System.out.println(GameVersion.ALPHA);
+		@SuppressWarnings("unused")
+		GameVersion gameVersion = (GameVersion.ALPHA);
 	}
 	
 	@Before

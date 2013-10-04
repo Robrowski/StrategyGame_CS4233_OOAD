@@ -118,7 +118,8 @@ public class BetaStrategyGameControllerTest {
 
 	@BeforeClass
 	public static void setupBefore(){
-		System.out.println(GameVersion.BETA);
+		@SuppressWarnings("unused")
+		GameVersion gameVersion = (GameVersion.BETA);
 	}
 	
 	/**

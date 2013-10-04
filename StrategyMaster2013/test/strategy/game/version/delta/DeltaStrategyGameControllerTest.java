@@ -25,7 +25,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import doubles.DeltaStrategyGameControllerTestDouble;
-
 import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
 import strategy.common.StrategyRuntimeException;
@@ -152,7 +151,8 @@ public class DeltaStrategyGameControllerTest {
 	
 	@BeforeClass
 	public static void setupBefore(){
-		System.out.println(GameVersion.DELTA);
+		@SuppressWarnings("unused")
+		GameVersion gameVersion = (GameVersion.DELTA);
 	}
 	
 	/**

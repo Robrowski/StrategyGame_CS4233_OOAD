@@ -1,0 +1,105 @@
+X Factory
+	X makeAplhaStrategyGame
+	X makeBetaStrategyGame
+		X Beta takes configurations for each player
+		X Beta stores configurations for each player
+		X stored configurations are correct
+			%see "Valid Configurations"
+		X stored configurations are usable
+		% client still calls startGame
+		X factory throws StrategyException if either configuration is incorrect
+
+X Valid Configurations
+	x board is 6 X 6   
+		% no choke points
+		% throw StrategyException if any location has coordinates not in that range
+	X each player has exactly 12 pieces, with each of the following being exact
+		X throw StrategyException if anything but 12
+	X 1 Flag
+		x throw StrategyException if anything but #
+	X 1 Marshal
+		X throw StrategyException if anything but #
+	X 2 Colonels
+		X throw StrategyException if anything but #
+	X 2 Captains
+		X throw StrategyException if anything but #
+	X 3 Lieutanants
+		X throw StrategyException if anything but #	
+	X 3 Sergeants
+		X throw StrategyException if anything but #
+	X red configuration contains only red pieces
+	X blue configuration contains only blue pieces
+	X starting on their own sides
+	
+
+X getPieceAt WORKS for all pieces
+	x entire initial configurations
+	x null for pieces not found
+	x null for illegal locations - implied from "pieces not found" because 
+		no piece may be placed off the board
+	% stated behavior is "null if there is no piece there", thus null for an
+		illegal location is perfectly valid
+X getPieceAt works after moves
+x getPieceAt works after battles
+
+
+	
+	
+X Move before initialization -> Exception
+X startGame() does not throw exception
+X move after game over = 
+-
+-
+x Movement occurs
+	X moves results contain "OK"
+	X moves results contain the location descriptor of the result of the move
+	X turns alternate
+		X red first
+			X StrategyException thrown if blue tries to go first
+		X blue second
+		X etc
+	X Valid move = inbounds to an adjacent space
+	X can make consecutive moves with the same piece
+x Invalid move - throw StrategyException
+	X  you own a piece there
+	X wrong piece
+		! no piece there !!!!!! IF configuration is valid, all from inputs can be assumed valid if a piece is there and invalid if a piece is not there
+		X unexpected piece there
+		X flag
+	see ! - bad x-coordinate in from
+		X negative
+		X out of bounds
+	see ! -  bad y-coordinate in from
+		X negative
+		X out of bounds
+	X bad x-coordinate in to
+		X negative
+		X out of bounds
+		X not adjacent
+	X bad y-coordinate in to
+		X negative
+		X out of bounds
+		X not adjacent
+	X bad XY - cannot move diagonal
+
+
+
+
+
+
+x Battle occurs
+	% "Move Repetition Rule" ignored
+-
+
+-
+-
+X Victory Condition
+	x Red captures blue flag
+	x Blue captures red flag
+x Game ends after 6 moves (each player makes 6 moves) = draw
+-
+
+-
+-
+- 95% code coverage
+- only "strategy.game.version" will be considered for grading

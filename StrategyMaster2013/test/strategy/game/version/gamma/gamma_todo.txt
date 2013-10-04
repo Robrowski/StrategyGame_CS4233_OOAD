@@ -1,0 +1,34 @@
+GAMMA TODO
+
+
+
+- Choke points
+ 	- change tests to work before and after choke points are put in
+
+
+
+
+
+- Move repetition rule
+	- change tests to work before and after rule implemented
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+- Refactoring
+	- Validators
+		- MoveValidatorFactory
+		- MoveValidator
+			- GammaMoveValidator
+		- ConfigurationValidator
+			- GammaConfigurationValidator
+		
+	- PieceStats
+		x GammaPieceStats

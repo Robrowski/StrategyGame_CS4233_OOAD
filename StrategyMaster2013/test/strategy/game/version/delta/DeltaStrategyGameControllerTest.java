@@ -24,6 +24,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import doubles.DeltaStrategyGameControllerTestDouble;
+
 import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
 import strategy.common.StrategyRuntimeException;
@@ -145,6 +147,9 @@ public class DeltaStrategyGameControllerTest {
 	/** a bad configuration for testing purposes */
 	private  List<PieceLocationDescriptor> badConfig = new LinkedList<PieceLocationDescriptor>();
 
+	/** a test double for a game */
+	private DeltaStrategyGameControllerTestDouble deltaTestDouble;
+	
 	@BeforeClass
 	public static void setupBefore(){
 		System.out.println(GameVersion.DELTA);
@@ -190,6 +195,7 @@ public class DeltaStrategyGameControllerTest {
 
 		// For general use
 		badConfig = new LinkedList<PieceLocationDescriptor>();
+		deltaTestDouble = new DeltaStrategyGameControllerTestDouble(validRedConfiguration, validBlueConfiguration, new DeltaRules());
 	}
 
 	/////////// TESTING makeDeltaStrategyGame -- number of pieces

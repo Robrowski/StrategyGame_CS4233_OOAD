@@ -7,7 +7,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package mockdata;
+package strategy.game.common;
 
 import strategy.common.StrategyRuntimeException;
 import strategy.game.common.Coordinate;

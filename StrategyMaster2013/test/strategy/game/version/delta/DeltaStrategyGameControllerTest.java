@@ -17,14 +17,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import mockdata.Location1D;
-import mockdata.Location3D;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import doubles.DeltaStrategyGameControllerTestDouble;
 import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
 import strategy.common.StrategyRuntimeException;
@@ -32,7 +28,9 @@ import strategy.game.StrategyGameController;
 import strategy.game.StrategyGameFactory;
 import strategy.game.common.GameVersion;
 import strategy.game.common.Location;
+import strategy.game.common.Location1D;
 import strategy.game.common.Location2D;
+import strategy.game.common.Location3D;
 import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;

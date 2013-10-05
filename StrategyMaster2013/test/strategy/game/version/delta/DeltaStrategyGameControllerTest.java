@@ -13,6 +13,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -24,7 +25,6 @@ import org.junit.Test;
 
 import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
-import strategy.common.StrategyRuntimeException;
 import strategy.game.StrategyGameController;
 import strategy.game.StrategyGameFactory;
 import strategy.game.common.DetailedMoveResult;
@@ -33,6 +33,7 @@ import strategy.game.common.Location;
 import strategy.game.common.Location1D;
 import strategy.game.common.Location2D;
 import strategy.game.common.Location3D;
+import strategy.game.common.MoveResult;
 import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
@@ -721,6 +722,77 @@ public class DeltaStrategyGameControllerTest {
 		deltaTestDouble.move(PieceType.BOMB, L(3,0) , L(4,0));		
 	}
 
+	@Test
+	public void scoutMovesFar() throws StrategyException{
+		// Add spies for fights with marshals
+		endConfig.add(new PieceLocationDescriptor( redScout,  L(4,0)));
+
+		// Forcibly set the configuration		
+		deltaTestDouble.setFieldConfiguration(endConfig);	
+
+		// Move a spy
+		MoveResult spyMove = deltaTestDouble.move(PieceType.SCOUT, L(4,0) , L(4,5));	
+
+		// Validate the move
+		assertSame(spyMove.getBattleWinner().getPiece(), redScout);
+	}
+
+	@Test(expected=StrategyException.class)
+	public void scoutCantJumpChokePoints() throws StrategyException{
+		// Add spies for fights with marshals
+		endConfig.add(new PieceLocationDescriptor( redScout,    L(0,5)));
+		endConfig.add(new PieceLocationDescriptor( chokePoint,  L(2,5)));
+		
+		// Forcibly set the configuration		
+		deltaTestDouble.setFieldConfiguration(endConfig);	
+
+		// Move a spy
+		deltaTestDouble.move(PieceType.SCOUT, L(0,5) , L(4,5));	
+		fail();
+	}
+
+	@Test(expected=StrategyException.class)
+	public void scoutCantJumpAllies() throws StrategyException{
+		// Add spies for fights with marshals
+		endConfig.add(new PieceLocationDescriptor( redScout,  L(0,5)));
+		endConfig.add(new PieceLocationDescriptor( redSpy,    L(2,5)));
+		
+		// Forcibly set the configuration		
+		deltaTestDouble.setFieldConfiguration(endConfig);	
+
+		// Move a spy
+		deltaTestDouble.move(PieceType.SCOUT, L(0,5) , L(4,5));	
+		fail();
+	}
+	
+	@Test(expected=StrategyException.class)
+	public void scoutCantJumpEnemies() throws StrategyException{
+		// Add spies for fights with marshals
+		endConfig.add(new PieceLocationDescriptor( redScout,  L(0,5)));
+		endConfig.add(new PieceLocationDescriptor( blueSpy,   L(2,5)));
+		
+		// Forcibly set the configuration		
+		deltaTestDouble.setFieldConfiguration(endConfig);	
+
+		// Move a spy
+		deltaTestDouble.move(PieceType.SCOUT, L(0,5) , L(4,5));	
+		fail();
+	}
+	
+	@Test(expected=StrategyException.class)
+	public void scoutCantAttackOnLongMoves() throws StrategyException{
+		// Add spies for fights with marshals
+		endConfig.add(new PieceLocationDescriptor( redScout,  L(0,5)));
+		endConfig.add(new PieceLocationDescriptor( blueSpy,   L(4,5)));
+		
+		// Forcibly set the configuration		
+		deltaTestDouble.setFieldConfiguration(endConfig);	
+
+		// Move a spy
+		deltaTestDouble.move(PieceType.SCOUT, L(0,5) , L(4,5));	
+		fail();
+	}
+
 	////// BATTLE
 	/**
 	 * Method battle1_MarshalWinsALot.
@@ -791,6 +863,29 @@ public class DeltaStrategyGameControllerTest {
 		assertSame(deltaTestDouble.move(PieceType.MARSHAL, L(0,1), L(0,2)).getStatus(), MoveResultStatus.BLUE_WINS);
 	}
 
+	@Test
+	public void fullGame_blueWins_redHasBombsAndFlag() throws StrategyException {
+		// Add an extra blue piece
+		endConfig.add(new PieceLocationDescriptor( blueSergeant,  L(1,3)));
+		endConfig.add(new PieceLocationDescriptor( redBomb,  L(2,3)));
+		endConfig.add(new PieceLocationDescriptor( redBomb,  L(3,3)));
+
+		// Forcibly set the configuration		
+		deltaTestDouble.setFieldConfiguration(endConfig);
+
+		// Make the move that ends the game
+		assertSame(deltaTestDouble.move(PieceType.MARSHAL, L(0,1), L(0,2)).getStatus(), MoveResultStatus.BLUE_WINS);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@Test(expected=StrategyException.class)
 	public void cannotMoveAfterGameOver() throws StrategyException {
 		// Add an extra blue piece
@@ -886,7 +981,7 @@ public class DeltaStrategyGameControllerTest {
 
 		// Forcibly set the configuration		
 		deltaTestDouble.setFieldConfiguration(endConfig);
-		
+
 		// Fight!
 		DetailedMoveResult minerLose = (DetailedMoveResult)  deltaTestDouble.move(PieceType.MINER,L(1,4), L(2,4));
 		DetailedMoveResult minerWin = (DetailedMoveResult)   deltaTestDouble.move(PieceType.SPY, L(3,3) , L(3,4));

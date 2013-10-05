@@ -11,14 +11,14 @@ TODO list for DELTA
 
 
 - scouts movement
-	- up to 10 spaces
-	- can't jump anything
-	- can't attack in a move > 1
+	X up to 10 spaces
+	X can't jump anything
+	X- can't attack in a move > 1
 
 
-- scout kills marshal
-- bomb kills all - BOMB DOESNT MOVE OR DIE
-- but miner kills bomb
+X scout kills marshal
+X bomb kills all - BOMB DOESNT MOVE OR DIE
+X but miner kills bomb
 
 
 

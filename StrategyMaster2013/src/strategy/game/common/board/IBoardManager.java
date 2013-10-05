@@ -44,5 +44,14 @@ public interface IBoardManager {
 	 * @param theDMove the full move details
 	
 	 * @return can remove an updated detailed move result if only the flag remains */
-	DetailedMoveResult updateField(DetailedMoveResult theDMove); 
+	DetailedMoveResult updateField(DetailedMoveResult theDMove);
+
+	/** Assemble a list of all the pieces in the movement path. This implementation
+	 *  is for straight lines only
+	 * 
+	 * @param from the location to start at
+	 * @param to   the location to get to
+	 * @return a list of the pieces in the path, cannot contain null
+	 */
+	Collection<Piece> getPiecesInPath(Location from, Location to); 
 }

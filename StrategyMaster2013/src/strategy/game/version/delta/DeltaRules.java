@@ -169,7 +169,7 @@ public class DeltaRules implements VersionRules {
 	 */
 	@Override
 	public IMoveSpecialCaseValidator getMoveSpecialCaseValidator() {
-		return new GammaMoveSpecialCaseValidator();
+		return new DeltaMoveSpecialCaseValidator();
 	}
 
 	/* (non-Javadoc)

@@ -11,11 +11,15 @@ package strategy.game.common.board;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 
 import strategy.common.PlayerColor;
+import strategy.common.StrategyRuntimeException;
+import strategy.game.common.Coordinate;
 import strategy.game.common.DetailedMoveResult;
 import strategy.game.common.Location;
+import strategy.game.common.Location2D;
 import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
@@ -134,4 +138,56 @@ public class MapBoardManager implements IBoardManager {
 	private void add(PieceLocationDescriptor piece) {
 		fieldConfiguration.put(piece.getLocation().toString(), piece);
 	}
+
+	/* (non-Javadoc)
+	 * @see strategy.game.common.board.IBoardManager#getPiecesInPath(strategy.game.common.Location, strategy.game.common.Location)
+	 */
+	@Override
+	public Collection<Piece> getPiecesInPath(Location from, Location to) {
+		// Have a list Ready
+		Collection<Piece> piecesInPath = new LinkedList<Piece>();
+		int direction, staticAxis;
+		Coordinate axisMovedOn; 
+		
+		// Check to see if the move is a straight path
+		try {
+			if (2 > from.distanceTo(to))
+				return piecesInPath; // because we don't care about the path in this case
+		} catch(StrategyRuntimeException sre){
+			return piecesInPath; // invalid path
+		}
+		
+		// Figure out what axis to move on - if the X is the same, the move is on the Y axis, else X axis
+		if (from.getCoordinate(Coordinate.X_COORDINATE) == to.getCoordinate(Coordinate.X_COORDINATE) ){
+			axisMovedOn = Coordinate.Y_COORDINATE; // the coordinate that changes
+			staticAxis =  from.getCoordinate(Coordinate.X_COORDINATE);
+		} else {
+			axisMovedOn = Coordinate.X_COORDINATE; // the coordinate that changes
+			staticAxis =  from.getCoordinate(Coordinate.Y_COORDINATE);
+		}
+		
+		// Figure out direction, positive or negative
+		if (from.getCoordinate(axisMovedOn) < to.getCoordinate(axisMovedOn)){
+			direction = 1;
+		} else {
+			direction = -1;
+		}
+		
+		// Get the pieces
+		for (int i = from.getCoordinate(axisMovedOn); i != to.getCoordinate(axisMovedOn) + direction; i += direction){
+			Piece toAdd;
+			if (axisMovedOn == Coordinate.X_COORDINATE){
+				toAdd = this.getPieceAt(new Location2D(i, staticAxis));
+			} else { // other axis
+				toAdd = this.getPieceAt(new Location2D(staticAxis ,i));
+			}
+			
+			// Only add if not null
+			if (toAdd != null){
+				piecesInPath.add(toAdd);
+			}	
+		}
+		
+		return piecesInPath;
+	}	
 }

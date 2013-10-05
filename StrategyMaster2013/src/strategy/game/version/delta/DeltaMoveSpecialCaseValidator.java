@@ -7,23 +7,24 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package strategy.game.version.gamma;
+package strategy.game.version.delta;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import strategy.common.PlayerColor;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceType;
 import strategy.game.common.validation.move.IMoveSpecialCaseValidator;
 
-/** This class is used for analyzing the special move cases that are not allowed in the 
- *  game of Gamma strategy.
+/** This is the move special case validator for the game of Delta Strategy
+ * 
  * 
  * @author Dabrowski
- *
  * @version $Revision: 1.0 $
  */
-public class GammaMoveSpecialCaseValidator implements IMoveSpecialCaseValidator {
+public class DeltaMoveSpecialCaseValidator implements IMoveSpecialCaseValidator {
+
 	/* (non-Javadoc)
 	 * @see strategy.game.version.common.validation.IMoveSpecialCaseValidator#verifyDestination(strategy.common.PlayerColor, strategy.game.common.Piece)
 	 */
@@ -58,9 +59,23 @@ public class GammaMoveSpecialCaseValidator implements IMoveSpecialCaseValidator 
 	 */
 	@Override
 	public String verifyMovePath(Collection<Piece> contentsOfPath) {
-		return ""; // There is no special move paths in Gamma
+		// Have an error string ready
+		String errors = "";
+
+		// Only do work if the move is more than one space
+		if (contentsOfPath.size() > 1){
+			// Time to iterate
+			Iterator<Piece> pieces = contentsOfPath.iterator();
+
+			// Check first entry for a Scout, continue if so
+			Piece first = pieces.next();
+			if (first.getType() == PieceType.SCOUT ){
+				while (pieces.hasNext()){
+					first = pieces.next();
+					errors += "scouts can't jump " + first.getType() +"'s, ";	
+				}
+			}
+		}
+		return errors;
 	}
-
-	
-
 }

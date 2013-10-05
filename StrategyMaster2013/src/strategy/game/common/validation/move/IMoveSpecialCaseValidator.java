@@ -9,6 +9,8 @@
  *******************************************************************************/
 package strategy.game.common.validation.move;
 
+import java.util.Collection;
+
 import strategy.common.PlayerColor;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceType;
@@ -48,8 +50,12 @@ public interface IMoveSpecialCaseValidator {
 	String verifyStartLocation(PlayerColor currentTurn, Piece atFrom, PieceType piece);
 
 	
-	
-	
+	/** Verify a move path. Mainly used when pieces can move more than 1 space or
+	 *  in a non-standard direction
+	 *  
+	 * @param contentsOfPath any pieces on the path
+	 * @return a string containing any error messages that may have arisen */
+	String verifyMovePath(Collection<Piece> contentsOfPath);
 	
 	
 	

@@ -9,10 +9,12 @@
  *******************************************************************************/
 package strategy.game.common.battle;
 
-/**
+/** BattleResult is an enum used internally to note the
+ *  winner of a particular battle
+ * 
  * @author Dabrowski
- *
+ * @version Oct 4, 2013
  */
 public enum BattleResult {
-	NOTSPECIAL, DRAW, ATTACKERWINS, DEFENDERWINS;
+	NOTSPECIAL, DRAW, ATTACKERWINS, DEFENDERWINS, BOMB;
 }

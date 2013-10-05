@@ -80,17 +80,20 @@ public class StandardBattleEngine implements IBattleEngine {
 			final int defPower = pieceStats.getPower(defender);	
 			
 			// Attacker wins
-			if (result == BattleResult.ATTACKERWINS || 
-					(atkPower > defPower && result == BattleResult.NOTSPECIAL)){  
+			if (result == BattleResult.ATTACKERWINS || (atkPower > defPower && result == BattleResult.NOTSPECIAL)){  
 				finalMoveResult = new DetailedMoveResult(gameWinner, 
 						new PieceLocationDescriptor(atFrom, moveTo), 
 						moveFrom, moveTo);
 			// Defender wins
-			} else if (result == BattleResult.DEFENDERWINS ||
-					( atkPower < defPower && result == BattleResult.NOTSPECIAL)){ 
+			} else if (result == BattleResult.DEFENDERWINS || ( atkPower < defPower && result == BattleResult.NOTSPECIAL)){ 
 				finalMoveResult = new DetailedMoveResult(gameWinner, 
 						new PieceLocationDescriptor(atTo, moveFrom), 
 						moveTo, moveFrom);
+			// Because bombs don't move
+			} else if (result == BattleResult.BOMB){
+				finalMoveResult = new DetailedMoveResult(gameWinner,
+						new PieceLocationDescriptor(atTo, moveTo),
+						moveTo, moveFrom);	
 			// Its a draw!
 			} else {
 				finalMoveResult = new DetailedMoveResult(gameWinner, 

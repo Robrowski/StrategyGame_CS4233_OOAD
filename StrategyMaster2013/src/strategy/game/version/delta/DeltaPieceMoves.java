@@ -16,6 +16,7 @@ import strategy.game.common.pieceStats.IPieceMoves;
  * 
  * @author Dabrowski
  *
+ * @version $Revision: 1.0 $
  */
 public class DeltaPieceMoves implements IPieceMoves {
 

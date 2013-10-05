@@ -27,7 +27,7 @@ public class DeltaSpecialBattles implements ISpecialBattles {
 	@Override
 	public BattleResult specialBattle(PieceType attacker, PieceType defender) {
 		if (PieceType.MINER == attacker && PieceType.BOMB == defender) return BattleResult.ATTACKERWINS;
-		if (PieceType.BOMB == defender) return BattleResult.DRAW;
+		if (PieceType.BOMB == defender) return BattleResult.BOMB;
 		if (PieceType.SPY == attacker && PieceType.MARSHAL == defender) return BattleResult.ATTACKERWINS;
 
 		return BattleResult.NOTSPECIAL;

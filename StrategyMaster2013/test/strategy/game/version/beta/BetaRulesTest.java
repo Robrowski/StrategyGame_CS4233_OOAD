@@ -20,7 +20,7 @@ import strategy.game.common.PieceType;
  *
  * @version $Revision: 1.0 $
  */
-public class MiscellaneousTests {
+public class BetaRulesTest {
 
 	/**
 	 * Method test_BetaRules_and_getPower.

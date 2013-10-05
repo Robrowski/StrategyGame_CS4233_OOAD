@@ -101,7 +101,7 @@ public class DeltaStrategyGameControllerTest {
 	// Choke point
 	private final Piece chokePoint = new Piece(PieceType.CHOKE_POINT, null);
 
-	//Piecs + locations
+	//Pieces + locations
 	private final PieceLocationDescriptor redFlagAtLocation = new PieceLocationDescriptor( redFlag, L(0,1));
 	private final PieceLocationDescriptor blueFlagAtLocation = new PieceLocationDescriptor( blueFlag, L(3,4));
 
@@ -700,13 +700,13 @@ public class DeltaStrategyGameControllerTest {
 	 * Method gameEndsAfterSIXMoves.
 	 * @throws StrategyException
 	 */
-	@Test(expected=StrategyException.class)
+	@Test
 	public void violateMoveRepitionRule() throws StrategyException {
 		game.move(PieceType.SERGEANT,   L(5,1) ,   L(5,2));
 		game.move(PieceType.LIEUTENANT, L(1,4) ,   L(1,3));
 		game.move(PieceType.SERGEANT,   L(5,2) ,   L(5,1));
 		game.move(PieceType.CAPTAIN,    L(4,4) ,   L(4,3));
-		game.move(PieceType.SERGEANT,   L(5,1) ,   L(5,2)); 
+		assertSame(game.move(PieceType.SERGEANT,   L(5,1) ,   L(5,2)).getStatus(), MoveResultStatus.BLUE_WINS); 
 	}
 
 	@Test(expected=StrategyException.class)

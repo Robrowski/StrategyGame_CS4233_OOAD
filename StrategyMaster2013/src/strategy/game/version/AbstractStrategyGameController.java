@@ -157,9 +157,18 @@ StrategyGameController {
 		// Do the battle since the move is valid
 		DetailedMoveResult theDMove = battleEngine.doBattle(atFrom, from, atTo, to); // Have to start somewhere
 	
-		// Record the move - last place that can throw a StrategyException
-		moveHistory.recordMove(theDMove);
-		
+		// Record the move - exceptions thrown here indicate the move repetition rule was violated
+		try {
+			moveHistory.recordMove(theDMove);
+		} catch (StrategyException se){
+			// Other player wins by default
+			MoveResultStatus winner = (currentTurn == PlayerColor.RED) ? MoveResultStatus.BLUE_WINS: MoveResultStatus.RED_WINS;
+			
+			theDMove = new DetailedMoveResult(winner, 
+					theDMove.getBattleWinner(), 
+					theDMove.getPieceThatMoved(), 
+					theDMove.getLoser());
+		}
 		// Update the field after the move
 		theDMove = fieldConfiguration.updateField(theDMove);
 		

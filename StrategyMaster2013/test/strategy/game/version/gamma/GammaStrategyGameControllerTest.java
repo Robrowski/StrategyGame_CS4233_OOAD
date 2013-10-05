@@ -728,13 +728,14 @@ public class GammaStrategyGameControllerTest {
 	 * Method gameEndsAfterSIXMoves.
 	 * @throws StrategyException
 	 */
-	@Test(expected=StrategyException.class)
+	@Test
 	public void violateMoveRepitionRule() throws StrategyException {
 		game.move(PieceType.SERGEANT,   L51 ,   L52);
 		game.move(PieceType.LIEUTENANT, L14 ,   L13);
-		game.move(PieceType.SERGEANT,   L52 ,   L51);
-		game.move(PieceType.CAPTAIN,    L44 ,   L43);
-		game.move(PieceType.SERGEANT,   L51 ,   L52); 
+		game.move(PieceType.SERGEANT,   L52 ,   L53);
+		game.move(PieceType.LIEUTENANT, L13 ,   L14);
+		game.move(PieceType.SERGEANT,   L53 ,   L52); 
+		assertSame(game.move(PieceType.LIEUTENANT, L14 ,   L13).getStatus(), MoveResultStatus.RED_WINS);
 	}
 
 	////// BATTLE

@@ -876,13 +876,19 @@ public class DeltaStrategyGameControllerTest {
 		// Make the move that ends the game
 		assertSame(deltaTestDouble.move(PieceType.MARSHAL, L(0,1), L(0,2)).getStatus(), MoveResultStatus.BLUE_WINS);
 	}
-	
-	
-	
-	
-	
-	
-	
+
+	@Test
+	public void fullGame_draw_bombs_and_flags() throws StrategyException {
+		// Add an extra blue piece
+		endConfig.add(new PieceLocationDescriptor( redBomb,  L(2,3)));
+		endConfig.add(new PieceLocationDescriptor( blueBomb,  L(3,3)));
+
+		// Forcibly set the configuration		
+		deltaTestDouble.setFieldConfiguration(endConfig);
+
+		// Make the move that ends the game
+		assertSame(deltaTestDouble.move(PieceType.MARSHAL, L(0,1), L(0,2)).getStatus(), MoveResultStatus.DRAW);
+	}
 	
 	
 	

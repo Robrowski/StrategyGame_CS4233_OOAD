@@ -35,7 +35,7 @@ import strategy.game.common.PieceLocationDescriptor;
 public class MapBoardManager implements IBoardManager {
 
 	/** The underlying implementation of the field configuration */
-	private final Map<String, PieceLocationDescriptor> fieldConfiguration;
+	protected final Map<String, PieceLocationDescriptor> fieldConfiguration;
 
 	/** Basic constructor that just initializes variables and take in a map to
 	 *  use to store data. It is requested that a map be passed in to allow 
@@ -117,7 +117,7 @@ public class MapBoardManager implements IBoardManager {
 					theDMove.getPieceThatMoved(), 
 					theDMove.getLoser());
 		}
-		return null;
+		return theDMove;
 	}
 
 	
@@ -125,7 +125,7 @@ public class MapBoardManager implements IBoardManager {
 	 * 
 	 * @param aLoc the location of the piece to remove
 	 */
-	private void remove(Location aLoc) {
+	protected void remove(Location aLoc) {
 		fieldConfiguration.remove(aLoc.toString());
 	}
 
@@ -135,7 +135,7 @@ public class MapBoardManager implements IBoardManager {
 	 *
 	 * @param result the piece + location to add
 	 */
-	private void add(PieceLocationDescriptor piece) {
+	protected void add(PieceLocationDescriptor piece) {
 		fieldConfiguration.put(piece.getLocation().toString(), piece);
 	}
 

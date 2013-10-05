@@ -15,9 +15,7 @@ import java.util.HashMap;
 import strategy.common.StrategyException;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.board.IBoardManager;
-import strategy.game.common.board.MapBoardManager;
 import strategy.game.version.VersionRules;
-import strategy.game.version.delta.DeltaStrategyGameController;
 
 /** Same exact functionality as a DeltaStrategyGameController + the
  *  internal configuration can be set after initialization
@@ -60,7 +58,7 @@ public class DeltaStrategyGameControllerTestDouble extends
 	 */
 	public void setFieldConfiguration(Collection<PieceLocationDescriptor> toSetTo){
 		// Make a new manager
-		IBoardManager newManager = new MapBoardManager(new HashMap<String,PieceLocationDescriptor>());
+		IBoardManager newManager = new DeltaBoardManager(new HashMap<String,PieceLocationDescriptor>(), new DeltaPieceMoves());
 		// Add the collection to the manager
 		newManager.addToConfiguration(toSetTo);
 		// Sets the field configuration		

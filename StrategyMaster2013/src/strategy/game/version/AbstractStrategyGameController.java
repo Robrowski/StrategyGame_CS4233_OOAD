@@ -141,6 +141,9 @@ StrategyGameController {
 		invalidities += moveSpecialCaseValidator.verifyDestination(currentTurn,     atTo);
 		invalidities += moveSpecialCaseValidator.verifyStartLocation(currentTurn, atFrom, piece);
 		
+		// Verify the move path
+		invalidities += moveSpecialCaseValidator.verifyMovePath(fieldConfiguration.getPiecesInPath(from, to));
+		
 		// If a piece was found, verify that it can go the distance
 		if (atFrom != null){
 			invalidities += moveDistanceValidator.moveDistanceIsValid(from, to, atFrom);	
@@ -158,8 +161,8 @@ StrategyGameController {
 		moveHistory.recordMove(theDMove);
 		
 		// Update the field after the move
-		final DetailedMoveResult update = fieldConfiguration.updateField(theDMove);
-		if (update!= null) theDMove = update;
+		theDMove = fieldConfiguration.updateField(theDMove);
+		
 		
 		// Update the turn states
 		currentTurn = (atFrom.getOwner() == PlayerColor.RED) ? PlayerColor.BLUE
@@ -170,5 +173,5 @@ StrategyGameController {
 				
 		return theDMove;
 	}
-	
+
 }

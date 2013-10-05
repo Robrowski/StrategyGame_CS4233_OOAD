@@ -92,22 +92,6 @@ public class DeltaStrategyGameControllerTest {
 	 *   |  0  |  1  |  2  |  3  |  4  |  5  |
 	 */
 
-	// Locations for testing (in the middle of the board)
-	private final Location L02 = new Location2D(0, 2);
-	private final Location L12 = new Location2D(1, 2);
-	private final Location L22 = new Location2D(2, 2); // choke point
-	private final Location L32 = new Location2D(3, 2); // choke point
-	private final Location L42 = new Location2D(4, 2);
-	private final Location L52 = new Location2D(5, 2);
-	private final Location L03 = new Location2D(0, 3);
-	private final Location L13 = new Location2D(1, 3);
-	private final Location L23 = new Location2D(2, 3); // choke point
-	private final Location L33 = new Location2D(3, 3); // choke point
-	private final Location L43 = new Location2D(4, 3);
-	private final Location L53 = L(5,3);
-
-
-
 	// Red Pieces
 	private final Piece redFlag = new Piece(PieceType.FLAG, PlayerColor.RED);
 	private final Piece redMarshal = new Piece(PieceType.MARSHAL, PlayerColor.RED);
@@ -201,10 +185,10 @@ public class DeltaStrategyGameControllerTest {
 		deltaTestDouble.startGame();
 
 		// make a configuration that simulates the end of a full game
-		endConfig.add( redFlagAtLocation );
-		endConfig.add(blueFlagAtLocation);
-		endConfig.add(new PieceLocationDescriptor( blueMarshal, L(0,4)));
+		endConfig.add(new PieceLocationDescriptor( blueFlag,    L(0,2)));
 		endConfig.add(new PieceLocationDescriptor( redMarshal,  L(0,3)));	
+		endConfig.add(new PieceLocationDescriptor( blueMarshal, L(0,4)));
+		endConfig.add(new PieceLocationDescriptor( redFlag,     L(0,5)));
 	}
 
 	/////////// TESTING makeDeltaStrategyGame -- number of pieces
@@ -306,16 +290,13 @@ public class DeltaStrategyGameControllerTest {
 		factory.makeDeltaStrategyGame(validRedConfiguration, badConfig);
 	}
 
-	/**
-	 * Method tooManyPiecesForBlueConfigurationWithOnlyFlag.
-	 * @throws StrategyException
-	 */
+	// This exception is thrown for many reasons, but definitely catches invalid number of pieces
 	@Test(expected=StrategyException.class)
 	public void tooManyPiecesForBlueConfigurationWithOnlyFlag() throws StrategyException{
-		for (int i =0;i<15;i++) badConfig.add(new PieceLocationDescriptor( blueFlag, L34));
+		for (int i =0;i<15;i++) badConfig.add(new PieceLocationDescriptor( blueFlag, L(i%6 , (i/3) % 6 )));
 		factory.makeDeltaStrategyGame(validRedConfiguration, badConfig);
 	}
-
+  
 	/**
 	 * Method nullLocation.
 	 * @throws StrategyException
@@ -408,7 +389,7 @@ public class DeltaStrategyGameControllerTest {
 	@Test(expected=StrategyException.class)
 	public void redPieceInNeutralZone() throws StrategyException {
 		validRedConfiguration.remove(redFlagAtLocation); // remove flag
-		validRedConfiguration.add(new PieceLocationDescriptor( redFlag, L32));
+		validRedConfiguration.add(new PieceLocationDescriptor( redFlag, L(3,2)));
 		factory.makeDeltaStrategyGame(validRedConfiguration, validBlueConfiguration);	
 	}
 
@@ -550,10 +531,10 @@ public class DeltaStrategyGameControllerTest {
 
 	@Test
 	public void getPieceAtChokePoints() throws StrategyException{
-		assertSame(chokePoint.getType(), game.getPieceAt(L33).getType() );
-		assertSame(chokePoint.getType(), game.getPieceAt(L32).getType() );
-		assertSame(chokePoint.getType(), game.getPieceAt(L22).getType() );
-		assertSame(chokePoint.getType(), game.getPieceAt(L23).getType() );
+		assertSame(chokePoint.getType(), game.getPieceAt(L(3,3)).getType() );
+		assertSame(chokePoint.getType(), game.getPieceAt(L(3,2)).getType() );
+		assertSame(chokePoint.getType(), game.getPieceAt(L(2,2)).getType() );
+		assertSame(chokePoint.getType(), game.getPieceAt(L(2,3)).getType() );
 	}
 
 
@@ -729,7 +710,7 @@ public class DeltaStrategyGameControllerTest {
 
 	@Test(expected=StrategyException.class)
 	public void redMovesOntoChokePoint() throws StrategyException{
-		assertSame(game.move(PieceType.COLONEL,    L21,      L22).getStatus(), MoveResultStatus.OK );
+		assertSame(game.move(PieceType.COLONEL,    L21,      L(2,2)).getStatus(), MoveResultStatus.OK );
 	}
 
 	/**
@@ -738,49 +719,12 @@ public class DeltaStrategyGameControllerTest {
 	 */
 	@Test(expected=StrategyException.class)
 	public void violateMoveRepitionRule() throws StrategyException {
-		game.move(PieceType.SERGEANT,   L51 ,   L52);
-		game.move(PieceType.LIEUTENANT, L14 ,   L13);
-		game.move(PieceType.SERGEANT,   L52 ,   L51);
-		game.move(PieceType.CAPTAIN,    L44 ,   L43);
-		game.move(PieceType.SERGEANT,   L51 ,   L52); 
+		game.move(PieceType.SERGEANT,   L51 ,   L(5,2));
+		game.move(PieceType.LIEUTENANT, L14 ,   L(1,3));
+		game.move(PieceType.SERGEANT,   L(5,2) ,   L51);
+		game.move(PieceType.CAPTAIN,    L44 ,   L(4,3));
+		game.move(PieceType.SERGEANT,   L51 ,   L(5,2)); 
 	}
-
-	@Test(expected=StrategyException.class)
-	public void violateMoveRepetitionRule2() throws StrategyException {
-		game.move(PieceType.MARSHAL, L11, L12);      //RED
-		game.move(PieceType.LIEUTENANT, L14, L13);
-		game.move(PieceType.LIEUTENANT, L41, L42);			//RED
-		game.move(PieceType.COLONEL, L24, L14); 
-		game.move(PieceType.SERGEANT, L51, L52);			//RED
-		game.move(PieceType.LIEUTENANT, L13, L12);
-		game.move(PieceType.MARSHAL, L13, L03); //RED
-		game.move(PieceType.COLONEL, L14, L13);
-		game.move(PieceType.COLONEL, L21, L11); //RED
-		game.move(PieceType.COLONEL, L13, L12); 
-		game.move(PieceType.COLONEL, L11, L12);//RED - its a tie battle
-		game.move(PieceType.LIEUTENANT, L15, L14);
-		game.move(PieceType.MARSHAL, L03, L04);//RED
-		game.move(PieceType.SERGEANT, L25, L24);
-		game.move(PieceType.MARSHAL, L04, L14);//RED
-		game.move(PieceType.SERGEANT, L24, L14);//////////////
-
-		game.move(PieceType.SERGEANT, L52, L53);//RED
-		game.move(PieceType.SERGEANT, L54, L53);
-		game.move(PieceType.MARSHAL, L24, L25);//RED
-		game.move(PieceType.LIEUTENANT, L35, L25);
-		game.move(PieceType.MARSHAL, L35, L45);//RED
-		game.move(PieceType.MARSHAL, L55, L54);
-		game.move(PieceType.MARSHAL, L45, L44);//RED
-		game.move(PieceType.MARSHAL, L54, L53);
-		game.move(PieceType.MARSHAL, L44, L45);//RED
-		game.move(PieceType.MARSHAL, L53, L52);
-		game.move(PieceType.MARSHAL, L45, L35);//RED <----
-		game.move(PieceType.MARSHAL, L52, L51);//Blue
-		game.move(PieceType.MARSHAL, L35, L45);//RED <----
-		game.move(PieceType.MARSHAL, L51, L50);//Blue
-		game.move(PieceType.MARSHAL, L45, L35);//RED <----
-	}
-
 
 	////// BATTLE
 	/**
@@ -789,12 +733,12 @@ public class DeltaStrategyGameControllerTest {
 	 */
 	@Test
 	public void battle1_MarshalWinsALot() throws StrategyException {
-		assertSame(game.move(PieceType.MARSHAL,    L11,      L12).getStatus(), MoveResultStatus.OK );
-		assertSame(game.move(PieceType.LIEUTENANT, L14, L13).getStatus(), MoveResultStatus.OK );
-		assertSame(game.move(PieceType.MARSHAL, L12,                        L13).getStatus(), MoveResultStatus.OK );
-		assertSame(game.getPieceAt(L13).getType(),PieceType.MARSHAL );
+		assertSame(game.move(PieceType.MARSHAL,    L11,      L(1,2)).getStatus(), MoveResultStatus.OK );
+		assertSame(game.move(PieceType.LIEUTENANT, L14, L(1,3)).getStatus(), MoveResultStatus.OK );
+		assertSame(game.move(PieceType.MARSHAL, L(1,2),                        L(1,3)).getStatus(), MoveResultStatus.OK );
+		assertSame(game.getPieceAt( L(1,3)  ).getType(),PieceType.MARSHAL );
 		assertSame(game.move(PieceType.SERGEANT, L04,    L14).getStatus(), MoveResultStatus.OK );
-		assertSame(game.move(PieceType.MARSHAL, L13,                       L14).getStatus(), MoveResultStatus.OK );
+		assertSame(game.move(PieceType.MARSHAL, L(1,3),                       L14).getStatus(), MoveResultStatus.OK );
 		assertSame(game.getPieceAt(L14).getType(),PieceType.MARSHAL );
 		assertSame(game.move(PieceType.COLONEL, L24,      L14).getStatus(), MoveResultStatus.OK );
 		assertSame(game.getPieceAt(L24).getType(),PieceType.MARSHAL );
@@ -806,19 +750,19 @@ public class DeltaStrategyGameControllerTest {
 	 */
 	@Test
 	public void battle2_ColonelDraw_FlagCapture() throws StrategyException {
-		game.move(PieceType.MARSHAL, L11, L12);      //RED
-		game.move(PieceType.LIEUTENANT, L14, L13);
-		game.move(PieceType.LIEUTENANT, L41, L42);											//RED
+		game.move(PieceType.MARSHAL, L11, L(1,2));      //RED
+		game.move(PieceType.LIEUTENANT, L14, L(1,3));
+		game.move(PieceType.LIEUTENANT, L41, L(4,2));											//RED
 		game.move(PieceType.COLONEL, L24, L14); 
-		game.move(PieceType.LIEUTENANT, L42, L43);											//RED
-		game.move(PieceType.LIEUTENANT, L13, L12);
-		game.move(PieceType.MARSHAL, L13, L03); //RED
-		game.move(PieceType.COLONEL, L14, L13);
+		game.move(PieceType.LIEUTENANT, L(4,2), L(4,3));											//RED
+		game.move(PieceType.LIEUTENANT, L(1,3), L(1,2));
+		game.move(PieceType.MARSHAL, L(1,3), L(0,3)); //RED
+		game.move(PieceType.COLONEL, L14, L(1,3));
 		game.move(PieceType.COLONEL, L21, L11); //RED
-		game.move(PieceType.COLONEL, L13, L12); 
-		game.move(PieceType.COLONEL, L11, L12);//RED - its a tie
+		game.move(PieceType.COLONEL, L(1,3), L(1,2)); 
+		game.move(PieceType.COLONEL, L11, L(1,2));//RED - its a tie
 		game.move(PieceType.LIEUTENANT, L15, L14);
-		game.move(PieceType.MARSHAL, L03, L04);//RED
+		game.move(PieceType.MARSHAL, L(0,3), L04);//RED
 		game.move(PieceType.SERGEANT, L25, L24);
 		game.move(PieceType.MARSHAL, L04, L14);//RED
 		game.move(PieceType.SERGEANT, L24, L14);
@@ -833,11 +777,11 @@ public class DeltaStrategyGameControllerTest {
 	 */
 	@Test
 	public void battle3_Captain_Lieutenant_Colonel() throws StrategyException {
-		assertSame(game.move(PieceType.LIEUTENANT,    L41,      L42).getStatus(), MoveResultStatus.OK );
-		assertSame(game.move(PieceType.CAPTAIN, L44, L43).getStatus(), MoveResultStatus.OK );
-		assertSame(game.move(PieceType.LIEUTENANT, L42,         L43).getStatus(), MoveResultStatus.OK );
-		assertSame(game.getPieceAt(L42).getType(), PieceType.CAPTAIN);
-		assertSame(game.move(PieceType.CAPTAIN, L42,    L41).getStatus(), MoveResultStatus.OK );
+		assertSame(game.move(PieceType.LIEUTENANT,    L41,      L(4,2)).getStatus(), MoveResultStatus.OK );
+		assertSame(game.move(PieceType.CAPTAIN, L44, L(4,3)).getStatus(), MoveResultStatus.OK );
+		assertSame(game.move(PieceType.LIEUTENANT, L(4,2),         L(4,3)).getStatus(), MoveResultStatus.OK );
+		assertSame(game.getPieceAt(L(4,2)).getType(), PieceType.CAPTAIN);
+		assertSame(game.move(PieceType.CAPTAIN, L(4,2),    L41).getStatus(), MoveResultStatus.OK );
 		assertSame(game.move(PieceType.COLONEL, L40,       L41).getStatus(), MoveResultStatus.OK );
 		assertSame(game.getPieceAt(L41).getType(), PieceType.COLONEL);
 	}
@@ -848,12 +792,12 @@ public class DeltaStrategyGameControllerTest {
 	 */
 	@Test
 	public void battle5_blueGetsRedFlag()throws StrategyException {
-		assertSame(game.move(PieceType.LIEUTENANT,    L41,      L42).getStatus(), MoveResultStatus.OK );
-		assertSame(game.move(PieceType.SERGEANT, L04, L03).getStatus(), MoveResultStatus.OK );
-		assertSame(game.move(PieceType.LIEUTENANT, L42,         L43).getStatus(), MoveResultStatus.OK );
-		assertSame(game.move(PieceType.SERGEANT, L03,    L02).getStatus(), MoveResultStatus.OK );
-		assertSame(game.move(PieceType.LIEUTENANT, L43,         L44).getStatus(), MoveResultStatus.OK );
-		assertSame(game.move(PieceType.SERGEANT, L02,    L01).getStatus(), MoveResultStatus.BLUE_WINS );
+		assertSame(game.move(PieceType.LIEUTENANT,    L(4,1),      L(4,2)).getStatus(), MoveResultStatus.OK );
+		assertSame(game.move(PieceType.SERGEANT, L(0,4), L(0,3)).getStatus(), MoveResultStatus.OK );
+		assertSame(game.move(PieceType.LIEUTENANT, L(4,2),         L(4,3)).getStatus(), MoveResultStatus.OK );
+		assertSame(game.move(PieceType.SERGEANT, L(0,3),    L(0,2)).getStatus(), MoveResultStatus.OK );
+		assertSame(game.move(PieceType.LIEUTENANT,  L(4,3),         L44).getStatus(), MoveResultStatus.OK );
+		assertSame(game.move(PieceType.SERGEANT, L(0,2),    L01).getStatus(), MoveResultStatus.BLUE_WINS );
 
 	}	
 

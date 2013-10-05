@@ -213,7 +213,7 @@ public class DeltaStrategyGameControllerTest {
 	@Test(expected=StrategyException.class)
 	public void noRedFlag() throws StrategyException{
 		validRedConfiguration.remove(redFlagAtLocation);
-		validRedConfiguration.add(new PieceLocationDescriptor(blueMarshal ,L(0,1)));
+		addToConfiguration(PieceType.MARSHAL, PlayerColor.BLUE, 0 ,1);
 		factory.makeDeltaStrategyGame(validRedConfiguration, validBlueConfiguration);
 	}
 
@@ -224,7 +224,7 @@ public class DeltaStrategyGameControllerTest {
 	@Test(expected=StrategyException.class)
 	public void testNoBlueFlag() throws StrategyException{
 		validBlueConfiguration.remove(blueFlagAtLocation);
-		validBlueConfiguration.add(new PieceLocationDescriptor(blueMarshal ,L(3,4)));
+		addToConfiguration(PieceType.MARSHAL, PlayerColor.BLUE, 3 , 4);
 		factory.makeDeltaStrategyGame(validRedConfiguration, validBlueConfiguration);
 	}
 
@@ -239,8 +239,7 @@ public class DeltaStrategyGameControllerTest {
 	}
 
 	@Test(expected=StrategyException.class)
-	public void redConfigurationHasTooFewItem() throws StrategyException
-	{ 
+	public void redConfigurationHasTooFewItem() throws StrategyException { 
 		validRedConfiguration.remove(0);
 		factory.makeDeltaStrategyGame(validRedConfiguration, validBlueConfiguration);
 	}
@@ -352,7 +351,7 @@ public class DeltaStrategyGameControllerTest {
 	 */
 	@Test(expected=StrategyException.class)
 	public void locationUsedTwice() throws StrategyException{
-		validRedConfiguration.add(new PieceLocationDescriptor( blueFlag, L(3,4)));
+		addToConfiguration(PieceType.FLAG, PlayerColor.BLUE, 3 ,4);
 		factory.makeDeltaStrategyGame(validRedConfiguration, validBlueConfiguration);
 	}
 
@@ -363,7 +362,7 @@ public class DeltaStrategyGameControllerTest {
 	@Test(expected=StrategyException.class)
 	public void bluePieceInNeutralZone() throws StrategyException {
 		validBlueConfiguration.remove(blueFlagAtLocation); // remove flag
-		validBlueConfiguration.add(new PieceLocationDescriptor( blueFlag, L(3,3)));
+		addToConfiguration(PieceType.FLAG, PlayerColor.BLUE, 3 ,3);
 		factory.makeDeltaStrategyGame(validRedConfiguration, validBlueConfiguration);	
 	}
 
@@ -374,7 +373,7 @@ public class DeltaStrategyGameControllerTest {
 	@Test(expected=StrategyException.class)
 	public void redPieceInNeutralZone() throws StrategyException {
 		validRedConfiguration.remove(redFlagAtLocation); // remove flag
-		validRedConfiguration.add(new PieceLocationDescriptor( redFlag, L(3,2)));
+		addToConfiguration(PieceType.FLAG, PlayerColor.RED, 3 ,2);
 		factory.makeDeltaStrategyGame(validRedConfiguration, validBlueConfiguration);	
 	}
 
@@ -386,8 +385,8 @@ public class DeltaStrategyGameControllerTest {
 	public void playerFlagsInEnemyZones() throws StrategyException {
 		validRedConfiguration.remove(redFlagAtLocation); // remove flag
 		validBlueConfiguration.remove(blueFlagAtLocation); // remove flag
-		validBlueConfiguration.add(new PieceLocationDescriptor(redFlag, L(3,4) ));
-		validRedConfiguration.add(new PieceLocationDescriptor( blueFlag,L(0,1)));
+		addToConfiguration(PieceType.FLAG, PlayerColor.BLUE, 0 ,1);
+		addToConfiguration(PieceType.FLAG, PlayerColor.RED, 3 ,4);
 		factory.makeDeltaStrategyGame(validRedConfiguration, validBlueConfiguration);		
 	}
 
@@ -398,7 +397,7 @@ public class DeltaStrategyGameControllerTest {
 	@Test(expected=StrategyException.class)
 	public void pieceOutOfBoundsY() throws StrategyException {
 		validBlueConfiguration.remove(blueFlagAtLocation); // remove flag
-		validBlueConfiguration.add(new PieceLocationDescriptor( blueFlag, L(0,12)));
+		addToConfiguration(PieceType.FLAG, PlayerColor.BLUE, 0, 12);
 		factory.makeDeltaStrategyGame(validRedConfiguration, validBlueConfiguration);	
 	}
 
@@ -409,7 +408,7 @@ public class DeltaStrategyGameControllerTest {
 	@Test(expected=StrategyException.class)
 	public void pieceOutOfBoundsX() throws StrategyException {
 		validRedConfiguration.remove(redFlagAtLocation); // remove flag
-		validRedConfiguration.add(new PieceLocationDescriptor( redFlag, L(11,1)));
+		addToConfiguration(PieceType.FLAG, PlayerColor.RED, 11 ,4);
 		factory.makeDeltaStrategyGame(validRedConfiguration, validBlueConfiguration);	
 	}
 
@@ -420,7 +419,7 @@ public class DeltaStrategyGameControllerTest {
 	@Test(expected=StrategyException.class)
 	public void pieceInNegativeX() throws StrategyException {
 		validRedConfiguration.remove(redFlagAtLocation); // remove flag
-		validRedConfiguration.add(new PieceLocationDescriptor( redFlag, L(-1,0)));
+		addToConfiguration(PieceType.FLAG, PlayerColor.RED, -1 , 0);
 		factory.makeDeltaStrategyGame(validRedConfiguration, validBlueConfiguration);	
 	}
 
@@ -431,7 +430,7 @@ public class DeltaStrategyGameControllerTest {
 	@Test(expected=StrategyException.class)
 	public void pieceInNegativeY() throws StrategyException {
 		validRedConfiguration.remove(redFlagAtLocation); // remove flag
-		validRedConfiguration.add(new PieceLocationDescriptor( redFlag, L(0,-1)));
+		addToConfiguration(PieceType.FLAG, PlayerColor.RED,0 ,-1);
 		factory.makeDeltaStrategyGame(validRedConfiguration, validBlueConfiguration);	
 	}
 
@@ -442,7 +441,7 @@ public class DeltaStrategyGameControllerTest {
 	@Test(expected=StrategyException.class)
 	public void pieceInNegativeCoordinates() throws StrategyException {
 		validRedConfiguration.remove(redFlagAtLocation); // remove flag
-		validRedConfiguration.add(new PieceLocationDescriptor( redFlag, L(-1,-1)));
+		addToConfiguration(PieceType.FLAG, PlayerColor.RED, -1 , -1);
 		factory.makeDeltaStrategyGame(validRedConfiguration, validBlueConfiguration);	
 	}
 
@@ -1030,4 +1029,25 @@ public class DeltaStrategyGameControllerTest {
 	private static Location L(int x, int y){
 		return new Location2D(x,y);
 	}
+	
+	/** Adds the given piece + color to the given location
+	 * 
+	 * @param type piece to add
+	 * @param color player to own
+	 * @param x x coordinate
+	 * @param y y coordinate
+	 */
+	private void addToConfiguration(PieceType type, PlayerColor color, int x, int y)
+	{
+		final PieceLocationDescriptor confItem = new PieceLocationDescriptor(
+				new Piece(type, color),
+				L(x, y));
+		if (color == PlayerColor.RED) {
+			validRedConfiguration.add(confItem);
+		} else {
+			validBlueConfiguration.add(confItem);
+		}
+	}
+	
+	
 }

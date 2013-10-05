@@ -91,7 +91,7 @@ public class DeltaStrategyGameControllerTest {
 	 * - +-----+-----+-----+-----+-----+-----+
 	 *   |  0  |  1  |  2  |  3  |  4  |  5  |
 	 */
-	
+
 	// Locations for testing (in the middle of the board)
 	private final Location L02 = new Location2D(0, 2);
 	private final Location L12 = new Location2D(1, 2);
@@ -104,7 +104,9 @@ public class DeltaStrategyGameControllerTest {
 	private final Location L23 = new Location2D(2, 3); // choke point
 	private final Location L33 = new Location2D(3, 3); // choke point
 	private final Location L43 = new Location2D(4, 3);
-	private final Location L53 = new Location2D(5, 3);
+	private final Location L53 = L(5,3);
+
+
 
 	// Red Pieces
 	private final Piece redFlag = new Piece(PieceType.FLAG, PlayerColor.RED);
@@ -125,7 +127,7 @@ public class DeltaStrategyGameControllerTest {
 
 	// Choke point
 	private final Piece chokePoint = new Piece(PieceType.CHOKE_POINT, null);
-	
+
 	//Piecs + locations
 	private final PieceLocationDescriptor redFlagAtLocation = new PieceLocationDescriptor( redFlag, L01);
 	private final PieceLocationDescriptor blueFlagAtLocation = new PieceLocationDescriptor( blueFlag, L34);
@@ -143,16 +145,18 @@ public class DeltaStrategyGameControllerTest {
 	private  List<PieceLocationDescriptor> validBlueConfiguration = new LinkedList<PieceLocationDescriptor>();
 	/** a bad configuration for testing purposes */
 	private  List<PieceLocationDescriptor> badConfig = new LinkedList<PieceLocationDescriptor>();
+	/** A game nearly over */
+	private  List<PieceLocationDescriptor> endConfig = new LinkedList<PieceLocationDescriptor>();
 
 	/** a test double for a game */
 	private DeltaStrategyGameControllerTestDouble deltaTestDouble;
-	
+
 	@BeforeClass
 	public static void setupBefore(){
 		@SuppressWarnings("unused")
 		GameVersion gameVersion = (GameVersion.DELTA);
 	}
-	
+
 	/**
 	 * Method setup.
 	 * @throws StrategyException
@@ -194,6 +198,13 @@ public class DeltaStrategyGameControllerTest {
 		// For general use
 		badConfig = new LinkedList<PieceLocationDescriptor>();
 		deltaTestDouble = new DeltaStrategyGameControllerTestDouble(validRedConfiguration, validBlueConfiguration, new DeltaRules());
+		deltaTestDouble.startGame();
+
+		// make a configuration that simulates the end of a full game
+		endConfig.add( redFlagAtLocation );
+		endConfig.add(blueFlagAtLocation);
+		endConfig.add(new PieceLocationDescriptor( blueMarshal, L(0,4)));
+		endConfig.add(new PieceLocationDescriptor( redMarshal,  L(0,3)));	
 	}
 
 	/////////// TESTING makeDeltaStrategyGame -- number of pieces
@@ -257,14 +268,14 @@ public class DeltaStrategyGameControllerTest {
 		badConfig.add(new PieceLocationDescriptor( redFlag, L01));
 		factory.makeDeltaStrategyGame(badConfig, validBlueConfiguration);
 	}
-	
+
 	@Test(expected=StrategyException.class)
 	public void redConfigurationHasTooFewItem() throws StrategyException
 	{ 
 		validRedConfiguration.remove(0);
 		factory.makeDeltaStrategyGame(validRedConfiguration, validBlueConfiguration);
 	}
-	
+
 
 	/**
 	 * Method tooManyPiecesForRedConfigurationWithOnlyFlag.
@@ -478,12 +489,12 @@ public class DeltaStrategyGameControllerTest {
 		assertSame(redLieutenant, game.getPieceAt(new Location3D(0,0,3)));
 		assertTrue(true);// no exception thrown
 	}
-	
+
 	@Test(expected=StrategyRuntimeException.class)
 	public void getPieceAtThrowsExceptionWhenItCantUseALocation(){
 		game.getPieceAt(new Location1D(1));		
 	}
-		
+
 	@Test
 	public void initialPositionHasCorrectREDPiecesPlaced() {
 		final Iterator<PieceLocationDescriptor> redIter = validRedConfiguration.iterator();
@@ -544,7 +555,7 @@ public class DeltaStrategyGameControllerTest {
 		assertSame(chokePoint.getType(), game.getPieceAt(L22).getType() );
 		assertSame(chokePoint.getType(), game.getPieceAt(L23).getType() );
 	}
-	
+
 
 	//////////// MOVEMENT
 	/**
@@ -720,7 +731,7 @@ public class DeltaStrategyGameControllerTest {
 	public void redMovesOntoChokePoint() throws StrategyException{
 		assertSame(game.move(PieceType.COLONEL,    L21,      L22).getStatus(), MoveResultStatus.OK );
 	}
-	
+
 	/**
 	 * Method gameEndsAfterSIXMoves.
 	 * @throws StrategyException
@@ -752,7 +763,7 @@ public class DeltaStrategyGameControllerTest {
 		game.move(PieceType.SERGEANT, L25, L24);
 		game.move(PieceType.MARSHAL, L04, L14);//RED
 		game.move(PieceType.SERGEANT, L24, L14);//////////////
-		
+
 		game.move(PieceType.SERGEANT, L52, L53);//RED
 		game.move(PieceType.SERGEANT, L54, L53);
 		game.move(PieceType.MARSHAL, L24, L25);//RED
@@ -845,155 +856,57 @@ public class DeltaStrategyGameControllerTest {
 		assertSame(game.move(PieceType.SERGEANT, L02,    L01).getStatus(), MoveResultStatus.BLUE_WINS );
 
 	}	
-	
+
 	/**
 	 * Method battle3_SergeantDraw.
 	 * @throws StrategyException
 	 */
-	@Test(expected=StrategyException.class)
-	public void fullGame_blueCantMove_andMoveAfterGame() throws StrategyException {
-		game.move(PieceType.MARSHAL, L11, L12);      //RED
-		game.move(PieceType.LIEUTENANT, L14, L13);
-		game.move(PieceType.LIEUTENANT, L41, L42);			//RED
-		game.move(PieceType.COLONEL, L24, L14); 
-		game.move(PieceType.SERGEANT, L51, L52);			//RED
-		game.move(PieceType.LIEUTENANT, L13, L12);
-		game.move(PieceType.MARSHAL, L13, L03); //RED
-		game.move(PieceType.COLONEL, L14, L13);
-		game.move(PieceType.COLONEL, L21, L11); //RED
-		game.move(PieceType.COLONEL, L13, L12); 
-		game.move(PieceType.COLONEL, L11, L12);//RED - its a tie battle
-		game.move(PieceType.LIEUTENANT, L15, L14);
-		game.move(PieceType.MARSHAL, L03, L04);//RED
-		game.move(PieceType.SERGEANT, L25, L24);
-		game.move(PieceType.MARSHAL, L04, L14);//RED
-		game.move(PieceType.SERGEANT, L24, L14);//////////////
-		
-		game.move(PieceType.SERGEANT, L52, L53);//RED
-		game.move(PieceType.SERGEANT, L54, L53);
-		game.move(PieceType.MARSHAL, L24, L25);//RED
-		game.move(PieceType.LIEUTENANT, L35, L25);
-		game.move(PieceType.MARSHAL, L35, L45);//RED
-		game.move(PieceType.COLONEL, L05, L15);
-		game.move(PieceType.MARSHAL, L45, L44);//RED
-		game.move(PieceType.COLONEL, L15, L25);
-		game.move(PieceType.MARSHAL, L44, L45);//RED
-		game.move(PieceType.COLONEL, L25, L35);
-		game.move(PieceType.MARSHAL, L45, L35);//RED
-		game.move(PieceType.MARSHAL, L55, L45);//Blue
-		assertSame(game.move(PieceType.MARSHAL, L35, L45).getStatus(), MoveResultStatus.RED_WINS);//RED
-		game.move(PieceType.CAPTAIN, L20, L21);
+	@Test
+	public void fullGame_blueCantMove_redWins() throws StrategyException {
+		// Add an extra red piece
+		endConfig.add(new PieceLocationDescriptor( redSergeant,  L(1,3)));
+
+		// Forcibly set the configuration		
+		deltaTestDouble.setFieldConfiguration(endConfig);
+
+		// Make the move that ends the game
+		assertSame(deltaTestDouble.move(PieceType.MARSHAL, L(0,3), L(0,4)).getStatus(), MoveResultStatus.RED_WINS);
 	}
 
 	@Test
-	public void fullGame_DRAW() throws StrategyException {
-		game.move(PieceType.MARSHAL, L11, L12);      //RED
-		game.move(PieceType.LIEUTENANT, L14, L13);
-		game.move(PieceType.LIEUTENANT, L41, L42);			//RED
-		game.move(PieceType.COLONEL, L24, L14); 
-		game.move(PieceType.SERGEANT, L51, L52);			//RED
-		game.move(PieceType.LIEUTENANT, L13, L12);
-		game.move(PieceType.MARSHAL, L13, L03); //RED
-		game.move(PieceType.COLONEL, L14, L13);
-		game.move(PieceType.COLONEL, L21, L11); //RED
-		game.move(PieceType.COLONEL, L13, L12); 
-		game.move(PieceType.COLONEL, L11, L12);//RED - its a tie battle
-		game.move(PieceType.LIEUTENANT, L15, L14);
-		game.move(PieceType.MARSHAL, L03, L04);//RED
-		game.move(PieceType.SERGEANT, L25, L24);
-		game.move(PieceType.MARSHAL, L04, L14);//RED
-		game.move(PieceType.SERGEANT, L24, L14);//////////////
-		game.move(PieceType.SERGEANT, L52, L53);//RED
-		game.move(PieceType.SERGEANT, L54, L53);
-		game.move(PieceType.MARSHAL, L24, L25);//RED
-		game.move(PieceType.LIEUTENANT, L35, L25);
-		game.move(PieceType.MARSHAL, L35, L45);//RED
-		game.move(PieceType.MARSHAL, L55, L54);
-		game.move(PieceType.MARSHAL, L45, L44);//RED
-		game.move(PieceType.MARSHAL, L54, L53);
-		game.move(PieceType.MARSHAL, L44, L45);//RED
-		game.move(PieceType.MARSHAL, L53, L52);
-		game.move(PieceType.MARSHAL, L45, L35);//RED
-		game.move(PieceType.MARSHAL, L52, L51);//Blue
-		game.move(PieceType.MARSHAL, L35, L25);//RED
-		game.move(PieceType.MARSHAL, L51, L50);//Blue
-		game.move(PieceType.MARSHAL, L25, L15);//RED
-		game.move(PieceType.MARSHAL, L50, L40);//Blue
-		game.move(PieceType.MARSHAL, L15, L05);//RED
-		game.move(PieceType.MARSHAL, L40, L30);//Blue
-		game.move(PieceType.LIEUTENANT, L42, L41);			//RED
-		game.move(PieceType.MARSHAL, L30, L20); // BLUE
-		game.move(PieceType.MARSHAL, L05, L15);//RED
-		game.move(PieceType.MARSHAL, L20, L10);//Blue
-		game.move(PieceType.MARSHAL, L15, L14);//RED
-		game.move(PieceType.MARSHAL, L10, L00);//Blue
-		game.move(PieceType.CAPTAIN, L31, L21);//red
-		game.move(PieceType.MARSHAL, L00, L10);//Blue
-		game.move(PieceType.MARSHAL, L14, L13);//RED
-		game.move(PieceType.MARSHAL, L10, L20);//Blue
-		game.move(PieceType.MARSHAL, L13, L12);//RED
-		game.move(PieceType.MARSHAL, L20, L21);//Blue
-		game.move(PieceType.MARSHAL, L12, L11);//RED
-		game.move(PieceType.MARSHAL, L21, L31);//Blue
-		game.move(PieceType.MARSHAL, L11, L21); //red
-		game.move(PieceType.MARSHAL, L31, L41);//Blue
-		game.move(PieceType.MARSHAL, L21, L31); //red
-		assertSame(game.move(PieceType.MARSHAL, L41, L31).getStatus(), MoveResultStatus.DRAW);//BLUE
+	public void fullGame_DRAW_noMoves() throws StrategyException {
+		// Forcibly set the configuration		
+		deltaTestDouble.setFieldConfiguration(endConfig);
+
+		// Make the move that ends the game
+		assertSame(deltaTestDouble.move(PieceType.MARSHAL, L(0,3), L(0,4)).getStatus(), MoveResultStatus.DRAW);
 	}
-	
+
 	@Test
 	public void fullGame_blueWins_redCantMove() throws StrategyException {
-		game.move(PieceType.MARSHAL, L11, L12);      //RED
-		game.move(PieceType.LIEUTENANT, L14, L13);
-		game.move(PieceType.LIEUTENANT, L41, L42);			//RED
-		game.move(PieceType.COLONEL, L24, L14); 
-		game.move(PieceType.SERGEANT, L51, L52);			//RED
-		game.move(PieceType.LIEUTENANT, L13, L12);
-		game.move(PieceType.MARSHAL, L13, L03); //RED
-		game.move(PieceType.COLONEL, L14, L13);
-		game.move(PieceType.COLONEL, L21, L11); //RED
-		game.move(PieceType.COLONEL, L13, L12); 
-		game.move(PieceType.COLONEL, L11, L12);//RED - its a tie battle
-		game.move(PieceType.LIEUTENANT, L15, L14);
-		game.move(PieceType.MARSHAL, L03, L04);//RED
-		game.move(PieceType.SERGEANT, L25, L24);
-		game.move(PieceType.MARSHAL, L04, L14);//RED
-		game.move(PieceType.SERGEANT, L24, L14);//////////////
-		game.move(PieceType.SERGEANT, L52, L53);//RED
-		game.move(PieceType.SERGEANT, L54, L53);
-		game.move(PieceType.MARSHAL, L24, L25);//RED
-		game.move(PieceType.LIEUTENANT, L35, L25);
-		game.move(PieceType.MARSHAL, L35, L45);//RED
-		game.move(PieceType.MARSHAL, L55, L54);
-		game.move(PieceType.MARSHAL, L45, L44);//RED
-		game.move(PieceType.MARSHAL, L54, L53);
-		game.move(PieceType.MARSHAL, L44, L45);//RED
-		game.move(PieceType.MARSHAL, L53, L52);
-		game.move(PieceType.MARSHAL, L45, L35);//RED
-		game.move(PieceType.MARSHAL, L52, L51);//Blue
-		game.move(PieceType.MARSHAL, L35, L25);//RED
-		game.move(PieceType.MARSHAL, L51, L50);//Blue
-		game.move(PieceType.MARSHAL, L25, L15);//RED
-		game.move(PieceType.MARSHAL, L50, L40);//Blue
-		game.move(PieceType.CAPTAIN, L20 , L21); //Red
-		game.move(PieceType.MARSHAL, L40, L30);//Blue
-		game.move(PieceType.LIEUTENANT, L42, L41);			//RED
-		game.move(PieceType.MARSHAL, L30, L20); // BLUE
-		game.move(PieceType.LIEUTENANT, L41, L42);			//RED
-		game.move(PieceType.MARSHAL, L20, L10);//Blue
-		game.move(PieceType.MARSHAL, L15, L14);//RED
-		game.move(PieceType.MARSHAL, L10, L00);//Blue
-		game.move(PieceType.LIEUTENANT, L42, L41);//red
-		game.move(PieceType.MARSHAL, L00, L10);//Blue
-		game.move(PieceType.MARSHAL, L14, L13);//RED
-		game.move(PieceType.MARSHAL, L10, L20);//Blue
-		game.move(PieceType.MARSHAL, L13, L12);//RED
-		game.move(PieceType.MARSHAL, L20, L21);//Blue
-		game.move(PieceType.MARSHAL, L12, L11);//RED
-		game.move(PieceType.MARSHAL, L21, L31);//Blue
-		game.move(PieceType.MARSHAL, L11, L21); //red
-		game.move(PieceType.MARSHAL, L31, L41);//Blue
-		game.move(PieceType.MARSHAL, L21, L31); //red
-		assertSame(game.move(PieceType.MARSHAL, L41, L31).getStatus(), MoveResultStatus.BLUE_WINS);//BLUE
+		// Add an extra blue piece
+		endConfig.add(new PieceLocationDescriptor( blueSergeant,  L(1,3)));
+
+		// Forcibly set the configuration		
+		deltaTestDouble.setFieldConfiguration(endConfig);
+
+		// Make the move that ends the game
+		assertSame(deltaTestDouble.move(PieceType.MARSHAL, L(0,3), L(0,4)).getStatus(), MoveResultStatus.BLUE_WINS);
 	}
+
+	//////////////// Helper methods /////////////////////
+	/** Makes a location with the given coordinates
+	 * 
+	 * @param x the x coordinate
+	 * @param y the y coordinate
+	 * @return a location2D with the given coordinates
+	 */
+	private static Location L(int x, int y){
+		return new Location2D(x,y);
+	}
+
+
+
+
+
 }

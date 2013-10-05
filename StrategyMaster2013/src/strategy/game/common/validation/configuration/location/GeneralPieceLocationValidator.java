@@ -28,7 +28,7 @@ public class GeneralPieceLocationValidator  extends AbstractPieceLocationValidat
 
 	/** The upper bounds of the redZone */
 	int bottomOfRedZone;
-	/** The Lower bounds of the bluezone */
+	/** The Lower bounds of the blueZone */
 	int bottomOfBlueZone;
 	
 	/** General constructor to take the number of players, as well as the X and Y 
@@ -41,6 +41,8 @@ public class GeneralPieceLocationValidator  extends AbstractPieceLocationValidat
 	 * @param numberOfPlayers The number of players in the game
 	 * @param fieldXDim The number of units the field goes on the X axis
 	 * @param fieldYDim The number of units the field goes on the Y axis 
+	 * @param bottomOfRedZone int noting the bottom of the red zone
+	 * @param bottomOfBlueZone int noting the bottom of the blue zone
 	 */
 	public GeneralPieceLocationValidator(int numberOfPlayers, int fieldXDim,	int fieldYDim, int bottomOfRedZone, int bottomOfBlueZone) {
 		super(numberOfPlayers, fieldXDim, fieldYDim);

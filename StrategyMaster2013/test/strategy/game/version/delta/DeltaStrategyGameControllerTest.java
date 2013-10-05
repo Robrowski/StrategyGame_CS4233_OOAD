@@ -10,6 +10,7 @@
 package strategy.game.version.delta;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -23,7 +24,6 @@ import org.junit.Test;
 
 import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
-import strategy.common.StrategyRuntimeException;
 import strategy.game.StrategyGameController;
 import strategy.game.StrategyGameFactory;
 import strategy.game.common.GameVersion;
@@ -440,9 +440,9 @@ public class DeltaStrategyGameControllerTest {
 		assertTrue(true);// no exception thrown
 	}
 
-	@Test(expected=StrategyRuntimeException.class)
-	public void getPieceAtThrowsExceptionWhenItCantUseALocation(){
-		game.getPieceAt(new Location1D(1));		
+	@Test
+	public void getNullWhenUsingInappropriateLocationsWith_getPieceAt(){
+		assertNull(game.getPieceAt(new Location1D(1)));		
 	}
 
 	@Test

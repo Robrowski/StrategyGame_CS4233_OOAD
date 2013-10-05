@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import strategy.common.PlayerColor;
-import strategy.game.common.Coordinate;
 import strategy.game.common.DetailedMoveResult;
 import strategy.game.common.Location;
 import strategy.game.common.MoveResultStatus;
@@ -65,21 +64,11 @@ public class MapBoardManager implements IBoardManager {
 	@Override
 	public Piece getPieceAt(Location location) {
 		// Attempt to get the PieceLocationDescriptor
-		final PieceLocationDescriptor pld = fieldConfiguration.get(generateLocationHash(location));
+		final PieceLocationDescriptor pld = fieldConfiguration.get(location.toString());
 		if (pld == null) return null;
 		return pld.getPiece();
 	}
 
-	/** Return a hash code for a location - for a 2D grid this ensures unique ID's
-	 *  for board up to  40 x 40
-	 * 
-	 * @param location assumed to have at least X and Y coordinates
-	 * @return a unique hash code
-	 */
-	private String generateLocationHash(Location location){
-		return "" + location.getCoordinate(Coordinate.X_COORDINATE)*37 
-				+ location.getCoordinate(Coordinate.Y_COORDINATE)*41 ;
-	}
 
 	/* (non-Javadoc)
 	 * @see strategy.game.common.board.IBoardManager#updateField(strategy.game.common.DetailedMoveResult)
@@ -130,10 +119,10 @@ public class MapBoardManager implements IBoardManager {
 	
 	/** Remove the piece at the location given
 	 * 
-	 * @param piece the location of the piece to remove
+	 * @param aLoc the location of the piece to remove
 	 */
-	private void remove(Location piece) {
-		fieldConfiguration.remove(generateLocationHash(piece));
+	private void remove(Location aLoc) {
+		fieldConfiguration.remove(aLoc.toString());
 	}
 
 
@@ -143,6 +132,6 @@ public class MapBoardManager implements IBoardManager {
 	 * @param result the piece + location to add
 	 */
 	private void add(PieceLocationDescriptor piece) {
-		fieldConfiguration.put(generateLocationHash(piece.getLocation()), piece);
+		fieldConfiguration.put(piece.getLocation().toString(), piece);
 	}
 }

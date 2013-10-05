@@ -10,6 +10,7 @@
 package strategy.game.version.gamma;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -475,9 +476,9 @@ public class GammaStrategyGameControllerTest {
 		assertTrue(true);// no exception thrown
 	}
 
-	@Test(expected=StrategyRuntimeException.class)
-	public void getPieceAtThrowsExceptionWhenItCantUseALocation(){
-		game.getPieceAt(new Location1D(1));		
+	@Test
+	public void getNullWhenUsingInappropriateLocationsWith_getPieceAt(){
+		assertNull(game.getPieceAt(new Location1D(1)));		
 	}
 
 	@Test

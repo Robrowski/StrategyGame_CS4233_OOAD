@@ -16,5 +16,5 @@ package strategy.game.common.battle;
  * @version Oct 4, 2013
  */
 public enum BattleResult {
-	NOTSPECIAL, DRAW, ATTACKERWINS, DEFENDERWINS, BOMB;
+	NOTSPECIAL, DRAW, ATTACKERWINS, DEFENDERWINS, DEFENDERWINS_NOTMOVED;
 }

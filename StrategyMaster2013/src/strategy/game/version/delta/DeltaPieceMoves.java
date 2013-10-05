@@ -24,6 +24,7 @@ public class DeltaPieceMoves implements IPieceMoves {
 	 * @see strategy.game.version.common.IPieceInfo#getMovementCapability(strategy.game.common.PieceType)
 	 */
 	public int getMovementCapability(PieceType type) {
+		if (type == null) return 0;
 		if (type.equals(PieceType.FLAG)) return 0;
 		if (type.equals(PieceType.MARSHAL)) return 1;
 		if (type.equals(PieceType.COLONEL)) return 1;
@@ -36,7 +37,7 @@ public class DeltaPieceMoves implements IPieceMoves {
 		if (type.equals(PieceType.SPY)) return 1;
 		if (type.equals(PieceType.SCOUT)) return 10;
 		if (type.equals(PieceType.BOMB)) return 0;
-		return 0;
+		else return 0;
 	}
 
 }

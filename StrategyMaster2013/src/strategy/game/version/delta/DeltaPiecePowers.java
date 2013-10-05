@@ -19,12 +19,13 @@ import strategy.game.common.pieceStats.IPiecePowers;
  * @version $Revision: 1.0 $
  */
 public class DeltaPiecePowers implements IPiecePowers{ 
-	
+
 
 	/* (non-Javadoc)
 	 * @see strategy.game.version.common.IPieceInfo#getPower(strategy.game.common.PieceType)
 	 */
 	public int getPower(PieceType type) {
+		if (type == null) return 0;
 		if (type.equals(PieceType.FLAG)) return 0;
 		if (type.equals(PieceType.MARSHAL)) return 12;
 		if (type.equals(PieceType.COLONEL)) return 10;
@@ -37,7 +38,7 @@ public class DeltaPiecePowers implements IPiecePowers{
 		if (type.equals(PieceType.SPY)) return 3;
 		if (type.equals(PieceType.SCOUT)) return 4;
 		if (type.equals(PieceType.BOMB)) return 0;
-		return 0;
+		else return 0;
 	}
 
 

@@ -24,6 +24,7 @@ import org.junit.Test;
 
 import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
+import strategy.common.StrategyRuntimeException;
 import strategy.game.StrategyGameController;
 import strategy.game.StrategyGameFactory;
 import strategy.game.common.DetailedMoveResult;
@@ -708,6 +709,18 @@ public class DeltaStrategyGameControllerTest {
 		game.move(PieceType.SERGEANT,   L(5,1) ,   L(5,2)); 
 	}
 
+	@Test(expected=StrategyException.class)
+	public void tryToMoveBomb() throws StrategyException{
+		// Add spies for fights with marshals
+		endConfig.add(new PieceLocationDescriptor( redBomb,  L(3,0)));
+
+		// Forcibly set the configuration		
+		deltaTestDouble.setFieldConfiguration(endConfig);	
+
+		// Move a bomb lolz
+		deltaTestDouble.move(PieceType.BOMB, L(3,0) , L(4,0));		
+	}
+
 	////// BATTLE
 	/**
 	 * Method battle1_MarshalWinsALot.
@@ -799,13 +812,13 @@ public class DeltaStrategyGameControllerTest {
 			endConfig.add(new PieceLocationDescriptor( blueBomb,   L(i   ,5)));
 			endConfig.add(new PieceLocationDescriptor( redBomb,    L(i+1 ,5)));
 		}
-		
+
 		endConfig.add(new PieceLocationDescriptor( redMarshal,  L(0,4)));
 		endConfig.add(new PieceLocationDescriptor( blueScout,   L(1,4)));
 		endConfig.add(new PieceLocationDescriptor( redGeneral,  L(2,4)));
 		endConfig.add(new PieceLocationDescriptor( blueMajor,    L(3,4)));
-		
-		
+
+
 		// Forcibly set the configuration		
 		deltaTestDouble.setFieldConfiguration(endConfig);
 
@@ -814,7 +827,7 @@ public class DeltaStrategyGameControllerTest {
 		DetailedMoveResult scoutLose   = (DetailedMoveResult) deltaTestDouble.move(PieceType.SCOUT,     L(1,4) , L(1,5));
 		DetailedMoveResult generalLose = (DetailedMoveResult) deltaTestDouble.move(PieceType.GENERAL,   L(2,4) , L(2,5));
 		DetailedMoveResult majorLose   = (DetailedMoveResult) deltaTestDouble.move(PieceType.MAJOR,  	L(3,4) , L(3,5));
-	
+
 		// Verify bomb survived
 		assertSame(blueBomb, deltaTestDouble.getPieceAt(L(0,5)));
 		assertSame(redBomb,  deltaTestDouble.getPieceAt(L(1,5)));
@@ -844,7 +857,6 @@ public class DeltaStrategyGameControllerTest {
 		assertSame(minerWin.getBattleWinner().getPiece(), redMiner);	
 	}
 
-
 	@Test
 	public void spyKillsMarshalOnStrike_notOnDefence() throws StrategyException{
 		// Add spies for fights with marshals
@@ -863,8 +875,29 @@ public class DeltaStrategyGameControllerTest {
 		assertSame(spyWin.getBattleWinner().getPiece(), redSpy);
 		assertSame(spyLose.getBattleWinner().getPiece(), blueMarshal);
 	}
+	
+	///////////////////// Miscellaneous DELTA tests
+	@Test
+	public void testIfNullGetsUsedAsPieceType1() throws StrategyException{
+		assertSame(0, new DeltaPieceMoves().getMovementCapability(null));
+	}
 
+	@Test
+	public void testIfNullGetsUsedAsPieceType2() throws StrategyException{
+		assertSame(0, new DeltaPiecePowers().getPower(null));
+	}
+	
+	@Test
+	public void testIf_CHOKE_POINT_GetsUsedAsPieceType1() throws StrategyException{
+		assertSame(0, new DeltaPieceMoves().getMovementCapability(PieceType.CHOKE_POINT));
+	}
 
+	@Test
+	public void testIf_CHOKE_POINT_GetsUsedAsPieceType2() throws StrategyException{
+		assertSame(0, new DeltaPiecePowers().getPower(PieceType.CHOKE_POINT));
+	}
+	
+	
 	//////////////// Helper methods /////////////////////
 	/** Makes a location with the given coordinates
 	 * 

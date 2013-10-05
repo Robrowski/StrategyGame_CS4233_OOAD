@@ -90,7 +90,7 @@ public class StandardBattleEngine implements IBattleEngine {
 						new PieceLocationDescriptor(atTo, moveFrom), 
 						moveTo, moveFrom);
 			// Because bombs don't move
-			} else if (result == BattleResult.BOMB){
+			} else if (result == BattleResult.DEFENDERWINS_NOTMOVED){
 				finalMoveResult = new DetailedMoveResult(gameWinner,
 						new PieceLocationDescriptor(atTo, moveTo),
 						moveTo, moveFrom);	

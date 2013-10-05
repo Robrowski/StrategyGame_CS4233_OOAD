@@ -763,6 +763,19 @@ public class DeltaStrategyGameControllerTest {
 		// Make the move that ends the game
 		assertSame(deltaTestDouble.move(PieceType.MARSHAL, L(0,3), L(0,4)).getStatus(), MoveResultStatus.BLUE_WINS);
 	}
+	
+	@Test(expected=StrategyException.class)
+	public void cannotMoveAfterGameOver() throws StrategyException {
+		// Add an extra blue piece
+		endConfig.add(new PieceLocationDescriptor( blueSergeant,  L(1,3)));
+
+		// Forcibly set the configuration		
+		deltaTestDouble.setFieldConfiguration(endConfig);
+
+		// Make the move that ends the game
+		assertSame(deltaTestDouble.move(PieceType.MARSHAL, L(0,3), L(0,4)).getStatus(), MoveResultStatus.BLUE_WINS);
+		deltaTestDouble.move(PieceType.SERGEANT, L(1,3), L(1,4)); //<-- this is a valid move
+	}
 
 	//////////////// Helper methods /////////////////////
 	/** Makes a location with the given coordinates

@@ -17,6 +17,7 @@ import strategy.game.StrategyGameController;
 import strategy.game.common.DetailedMoveResult;
 import strategy.game.common.Location;
 import strategy.game.common.MoveResult;
+import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
@@ -164,6 +165,9 @@ StrategyGameController {
 		currentTurn = (atFrom.getOwner() == PlayerColor.RED) ? PlayerColor.BLUE
 						: PlayerColor.RED;
 		
+		// Check if the game ended...
+		if (theDMove.getStatus() != MoveResultStatus.OK) gameOver = true;
+				
 		return theDMove;
 	}
 	

@@ -43,6 +43,7 @@ import strategy.game.common.PieceType;
  */
 public class DeltaStrategyGameControllerTest {
 
+	// The game!
 	private  StrategyGameController game;
 
 	/*
@@ -87,10 +88,6 @@ public class DeltaStrategyGameControllerTest {
 	//Piecs + locations
 	private final PieceLocationDescriptor redFlagAtLocation = new PieceLocationDescriptor( redFlag, L(0,1));
 	private final PieceLocationDescriptor blueFlagAtLocation = new PieceLocationDescriptor( blueFlag, L(3,4));
-
-	//Valid moves
-	private final Location validMove_RedSerg3 = L(5,2);
-	private final Location validMove_BlueSerg2 = L(5,3);
 
 	/** the strategy game factory */
 	private final StrategyGameFactory factory = StrategyGameFactory.getInstance();
@@ -487,18 +484,18 @@ public class DeltaStrategyGameControllerTest {
 		assertEquals(null, game.getPieceAt( L(0,6)));	
 		assertEquals(null, game.getPieceAt( L(6,6)));
 	}
-
+	
 	/**
 	 * Method getPieceAt_worksAfterTwoMoves.
 	 * @throws StrategyException
 	 */
 	@Test
 	public void getPieceAt_worksAfterTwoMoves() throws StrategyException {
-		game.move(PieceType.SERGEANT, L(5,1), validMove_RedSerg3);
-		game.move(PieceType.SERGEANT, L(5,4), validMove_BlueSerg2);
+		game.move(PieceType.SERGEANT, L(5,1), L(5,2));
+		game.move(PieceType.SERGEANT, L(5,4), L(5,3));
 		assertTrue(true); // have to get this far with moves
-		assertEquals(PieceType.SERGEANT, game.getPieceAt(validMove_RedSerg3).getType());
-		assertEquals(PieceType.SERGEANT, game.getPieceAt(validMove_BlueSerg2).getType());				
+		assertEquals(PieceType.SERGEANT, game.getPieceAt(L(5,2)).getType());
+		assertEquals(PieceType.SERGEANT, game.getPieceAt(L(5,3)).getType());				
 	}
 
 	@Test
@@ -554,7 +551,7 @@ public class DeltaStrategyGameControllerTest {
 	 */
 	@Test(expected=StrategyException.class)
 	public void moveOffBoardYPositive() throws StrategyException {
-		game.move(PieceType.SERGEANT, L(5,1), validMove_RedSerg3);
+		game.move(PieceType.SERGEANT, L(5,1), L(5,2));
 		game.move(PieceType.MARSHAL,  L(5,5), L(5,11));
 	}
 
@@ -564,7 +561,7 @@ public class DeltaStrategyGameControllerTest {
 	 */
 	@Test(expected=StrategyException.class)
 	public void badFromNegativeX() throws StrategyException {
-		game.move(PieceType.SERGEANT, L(-1,0), validMove_RedSerg3);
+		game.move(PieceType.SERGEANT, L(-1,0), L(5,2));
 	}
 
 	/**
@@ -573,7 +570,7 @@ public class DeltaStrategyGameControllerTest {
 	 */
 	@Test(expected=StrategyException.class)
 	public void badFromNegativeY() throws StrategyException {
-		game.move(PieceType.SERGEANT, L(0,-1), validMove_RedSerg3);
+		game.move(PieceType.SERGEANT, L(0,-1), L(5,2));
 	}
 
 	/**
@@ -582,7 +579,7 @@ public class DeltaStrategyGameControllerTest {
 	 */
 	@Test(expected=StrategyException.class)
 	public void badFromOutOfBoundsX() throws StrategyException {
-		game.move(PieceType.SERGEANT, L(6,0), validMove_RedSerg3);
+		game.move(PieceType.SERGEANT, L(6,0), L(5,2));
 	}
 
 	/**
@@ -591,7 +588,7 @@ public class DeltaStrategyGameControllerTest {
 	 */
 	@Test(expected=StrategyException.class)
 	public void badFromOutOfBoundsY() throws StrategyException {
-		game.move(PieceType.SERGEANT, L(0,6), validMove_RedSerg3);
+		game.move(PieceType.SERGEANT, L(0,6), L(5,2));
 	}
 
 	/**
@@ -618,7 +615,7 @@ public class DeltaStrategyGameControllerTest {
 	 */
 	@Test(expected=StrategyException.class)
 	public void blueTriesToGoFirst() throws StrategyException {
-		game.move(PieceType.SERGEANT, L(5,4), validMove_BlueSerg2);
+		game.move(PieceType.SERGEANT, L(5,4), L(5,3));
 	}
 
 	/**
@@ -627,9 +624,8 @@ public class DeltaStrategyGameControllerTest {
 	 */
 	@Test(expected=StrategyException.class)
 	public void redTriesToGoTwice() throws StrategyException {
-		game.move(PieceType.SERGEANT, L(5,1), validMove_BlueSerg2);
-		game.move(PieceType.SERGEANT, validMove_BlueSerg2, L(5,3));
-
+		game.move(PieceType.SERGEANT, L(5,1), L(5,3));
+		game.move(PieceType.SERGEANT, L(5,3), L(5,3));
 	}
 
 	/**
@@ -638,10 +634,10 @@ public class DeltaStrategyGameControllerTest {
 	 */
 	@Test(expected=StrategyException.class)
 	public void moveNonAdjacentX() throws StrategyException {
-		game.move(PieceType.SERGEANT, L(5,1), validMove_RedSerg3);
-		game.move(PieceType.SERGEANT, L(5,4), validMove_BlueSerg2);
+		game.move(PieceType.SERGEANT, L(5,1), L(5,2));
+		game.move(PieceType.SERGEANT, L(5,4), L(5,3));
 		assertTrue(true); // have to get this far
-		game.move(PieceType.SERGEANT, validMove_RedSerg3 , L(0,2));
+		game.move(PieceType.SERGEANT, L(5,2) , L(0,2));
 	}
 
 	/**

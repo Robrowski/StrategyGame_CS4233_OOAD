@@ -875,7 +875,28 @@ public class DeltaStrategyGameControllerTest {
 		assertSame(spyWin.getBattleWinner().getPiece(), redSpy);
 		assertSame(spyLose.getBattleWinner().getPiece(), blueMarshal);
 	}
-	
+
+	@Test
+	public void battlesBetweenNewPieces() throws StrategyException{
+		// Add some pieces for fighting
+		endConfig.add(new PieceLocationDescriptor( redMiner,     L(1,4)));
+		endConfig.add(new PieceLocationDescriptor( blueGeneral,  L(2,4)));
+		endConfig.add(new PieceLocationDescriptor( blueSpy,      L(3,3)));
+		endConfig.add(new PieceLocationDescriptor( redMiner,     L(3,4)));
+
+		// Forcibly set the configuration		
+		deltaTestDouble.setFieldConfiguration(endConfig);
+		
+		// Fight!
+		DetailedMoveResult minerLose = (DetailedMoveResult)  deltaTestDouble.move(PieceType.MINER,L(1,4), L(2,4));
+		DetailedMoveResult minerWin = (DetailedMoveResult)   deltaTestDouble.move(PieceType.SPY, L(3,3) , L(3,4));
+
+		// Prove Results
+		assertSame(minerLose.getBattleWinner().getPiece(),  blueGeneral);
+		assertSame(minerWin.getBattleWinner().getPiece(), redMiner);
+	}
+
+
 	///////////////////// Miscellaneous DELTA tests
 	@Test
 	public void testIfNullGetsUsedAsPieceType1() throws StrategyException{
@@ -886,7 +907,7 @@ public class DeltaStrategyGameControllerTest {
 	public void testIfNullGetsUsedAsPieceType2() throws StrategyException{
 		assertSame(0, new DeltaPiecePowers().getPower(null));
 	}
-	
+
 	@Test
 	public void testIf_CHOKE_POINT_GetsUsedAsPieceType1() throws StrategyException{
 		assertSame(0, new DeltaPieceMoves().getMovementCapability(PieceType.CHOKE_POINT));
@@ -896,8 +917,8 @@ public class DeltaStrategyGameControllerTest {
 	public void testIf_CHOKE_POINT_GetsUsedAsPieceType2() throws StrategyException{
 		assertSame(0, new DeltaPiecePowers().getPower(PieceType.CHOKE_POINT));
 	}
-	
-	
+
+
 	//////////////// Helper methods /////////////////////
 	/** Makes a location with the given coordinates
 	 * 

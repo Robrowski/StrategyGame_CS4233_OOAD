@@ -737,43 +737,6 @@ public class GammaStrategyGameControllerTest {
 		game.move(PieceType.SERGEANT,   L51 ,   L52); 
 	}
 
-	@Test(expected=StrategyException.class)
-	public void violateMoveRepetitionRule2() throws StrategyException {
-		game.move(PieceType.MARSHAL, L11, L12);      //RED
-		game.move(PieceType.LIEUTENANT, L14, L13);
-		game.move(PieceType.LIEUTENANT, L41, L42);			//RED
-		game.move(PieceType.COLONEL, L24, L14); 
-		game.move(PieceType.SERGEANT, L51, L52);			//RED
-		game.move(PieceType.LIEUTENANT, L13, L12);
-		game.move(PieceType.MARSHAL, L13, L03); //RED
-		game.move(PieceType.COLONEL, L14, L13);
-		game.move(PieceType.COLONEL, L21, L11); //RED
-		game.move(PieceType.COLONEL, L13, L12); 
-		game.move(PieceType.COLONEL, L11, L12);//RED - its a tie battle
-		game.move(PieceType.LIEUTENANT, L15, L14);
-		game.move(PieceType.MARSHAL, L03, L04);//RED
-		game.move(PieceType.SERGEANT, L25, L24);
-		game.move(PieceType.MARSHAL, L04, L14);//RED
-		game.move(PieceType.SERGEANT, L24, L14);//////////////
-
-		game.move(PieceType.SERGEANT, L52, L53);//RED
-		game.move(PieceType.SERGEANT, L54, L53);
-		game.move(PieceType.MARSHAL, L24, L25);//RED
-		game.move(PieceType.LIEUTENANT, L35, L25);
-		game.move(PieceType.MARSHAL, L35, L45);//RED
-		game.move(PieceType.MARSHAL, L55, L54);
-		game.move(PieceType.MARSHAL, L45, L44);//RED
-		game.move(PieceType.MARSHAL, L54, L53);
-		game.move(PieceType.MARSHAL, L44, L45);//RED
-		game.move(PieceType.MARSHAL, L53, L52);
-		game.move(PieceType.MARSHAL, L45, L35);//RED <----
-		game.move(PieceType.MARSHAL, L52, L51);//Blue
-		game.move(PieceType.MARSHAL, L35, L45);//RED <----
-		game.move(PieceType.MARSHAL, L51, L50);//Blue
-		game.move(PieceType.MARSHAL, L45, L35);//RED <----
-	}
-
-
 	////// BATTLE
 	/**
 	 * Method battle1_MarshalWinsALot.

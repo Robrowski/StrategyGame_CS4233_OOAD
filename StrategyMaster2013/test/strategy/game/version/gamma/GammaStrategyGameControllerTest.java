@@ -24,7 +24,6 @@ import org.junit.Test;
 
 import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
-import strategy.common.StrategyRuntimeException;
 import strategy.game.StrategyGameController;
 import strategy.game.StrategyGameFactory;
 import strategy.game.common.GameVersion;

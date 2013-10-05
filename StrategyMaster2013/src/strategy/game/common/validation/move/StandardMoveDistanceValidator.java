@@ -62,7 +62,7 @@ public class StandardMoveDistanceValidator implements IMoveDistanceValidator {
 
 		// A tally of the problems- in the form of an error message string
 		String invalidities = "";
-		if (distance != pieceMovements.getMovementCapability(piece.getType())){
+		if (distance > pieceMovements.getMovementCapability(piece.getType())){
 			invalidities += String.valueOf(piece.getType()) + " cannot move that far, ";
 		}
 		

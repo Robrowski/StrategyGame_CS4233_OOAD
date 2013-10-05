@@ -1,0 +1,29 @@
+TODO list for DELTA
+
+
+
+- 10 x 10 board
+
+
+- update configuration validator to have increased # of pieces
+
+
+
+
+- scouts movement
+	- up to 10 spaces
+	- can't jump anything
+	- can't attack in a move > 1
+
+
+- scout kills marshal
+- bomb kills all
+- but miner kills bomb
+
+
+
+
+
+- must check more intensely the end game scenario - bombs + flags can't move
+	- flags + bombs
+	- flags + bombs + piece blocked in

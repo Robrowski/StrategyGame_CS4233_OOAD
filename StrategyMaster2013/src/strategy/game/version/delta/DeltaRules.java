@@ -22,9 +22,8 @@ import strategy.game.common.PieceType;
 import strategy.game.common.battle.IBattleEngine;
 import strategy.game.common.battle.StandardBattleEngine;
 import strategy.game.common.board.IBoardManager;
-import strategy.game.common.board.MapBoardManager;
-import strategy.game.common.history.StandardMoveHistory;
 import strategy.game.common.history.IMoveHistory;
+import strategy.game.common.history.StandardMoveHistory;
 import strategy.game.common.validation.configuration.ConfigurationValidator2D;
 import strategy.game.common.validation.configuration.IConfigurationValidator;
 import strategy.game.common.validation.configuration.location.GeneralPieceLocationValidator;
@@ -35,7 +34,6 @@ import strategy.game.common.validation.move.IMoveDistanceValidator;
 import strategy.game.common.validation.move.IMoveSpecialCaseValidator;
 import strategy.game.common.validation.move.StandardMoveDistanceValidator;
 import strategy.game.version.VersionRules;
-import strategy.game.version.gamma.GammaMoveSpecialCaseValidator;
 
 /** DeltaRules holds all non-standard game rules that make
  *  Delta Strategy different from the rest. The methods
@@ -50,9 +48,9 @@ public class DeltaRules implements VersionRules {
 	/** The number of players */
 	private final int numberOfPlayers = 2;
 	/** The size of the field */
-	private final int xBoardDim = 6;
+	private final int xBoardDim = 10;
 	/** The size of the field */
-	private final int yBoardDim = 6;
+	private final int yBoardDim = 10;
 
 	/** The color of Player 1 */
 	private final PlayerColor player1 = PlayerColor.RED;
@@ -98,16 +96,16 @@ public class DeltaRules implements VersionRules {
 		// Add all the pieces and their counts
 		expectedPieceCounts.put(PieceType.FLAG 			, NUM_FLAGS_PER_TEAM);
 		expectedPieceCounts.put(PieceType.MARSHAL		, NUM_MARSHALS_PER_TEAM);
-		expectedPieceCounts.put(PieceType.COLONEL 		, 2);
-		expectedPieceCounts.put(PieceType.CAPTAIN 		, 2);
-		expectedPieceCounts.put(PieceType.LIEUTENANT 	, 3);
-		expectedPieceCounts.put(PieceType.SERGEANT 		, 3);
-//		expectedPieceCounts.put(PieceType.BOMB 			, NUM_BOMBS_PER_TEAM);
-//		expectedPieceCounts.put(PieceType.MAJOR			, NUM_MAJORS_PER_TEAM);
-//		expectedPieceCounts.put(PieceType.GENERAL 		, NUM_GENERALS_PER_TEAM);
-//		expectedPieceCounts.put(PieceType.MINER			, NUM_MINERS_PER_TEAM);
-//		expectedPieceCounts.put(PieceType.SPY 			, NUM_SPIES_PER_TEAM);
-//		expectedPieceCounts.put(PieceType.SCOUT 		, NUM_SCOUTS_PER_TEAM);
+		expectedPieceCounts.put(PieceType.COLONEL 		, NUM_COLONELS_PER_TEAM);
+		expectedPieceCounts.put(PieceType.CAPTAIN 		, NUM_CAPTAINS_PER_TEAM);
+		expectedPieceCounts.put(PieceType.LIEUTENANT 	, NUM_LIEUTENANTS_PER_TEAM);
+		expectedPieceCounts.put(PieceType.SERGEANT 		, NUM_SERGEANTS_PER_TEAM);
+		expectedPieceCounts.put(PieceType.BOMB 			, NUM_BOMBS_PER_TEAM);
+		expectedPieceCounts.put(PieceType.MAJOR			, NUM_MAJORS_PER_TEAM);
+		expectedPieceCounts.put(PieceType.GENERAL 		, NUM_GENERALS_PER_TEAM);
+		expectedPieceCounts.put(PieceType.MINER			, NUM_MINERS_PER_TEAM);
+		expectedPieceCounts.put(PieceType.SPY 			, NUM_SPIES_PER_TEAM);
+		expectedPieceCounts.put(PieceType.SCOUT 		, NUM_SCOUTS_PER_TEAM);
 
 		return new StandardPieceAllowanceValidator(expectedPieceCounts);
 	}
@@ -117,7 +115,7 @@ public class DeltaRules implements VersionRules {
 	 */
 	@Override
 	public IPieceLocationValidator getPieceLocationValidator() {
-		return new GeneralPieceLocationValidator(numberOfPlayers, xBoardDim, yBoardDim, 0, 4);
+		return new GeneralPieceLocationValidator(numberOfPlayers, xBoardDim, yBoardDim, 0, 6);
 	}
 
 	/* (non-Javadoc)
@@ -151,10 +149,10 @@ public class DeltaRules implements VersionRules {
 	public Collection<PieceLocationDescriptor> additionalFieldItems() {
 		final Collection<PieceLocationDescriptor> chokePoints = new LinkedList<PieceLocationDescriptor>();
 		
-		chokePoints.add(new PieceLocationDescriptor(chokePoint, new Location2D(2,2)));
-		chokePoints.add(new PieceLocationDescriptor(chokePoint, new Location2D(2,3)));
-		chokePoints.add(new PieceLocationDescriptor(chokePoint, new Location2D(3,2)));
-		chokePoints.add(new PieceLocationDescriptor(chokePoint, new Location2D(3,3)));
+		chokePoints.add(new PieceLocationDescriptor(chokePoint, new Location2D(2,4)));
+		chokePoints.add(new PieceLocationDescriptor(chokePoint, new Location2D(2,5)));
+		chokePoints.add(new PieceLocationDescriptor(chokePoint, new Location2D(3,4)));
+		chokePoints.add(new PieceLocationDescriptor(chokePoint, new Location2D(3,5)));
 		
 		chokePoints.add(new PieceLocationDescriptor(chokePoint, new Location2D(6,4)));
 		chokePoints.add(new PieceLocationDescriptor(chokePoint, new Location2D(6,5)));

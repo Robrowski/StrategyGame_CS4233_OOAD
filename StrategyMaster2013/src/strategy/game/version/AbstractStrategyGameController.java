@@ -162,7 +162,7 @@ StrategyGameController {
 			moveHistory.recordMove(theDMove);
 		} catch (StrategyException se){
 			// Other player wins by default
-			MoveResultStatus winner = (currentTurn == PlayerColor.RED) ? MoveResultStatus.BLUE_WINS: MoveResultStatus.RED_WINS;
+			final MoveResultStatus winner = (currentTurn == PlayerColor.RED) ? MoveResultStatus.BLUE_WINS: MoveResultStatus.RED_WINS;
 			
 			theDMove = new DetailedMoveResult(winner, 
 					theDMove.getBattleWinner(), 

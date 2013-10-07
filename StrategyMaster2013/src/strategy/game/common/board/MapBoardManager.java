@@ -81,7 +81,7 @@ public class MapBoardManager implements IBoardManager {
 	public DetailedMoveResult updateField(DetailedMoveResult theDMove) {
 		// Remove the piece that moved
 		this.remove(theDMove.getPieceThatMoved());
-		
+
 		// Remove the loser if there was one
 		if (theDMove.getLoser() != null){
 			this.remove(theDMove.getLoser());
@@ -120,7 +120,7 @@ public class MapBoardManager implements IBoardManager {
 		return theDMove;
 	}
 
-	
+
 	/** Remove the piece at the location given
 	 * 
 	 * @param aLoc the location of the piece to remove
@@ -133,7 +133,7 @@ public class MapBoardManager implements IBoardManager {
 
 	/** Add a single piece at a location to the configuration
 	 *
-	 * @param result the piece + location to add
+	 * @param piece PieceLocationDescriptor
 	 */
 	protected void add(PieceLocationDescriptor piece) {
 		fieldConfiguration.put(piece.getLocation().toString(), piece);
@@ -145,18 +145,19 @@ public class MapBoardManager implements IBoardManager {
 	@Override
 	public Collection<Piece> getPiecesInPath(Location from, Location to) {
 		// Have a list Ready
-		Collection<Piece> piecesInPath = new LinkedList<Piece>();
+		final Collection<Piece> piecesInPath = new LinkedList<Piece>();
 		int direction, staticAxis;
 		Coordinate axisMovedOn; 
-		
+
 		// Check to see if the move is a straight path
 		try {
-			if (2 > from.distanceTo(to))
+			if (2 > from.distanceTo(to)){
 				return piecesInPath; // because we don't care about the path in this case
+			}
 		} catch(StrategyRuntimeException sre){
 			return piecesInPath; // invalid path
 		}
-		
+
 		// Figure out what axis to move on - if the X is the same, the move is on the Y axis, else X axis
 		if (from.getCoordinate(Coordinate.X_COORDINATE) == to.getCoordinate(Coordinate.X_COORDINATE) ){
 			axisMovedOn = Coordinate.Y_COORDINATE; // the coordinate that changes
@@ -165,14 +166,14 @@ public class MapBoardManager implements IBoardManager {
 			axisMovedOn = Coordinate.X_COORDINATE; // the coordinate that changes
 			staticAxis =  from.getCoordinate(Coordinate.Y_COORDINATE);
 		}
-		
+
 		// Figure out direction, positive or negative
 		if (from.getCoordinate(axisMovedOn) < to.getCoordinate(axisMovedOn)){
 			direction = 1;
 		} else {
 			direction = -1;
 		}
-		
+
 		// Get the pieces
 		for (int i = from.getCoordinate(axisMovedOn); i != to.getCoordinate(axisMovedOn) + direction; i += direction){
 			Piece toAdd;
@@ -181,13 +182,13 @@ public class MapBoardManager implements IBoardManager {
 			} else { // other axis
 				toAdd = this.getPieceAt(new Location2D(staticAxis ,i));
 			}
-			
+
 			// Only add if not null
 			if (toAdd != null){
 				piecesInPath.add(toAdd);
 			}	
 		}
-		
+
 		return piecesInPath;
 	}	
 }

@@ -65,7 +65,7 @@ public class DeltaMoveSpecialCaseValidator implements IMoveSpecialCaseValidator 
 		// Only do work if the move is more than one space
 		if (contentsOfPath.size() > 1){
 			// Time to iterate
-			Iterator<Piece> pieces = contentsOfPath.iterator();
+			final Iterator<Piece> pieces = contentsOfPath.iterator();
 
 			// Check first entry for a Scout, continue if so
 			Piece first = pieces.next();

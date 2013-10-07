@@ -10,7 +10,7 @@ x update configuration validator to have increased # of pieces
 
 
 
-- scouts movement
+x scouts movement
 	X up to 10 spaces
 	X can't jump anything
 	X- can't attack in a move > 1

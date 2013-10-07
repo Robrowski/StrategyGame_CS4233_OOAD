@@ -33,7 +33,7 @@ public class DeltaBoardManager extends MapBoardManager {
 
 	
 	/** a tool for figuring out the movement capabilities of pieces */
-	private IPieceMoves pieceMovementCapabilities;
+	private final IPieceMoves pieceMovementCapabilities;
 
 	/** A basic constructor to work the same as MapBoardManager
 	 * 
@@ -53,7 +53,7 @@ public class DeltaBoardManager extends MapBoardManager {
 	@Override
 	public DetailedMoveResult updateField(DetailedMoveResult theDMove) {
 		// Evaluate the result the old way
-		DetailedMoveResult oldResult = super.updateField(theDMove);
+		final DetailedMoveResult oldResult = super.updateField(theDMove);
 				
 		// Have to check field for bombs and flags
 		// Actually only checking for instances of movable pieces

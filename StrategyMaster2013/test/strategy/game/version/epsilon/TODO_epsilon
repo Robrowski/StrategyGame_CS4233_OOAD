@@ -1,0 +1,26 @@
+EPSILON TODO LIST
+
+
+- New piece - first lieutenant
+	- same rank as lieutenant
+	- move like lieutenants
+	- added strike capability - may hit from 2 units
+		- no obstructions 
+		- straight line
+		- if defender wins - no move, lieu dies
+		- if lie wins, moves to def's position
+		new enum FIRST_LIEUTENANT(“First Lieutenant”, “1LT”).
+		
+- 2 flags per side
+	- any other piece may be removed
+	- FLAG_CAPTURED when one flag is captured, end game when both die
+		
+		
+- move with ALL NULL parameters indicates resignation
+
+
+REPORTER MODULE
+
+
+
+OBSERVER

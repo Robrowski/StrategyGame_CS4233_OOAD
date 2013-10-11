@@ -12,13 +12,16 @@ package strategy.game;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import strategy.common.StrategyException;
 import strategy.game.common.PieceLocationDescriptor;
+import strategy.game.common.StrategyGameObserver;
 import strategy.game.version.alpha.AlphaStrategyGameController;
 import strategy.game.version.beta.BetaStrategyGameController;
 import strategy.game.version.delta.DeltaRules;
 import strategy.game.version.delta.DeltaStrategyGameController;
+import strategy.game.version.epsilon.EpsilonStrategyGameController;
 import strategy.game.version.gamma.GammaRules;
 import strategy.game.version.gamma.GammaStrategyGameController;
 
@@ -110,15 +113,35 @@ public class StrategyGameFactory
 	 */
 	public StrategyGameController makeDeltaStrategyGame(
 			Collection<PieceLocationDescriptor> redConfiguration,
-			Collection<PieceLocationDescriptor> blueConfiguration)
-					throws StrategyException
-					{
+			Collection<PieceLocationDescriptor> blueConfiguration) throws StrategyException	{
 		checkConfigurationForNull(redConfiguration);
 		checkConfigurationForNull(blueConfiguration);
 
 		return new DeltaStrategyGameController(redConfiguration,blueConfiguration, new DeltaRules());
-					}
-	
+	}
+
+	/**
+	 * @param validRedConfiguration
+	 * @param validBlueConfiguration
+	 * @return
+	 * @throws StrategyException 
+	 */
+	public StrategyGameController makeEpsilonStrategyGame(
+			List<PieceLocationDescriptor> redConfiguration,
+			List<PieceLocationDescriptor> blueConfiguration,
+			Collection<StrategyGameObserver> observers) throws StrategyException {
+
+		checkConfigurationForNull(redConfiguration);
+		checkConfigurationForNull(blueConfiguration);
+
+
+		return new EpsilonStrategyGameController(redConfiguration,blueConfiguration, new DeltaRules(), observers);
+	}
+
+
+
+
+
 
 	/** Checks the a configuration for nulls and throws an exception if any are thrown.
 	 *  @param aConfiguration a configuration of pieces to check
@@ -139,6 +162,8 @@ public class StrategyGameFactory
 					|| next.getLocation() == null) throw new StrategyException("Null data is not appreciated.");
 		}
 	}
+
+
 
 
 }

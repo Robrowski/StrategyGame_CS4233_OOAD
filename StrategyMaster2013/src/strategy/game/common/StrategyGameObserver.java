@@ -38,7 +38,7 @@ public interface StrategyGameObserver {
 	 * @param piece piece that moved
 	 * @param from  where it started
 	 * @param to    where its going
-	 * @param result the result (game status)
+	 * @param result the result 
 	 * @param fault  any faults 
 	 */
 	void moveHappened(PieceType piece, Location from, Location to,

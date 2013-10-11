@@ -15,6 +15,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,6 +39,7 @@ import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
+import strategy.game.common.StrategyGameObserver;
 import strategy.game.version.delta.DeltaRules;
 
 /** These are the tests for Epsilon Strategy
@@ -121,6 +123,9 @@ public class EpsilonStrategyGameControllerTest {
 	/** a test double for a game */
 	private EpsilonStrategyGameControllerTestDouble EpsilonTestDouble;
 
+	/** Observers */
+	private Collection<StrategyGameObserver> observers = new LinkedList<StrategyGameObserver>();
+	
 	@BeforeClass
 	public static void setupBefore(){
 		@SuppressWarnings("unused")
@@ -221,12 +226,12 @@ public class EpsilonStrategyGameControllerTest {
 		addToConfiguration( redBomb,  9,  3);		
 
 		// Fresh valid game
-		game = factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, null);
+		game = factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, observers);
 		game.startGame();
 
 		// For general use
 		badConfig = new LinkedList<PieceLocationDescriptor>();
-		EpsilonTestDouble = new EpsilonStrategyGameControllerTestDouble(validRedConfiguration, validBlueConfiguration, new DeltaRules(), null);
+		EpsilonTestDouble = new EpsilonStrategyGameControllerTestDouble(validRedConfiguration, validBlueConfiguration, new DeltaRules(), observers);
 		EpsilonTestDouble.startGame();
 
 		// make a configuration that simulates the end of a full game
@@ -244,10 +249,21 @@ public class EpsilonStrategyGameControllerTest {
 	@Test
 	public void controllerTakesValidConfigurations() throws StrategyException
 	{
-		game = factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, null);
+		game = factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, observers);
 		assertTrue(true); // No exceptions thrown!
 	} 
 
+	/**
+	 * Method controllerTakesValidConfigurations.
+	 * @throws StrategyException
+	 */
+	@Test
+	public void controllerHanlesNullObserverList() throws StrategyException
+	{
+		game = factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, null);
+		assertTrue(true); // No exceptions thrown!
+	} 
+	
 	/**
 	 * Method startGameAfterStarting.
 	 * @throws StrategyException
@@ -263,7 +279,7 @@ public class EpsilonStrategyGameControllerTest {
 	 */
 	@Test(expected=StrategyException.class)
 	public void nullRedConfiguration() throws StrategyException{
-		factory.makeEpsilonStrategyGame(null, validBlueConfiguration, null);
+		factory.makeEpsilonStrategyGame(null, validBlueConfiguration, observers);
 	}
 
 	/**
@@ -274,7 +290,7 @@ public class EpsilonStrategyGameControllerTest {
 	public void noRedFlag() throws StrategyException{
 		validRedConfiguration.remove(redFlagAtLocation);
 		addToConfiguration(PieceType.MARSHAL, PlayerColor.BLUE, 0 ,1);
-		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, null);
+		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, observers);
 	}
 
 	/**
@@ -285,7 +301,7 @@ public class EpsilonStrategyGameControllerTest {
 	public void testNoBlueFlag() throws StrategyException{
 		validBlueConfiguration.remove(blueFlagAtLocation);
 		addToConfiguration(PieceType.MARSHAL, PlayerColor.BLUE, 3 , 4);
-		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, null);
+		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, observers);
 	}
 
 	/**
@@ -295,13 +311,13 @@ public class EpsilonStrategyGameControllerTest {
 	@Test(expected=StrategyException.class)
 	public void toofewPiecesForRedConfigurationButHasFlag() throws StrategyException{
 		badConfig.add(new PieceLocationDescriptor( redFlag, L(0,1)));
-		factory.makeEpsilonStrategyGame(badConfig, validBlueConfiguration, null);
+		factory.makeEpsilonStrategyGame(badConfig, validBlueConfiguration, observers);
 	}
 
 	@Test(expected=StrategyException.class)
 	public void redConfigurationHasTooFewItem() throws StrategyException { 
 		validRedConfiguration.remove(0);
-		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, null);
+		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, observers);
 	}
 
 
@@ -312,7 +328,7 @@ public class EpsilonStrategyGameControllerTest {
 	@Test(expected=StrategyException.class)
 	public void tooManyPiecesForRedConfigurationWithOnlyFlag() throws StrategyException{
 		for (int i =0;i<15;i++) badConfig.add(new PieceLocationDescriptor( redFlag, L(0,1)));
-		factory.makeEpsilonStrategyGame(badConfig, validBlueConfiguration, null);
+		factory.makeEpsilonStrategyGame(badConfig, validBlueConfiguration, observers);
 	}
 
 	/**
@@ -321,7 +337,7 @@ public class EpsilonStrategyGameControllerTest {
 	 */
 	@Test(expected=StrategyException.class)
 	public void nullForBlueConfiguration() throws StrategyException{
-		factory.makeEpsilonStrategyGame(validRedConfiguration, null, null);
+		factory.makeEpsilonStrategyGame(validRedConfiguration, null, observers);
 	}
 
 	/**
@@ -331,14 +347,14 @@ public class EpsilonStrategyGameControllerTest {
 	@Test(expected=StrategyException.class)
 	public void tooFewPiecesForBlueConfigurationButHasFlag() throws StrategyException{
 		badConfig.add(new PieceLocationDescriptor( blueFlag, L(3,4)));
-		factory.makeEpsilonStrategyGame(validRedConfiguration, badConfig, null);
+		factory.makeEpsilonStrategyGame(validRedConfiguration, badConfig, observers);
 	}
 
 	// This exception is thrown for many reasons, but definitely catches invalid number of pieces
 	@Test(expected=StrategyException.class)
 	public void tooManyPiecesForBlueConfigurationWithOnlyFlag() throws StrategyException{
 		for (int i =0;i<42;i++) badConfig.add(new PieceLocationDescriptor( blueFlag, L(i%6 , (i/6) % 10 )));
-		factory.makeEpsilonStrategyGame(validRedConfiguration, badConfig, null);
+		factory.makeEpsilonStrategyGame(validRedConfiguration, badConfig, observers);
 	}
 
 	/**
@@ -348,7 +364,7 @@ public class EpsilonStrategyGameControllerTest {
 	@Test(expected=StrategyException.class)
 	public void nullLocation() throws StrategyException{
 		badConfig.add(new PieceLocationDescriptor( blueFlag, null));
-		factory.makeEpsilonStrategyGame(validRedConfiguration, badConfig, null);
+		factory.makeEpsilonStrategyGame(validRedConfiguration, badConfig, observers);
 	}
 
 	/**
@@ -358,7 +374,7 @@ public class EpsilonStrategyGameControllerTest {
 	@Test(expected=StrategyException.class)
 	public void nullPiece() throws StrategyException{
 		badConfig.add(new PieceLocationDescriptor( null, L(3,4)));
-		factory.makeEpsilonStrategyGame(validRedConfiguration, badConfig, null);
+		factory.makeEpsilonStrategyGame(validRedConfiguration, badConfig, observers);
 	}
 
 	/**
@@ -368,7 +384,7 @@ public class EpsilonStrategyGameControllerTest {
 	@Test(expected=StrategyException.class)
 	public void nullPieceLocationDescription() throws StrategyException{
 		badConfig.add(null);
-		factory.makeEpsilonStrategyGame(validRedConfiguration, badConfig, null);
+		factory.makeEpsilonStrategyGame(validRedConfiguration, badConfig, observers);
 	}
 
 	/**
@@ -379,7 +395,7 @@ public class EpsilonStrategyGameControllerTest {
 	public void nullPieceOwner() throws StrategyException{
 		final Piece badPice = new Piece(PieceType.BOMB, null);		
 		badConfig.add(new PieceLocationDescriptor( badPice, L(3,4)));
-		factory.makeEpsilonStrategyGame(validRedConfiguration,badConfig, null );
+		factory.makeEpsilonStrategyGame(validRedConfiguration,badConfig, observers );
 	}
 
 	/**
@@ -390,7 +406,7 @@ public class EpsilonStrategyGameControllerTest {
 	public void nullPieceType() throws StrategyException{
 		final Piece badPice = new Piece(null, PlayerColor.BLUE);		
 		badConfig.add(new PieceLocationDescriptor( badPice, L(3,4)));
-		factory.makeEpsilonStrategyGame(validRedConfiguration,badConfig, null );
+		factory.makeEpsilonStrategyGame(validRedConfiguration,badConfig, observers );
 	}
 
 	/////////// TESTING makeEpsilonStrategyGame -- locations
@@ -401,7 +417,7 @@ public class EpsilonStrategyGameControllerTest {
 	@Test(expected=StrategyException.class)
 	public void locationUsedTwice() throws StrategyException{
 		addToConfiguration(PieceType.FLAG, PlayerColor.RED, 3 ,1);
-		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, null);
+		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, observers);
 	}
 
 	/**
@@ -412,7 +428,7 @@ public class EpsilonStrategyGameControllerTest {
 	public void bluePieceInNeutralZone() throws StrategyException {
 		validBlueConfiguration.remove(blueFlagAtLocation); // remove flag
 		addToConfiguration(PieceType.FLAG, PlayerColor.BLUE, 3 ,4);
-		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, null);	
+		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, observers);	
 	}
 
 	/**
@@ -423,7 +439,7 @@ public class EpsilonStrategyGameControllerTest {
 	public void redPieceInNeutralZone() throws StrategyException {
 		validRedConfiguration.remove(redFlagAtLocation); // remove flag
 		addToConfiguration(PieceType.FLAG, PlayerColor.RED, 3 ,4);
-		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, null);	
+		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, observers);	
 	}
 
 	/**
@@ -436,7 +452,7 @@ public class EpsilonStrategyGameControllerTest {
 		validBlueConfiguration.remove(blueFlagAtLocation); // remove flag
 		addToConfiguration(PieceType.FLAG, PlayerColor.BLUE, 0 ,1);
 		addToConfiguration(PieceType.FLAG, PlayerColor.RED, 3 ,6);
-		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, null);		
+		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, observers);		
 	}
 
 	/**
@@ -447,7 +463,7 @@ public class EpsilonStrategyGameControllerTest {
 	public void pieceOutOfBoundsY() throws StrategyException {
 		validBlueConfiguration.remove(blueFlagAtLocation); // remove flag
 		addToConfiguration(PieceType.FLAG, PlayerColor.BLUE, 0, 12);
-		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, null);	
+		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, observers);	
 	}
 
 	/**
@@ -458,7 +474,7 @@ public class EpsilonStrategyGameControllerTest {
 	public void pieceOutOfBoundsX() throws StrategyException {
 		validRedConfiguration.remove(redFlagAtLocation); // remove flag
 		addToConfiguration(PieceType.FLAG, PlayerColor.RED, 11 ,4);
-		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, null);	
+		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, observers);	
 	}
 
 	/**
@@ -469,7 +485,7 @@ public class EpsilonStrategyGameControllerTest {
 	public void pieceInNegativeX() throws StrategyException {
 		validRedConfiguration.remove(redFlagAtLocation); // remove flag
 		addToConfiguration(PieceType.FLAG, PlayerColor.RED, -1 , 0);
-		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, null);	
+		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, observers);	
 	}
 
 	/**
@@ -480,7 +496,7 @@ public class EpsilonStrategyGameControllerTest {
 	public void pieceInNegativeY() throws StrategyException {
 		validRedConfiguration.remove(redFlagAtLocation); // remove flag
 		addToConfiguration(PieceType.FLAG, PlayerColor.RED,0 ,-1);
-		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, null);	
+		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, observers);	
 	}
 
 	/**
@@ -491,7 +507,7 @@ public class EpsilonStrategyGameControllerTest {
 	public void pieceInNegativeCoordinates() throws StrategyException {
 		validRedConfiguration.remove(redFlagAtLocation); // remove flag
 		addToConfiguration(PieceType.FLAG, PlayerColor.RED, -1 , -1);
-		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, null);	
+		factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, observers);	
 	}
 
 	////// getPieceAt
@@ -583,7 +599,7 @@ public class EpsilonStrategyGameControllerTest {
 	 */
 	@Test(expected=StrategyException.class)
 	public void makeMoveBeforeInitialization() throws StrategyException	{
-		final StrategyGameController agame = StrategyGameFactory.getInstance().makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, null);
+		final StrategyGameController agame = StrategyGameFactory.getInstance().makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, observers);
 		agame.move(PieceType.SERGEANT, L(5,1), L(5,2));
 	}
 

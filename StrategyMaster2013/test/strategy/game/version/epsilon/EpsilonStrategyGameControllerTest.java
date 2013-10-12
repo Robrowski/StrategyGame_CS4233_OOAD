@@ -40,6 +40,7 @@ import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
 import strategy.game.common.StrategyGameObserver;
+import strategy.game.reporter.LazyStrategyGameReporter;
 import strategy.game.version.delta.DeltaRules;
 
 /** These are the tests for Epsilon Strategy
@@ -132,7 +133,7 @@ public class EpsilonStrategyGameControllerTest {
 		GameVersion gameVersion = (GameVersion.EPSILON);
 		
 		// Set up observer
-//		observers.add(new LazyStrategyGameReporter());
+		observers.add(new LazyStrategyGameReporter());
 	}
 
 	/**
@@ -231,6 +232,8 @@ public class EpsilonStrategyGameControllerTest {
 		// Fresh valid game
 		game = factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, observers);
 		game.startGame();
+		((EpsilonStrategyGameController) game).register(new LazyStrategyGameReporter());
+		((EpsilonStrategyGameController) game).unregister(new LazyStrategyGameReporter());
 
 		// For general use
 		badConfig = new LinkedList<PieceLocationDescriptor>();

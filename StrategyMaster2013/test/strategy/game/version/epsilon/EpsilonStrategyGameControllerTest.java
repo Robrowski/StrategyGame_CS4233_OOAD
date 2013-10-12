@@ -1106,6 +1106,27 @@ public class EpsilonStrategyGameControllerTest {
 		assertSame(minerWin.getBattleWinner().getPiece(), redMiner);
 	}
 
+	@Test
+	public void firstLieutentantBasicCharacteristics() throws StrategyException{
+		// Add some pieces for fighting
+		endConfig.add(new PieceLocationDescriptor( redMiner,     L(1,4)));
+		endConfig.add(new PieceLocationDescriptor( redFirstLieutenant,  L(3,4)));
+		endConfig.add(new PieceLocationDescriptor( blueFirstLieutenant,      L(1,1)));
+		endConfig.add(new PieceLocationDescriptor( blueLieutenant,     L(3,3)));
+
+		// Forcibly set the configuration		
+		EpsilonTestDouble.setFieldConfiguration(endConfig);
+
+		// Fight!
+		DetailedMoveResult firstLieuLose = (DetailedMoveResult)  EpsilonTestDouble.move(PieceType.MARSHAL,L(0,1), L(1,1));
+		DetailedMoveResult tie = (DetailedMoveResult)   EpsilonTestDouble.move(PieceType.LIEUTENANT, L(3,3) , L(3,4));
+
+		// Prove Results
+		assertSame(firstLieuLose.getBattleWinner().getPiece(),  redMarshal);
+		assertNull(tie.getBattleWinner());
+	}
+	
+	
 
 	///////////////////// Miscellaneous Epsilon tests
 	@Test 
@@ -1119,27 +1140,31 @@ public class EpsilonStrategyGameControllerTest {
 		assertSame(game.move(null, null, null).getStatus(), MoveResultStatus.RED_WINS);
 	}
 	
+	@Test(expected=StrategyException.class)
+	public void resignAfterResign() throws StrategyException {
+		assertSame(game.move(null, null, null).getStatus(), MoveResultStatus.BLUE_WINS);
+		assertSame(game.move(null, null, null).getStatus(), MoveResultStatus.RED_WINS);
+	}
 		
-	
-//	@Test
-//	public void testIfNullGetsUsedAsPieceType1() throws StrategyException{
-//		assertSame(0, new EpsilonPieceMoves().getMovementCapability(null));
-//	}
-//
-//	@Test
-//	public void testIfNullGetsUsedAsPieceType2() throws StrategyException{
-//		assertSame(0, new EpsilonPiecePowers().getPower(null));
-//	}
-//
-//	@Test
-//	public void testIf_CHOKE_POINT_GetsUsedAsPieceType1() throws StrategyException{
-//		assertSame(0, new EpsilonPieceMoves().getMovementCapability(PieceType.CHOKE_POINT));
-//	}
-//
-//	@Test
-//	public void testIf_CHOKE_POINT_GetsUsedAsPieceType2() throws StrategyException{
-//		assertSame(0, new EpsilonPiecePowers().getPower(PieceType.CHOKE_POINT));
-//	}
+	@Test
+	public void testIfNullGetsUsedAsPieceType1() throws StrategyException{
+		assertSame(0, new EpsilonPieceMoves().getMovementCapability(null));
+	}
+
+	@Test
+	public void testIfNullGetsUsedAsPieceType2() throws StrategyException{
+		assertSame(0, new EpsilonPiecePowers().getPower(null));
+	}
+
+	@Test
+	public void testIf_CHOKE_POINT_GetsUsedAsPieceType1() throws StrategyException{
+		assertSame(0, new EpsilonPieceMoves().getMovementCapability(PieceType.CHOKE_POINT));
+	}
+
+	@Test
+	public void testIf_CHOKE_POINT_GetsUsedAsPieceType2() throws StrategyException{
+		assertSame(0, new EpsilonPiecePowers().getPower(PieceType.CHOKE_POINT));
+	}
 
 
 	//////////////// Helper methods /////////////////////

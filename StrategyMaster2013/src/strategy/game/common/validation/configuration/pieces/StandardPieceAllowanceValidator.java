@@ -87,7 +87,7 @@ public class StandardPieceAllowanceValidator implements IPieceAllowanceValidator
 			}
 			// Now check the actual count
 			else if (expectedPieceCounts.get(typeToCheck) != theCount ) {
-				invalidities+= "a player has too many "+ typeToCheck.getPrintableName() +"s, ";	
+				invalidities+= "#a player has too many "+ typeToCheck.getPrintableName() +"s, ";	
 			}
 		}
 		

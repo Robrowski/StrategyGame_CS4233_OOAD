@@ -65,6 +65,11 @@ public abstract class AbstractPieceLocationValidator implements IPieceLocationVa
 		// Get the valid locations that pieces may be placed at
 		final Collection<Location> validLocations = generateValidStartingLocations( givenPlayer );		
 
+		// Check that all the locations are used
+		if (validLocations.size() != aConfiguration.size()){
+			invalidities += " there aren't enough pieces placed";
+		}
+		
 		// THIS is not a variability point (I hope)
 		final Iterator<PieceLocationDescriptor> pieces = aConfiguration.iterator();
 		final Collection<Location> tempLocationChecker = new LinkedList<Location>();	

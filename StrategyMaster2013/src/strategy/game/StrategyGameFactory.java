@@ -21,6 +21,7 @@ import strategy.game.version.alpha.AlphaStrategyGameController;
 import strategy.game.version.beta.BetaStrategyGameController;
 import strategy.game.version.delta.DeltaRules;
 import strategy.game.version.delta.DeltaStrategyGameController;
+import strategy.game.version.epsilon.EpsilonRules;
 import strategy.game.version.epsilon.EpsilonStrategyGameController;
 import strategy.game.version.gamma.GammaRules;
 import strategy.game.version.gamma.GammaStrategyGameController;
@@ -136,7 +137,7 @@ public class StrategyGameFactory
 		checkConfigurationForNull(blueConfiguration);
 
 
-		return new EpsilonStrategyGameController(redConfiguration,blueConfiguration, new DeltaRules(), observers);
+		return new EpsilonStrategyGameController(redConfiguration,blueConfiguration, new EpsilonRules(), observers);
 	}
 
 

@@ -163,7 +163,7 @@ public class EpsilonStrategyGameControllerTest {
 		addToConfiguration(blueLieutenant,  3,  7);
 		addToConfiguration(blueLieutenant,  3,  6);
 		addToConfiguration(blueSergeant,  4,  9);
-		addToConfiguration(blueSergeant,  4,  8);
+		addToConfiguration(blueFlag,  4,  8);  // EXTRA FLAG
 		addToConfiguration(blueSergeant,  4,  7);
 		addToConfiguration(blueSergeant,  4,  6);
 		addToConfiguration(blueMiner,  5,  9);
@@ -192,7 +192,7 @@ public class EpsilonStrategyGameControllerTest {
 		addToConfiguration( redMarshal,  0,  1);
 		addToConfiguration( redGeneral,  0,  2);
 		addToConfiguration( redColonel,  0,  3);
-		addToConfiguration( redColonel,  1,  0);
+		addToConfiguration( redFlag,  1,  0); // EXTRA FLAG
 		addToConfiguration( redMajor,    1,  1);
 		addToConfiguration( redMajor,    1,  2);
 		addToConfiguration( redMajor,    1,  3);
@@ -237,7 +237,7 @@ public class EpsilonStrategyGameControllerTest {
 
 		// For general use
 		badConfig = new LinkedList<PieceLocationDescriptor>();
-		EpsilonTestDouble = new EpsilonStrategyGameControllerTestDouble(validRedConfiguration, validBlueConfiguration, new DeltaRules(), observers);
+		EpsilonTestDouble = new EpsilonStrategyGameControllerTestDouble(validRedConfiguration, validBlueConfiguration, new EpsilonRules(), observers);
 		EpsilonTestDouble.startGame();
 
 		// make a configuration that simulates the end of a full game

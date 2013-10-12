@@ -13,7 +13,7 @@ EPSILON TODO LIST
 		
 - 2 flags per side
 	- any other piece may be removed
-	- FLAG_CAPTURED when one flag is captured, end game when both die
+	X FLAG_CAPTURED when one flag is captured, end game when both die
 		
 		
 X move with ALL NULL parameters indicates resignation

@@ -35,11 +35,11 @@ import strategy.game.version.VersionRules;
 public class EpsilonStrategyGameController extends AbstractStrategyGameController implements StrategyGameObservable {
 
 	/** The objects observer this observable */
-	private Collection<StrategyGameObserver> observers;
+	private final Collection<StrategyGameObserver> observers;
 	/** red's configuration */
-	private Collection<PieceLocationDescriptor> redConfiguration;
+	private final Collection<PieceLocationDescriptor> redConfiguration;
 	/** Blue's configuration */
-	private Collection<PieceLocationDescriptor> blueConfiguration;
+	private final Collection<PieceLocationDescriptor> blueConfiguration;
 	
 	
 	/** Constructor for AbstractStrategyGameController. Takes two configurations, checks their 
@@ -78,7 +78,7 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 
 	/** Notifies the observers that the game has started  */
 	private void notifyGameStart() {
-		Iterator<StrategyGameObserver> obsIter = observers.iterator();
+		final Iterator<StrategyGameObserver> obsIter = observers.iterator();
 		while (obsIter.hasNext()){
 			obsIter.next().gameStart(redConfiguration, blueConfiguration);		
 		}
@@ -92,7 +92,7 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 			throws StrategyException {
 		// Try to call the normal way
 		try {
-			DetailedMoveResult theDMove = (DetailedMoveResult) super.move(piece, from, to);
+			final DetailedMoveResult theDMove = (DetailedMoveResult) super.move(piece, from, to);
 			notifyMove(piece, from, to, theDMove, null);
 			return theDMove;
 		} catch(StrategyException se){
@@ -113,7 +113,7 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 	 */
 	private void notifyMove(PieceType piece, Location from, Location to,
 			MoveResult result, StrategyException fault) {
-		Iterator<StrategyGameObserver> obsIter = observers.iterator();
+		final Iterator<StrategyGameObserver> obsIter = observers.iterator();
 		while (obsIter.hasNext()){
 			obsIter.next().moveHappened(piece, from, to, result, fault);
 		}		

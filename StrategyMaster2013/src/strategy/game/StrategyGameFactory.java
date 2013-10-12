@@ -120,11 +120,12 @@ public class StrategyGameFactory
 		return new DeltaStrategyGameController(redConfiguration,blueConfiguration, new DeltaRules());
 	}
 
-	/**
-	 * @param validRedConfiguration
-	 * @param validBlueConfiguration
-	 * @return
-	 * @throws StrategyException 
+	/** Create a new Epsilon strategy game given the following
+	 * @param redConfiguration  a configuration for the red side
+	 * @param blueConfiguration a configuration for the blue side
+	 * @param observers Observers to watch the game
+	 * @return A valid game of Epsilon Strategy
+	 * @throws StrategyException a configuration was invalid
 	 */
 	public StrategyGameController makeEpsilonStrategyGame(
 			List<PieceLocationDescriptor> redConfiguration,
@@ -137,10 +138,6 @@ public class StrategyGameFactory
 
 		return new EpsilonStrategyGameController(redConfiguration,blueConfiguration, new DeltaRules(), observers);
 	}
-
-
-
-
 
 
 	/** Checks the a configuration for nulls and throws an exception if any are thrown.

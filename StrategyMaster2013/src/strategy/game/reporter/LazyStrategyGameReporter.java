@@ -44,7 +44,7 @@ public class LazyStrategyGameReporter implements StrategyGameObserver {
 	 */
 	private void printConfig(
 			Collection<PieceLocationDescriptor> config) {
-		Iterator<PieceLocationDescriptor> configIter =   config.iterator();
+		final Iterator<PieceLocationDescriptor> configIter =   config.iterator();
 		while (configIter.hasNext()){
 			PieceLocationDescriptor next = configIter.next();
 			System.out.println("Piece: " + next.getPiece().toString() + "  At: " + next.getLocation().toString());			
@@ -64,10 +64,12 @@ public class LazyStrategyGameReporter implements StrategyGameObserver {
 		if (result != null){
 			System.out.print("Result:");
 			if (result.getBattleWinner() != null){
-				if (result.getBattleWinner().getPiece() != null)
+				if (result.getBattleWinner().getPiece() != null){
 					System.out.print(result.getBattleWinner().getPiece().toString() + " won ");
-				if (result.getBattleWinner().getLocation() != null)
-					System.out.print(" at " + result.getBattleWinner().getLocation().toString());
+				}
+				if (result.getBattleWinner().getLocation() != null){
+					System.out.print(" at " + result.getBattleWinner().getLocation().toString());	
+				}
 			} else {
 				System.out.print("the pieces killed eachother lol");
 			}

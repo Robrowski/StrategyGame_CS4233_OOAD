@@ -7,20 +7,22 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package strategy.game.version.delta;
+package strategy.game.version.epsilon;
 
+import strategy.common.StrategyRuntimeException;
 import strategy.game.common.Location;
 import strategy.game.common.PieceType;
 import strategy.game.common.battle.BattleResult;
 import strategy.game.common.battle.ISpecialBattles;
+import strategy.game.common.pieceStats.IPiecePowers;
 
 /** This class is capable of taking two pieces and evaluating all the special battles
- *  for the Delta version of Strategy.
+ *  for the Epsilon version of Strategy.
  * @author Dabrowski
  *
  * @version $Revision: 1.0 $
  */
-public class DeltaSpecialBattles implements ISpecialBattles {
+public class EpsilonSpecialBattles implements ISpecialBattles {
 
 	/* (non-Javadoc)
 	 * @see strategy.game.version.common.battle.SpecialBattles#specialBattle(strategy.game.common.PieceType, strategy.game.common.PieceType)
@@ -28,6 +30,26 @@ public class DeltaSpecialBattles implements ISpecialBattles {
 	@Override
 	public BattleResult specialBattle(PieceType attacker, Location from, PieceType defender, Location to) {
 		// Locations aren't critical in this version
+
+		// Main way of figuring out which special case to deal with
+		int moveDistance = 0;
+		try{
+			moveDistance = from.distanceTo(to);
+		}catch(StrategyRuntimeException sre){
+			// Means distance != 2, so don't care
+		}
+		
+		// Very specific attack case
+		if (attacker == PieceType.FIRST_LIEUTENANT && moveDistance == 2){
+			IPiecePowers epsilonPowers = new EpsilonPiecePowers(); // absolutely necessary here
+			int atkStr = epsilonPowers.getPower(attacker);
+			int defStr = epsilonPowers.getPower(defender);
+			
+			// Now evaluate battle for the very special case that first lieutenant lost on a 2 move attack
+			if (defStr > atkStr){
+				 return BattleResult.DEFENDERWINS_NOTMOVED; 
+			}
+		}
 		
 		if (PieceType.MINER == attacker && PieceType.BOMB == defender) return BattleResult.ATTACKERWINS;
 		if (PieceType.BOMB == defender) return BattleResult.DEFENDERWINS_NOTMOVED;

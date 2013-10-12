@@ -73,7 +73,7 @@ public class StandardBattleEngine implements IBattleEngine {
 			
 			// Check for special battle conditions: *NOTE* special conditions override
 			// regular battles between different powers
-			final BattleResult result = specialBattles.specialBattle(attacker, defender);
+			final BattleResult result = specialBattles.specialBattle(attacker, moveFrom, defender, moveTo);
 			
 			// Evaluate winner by power
 			final int atkPower = pieceStats.getPower(attacker);

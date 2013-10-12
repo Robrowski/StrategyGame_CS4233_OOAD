@@ -114,6 +114,7 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 		try {
 			final Piece atTo = this.getPieceAt(to);
 			MoveResult theMove = super.move(piece, from, to);
+			
 			// Catch the case where 1 flag is capture but the OTHER remains
 			if (atTo != null && atTo.getType() == PieceType.FLAG){
 				// IF RED flag

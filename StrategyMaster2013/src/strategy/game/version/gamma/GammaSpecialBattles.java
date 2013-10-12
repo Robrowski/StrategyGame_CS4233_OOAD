@@ -9,6 +9,7 @@
  *******************************************************************************/
 package strategy.game.version.gamma;
 
+import strategy.game.common.Location;
 import strategy.game.common.PieceType;
 import strategy.game.common.battle.BattleResult;
 import strategy.game.common.battle.ISpecialBattles;
@@ -25,7 +26,7 @@ public class GammaSpecialBattles implements ISpecialBattles {
 	 * @see strategy.game.version.common.battle.SpecialBattles#specialBattle(strategy.game.common.PieceType, strategy.game.common.PieceType)
 	 */
 	@Override
-	public BattleResult specialBattle(PieceType attacker, PieceType defender) {
+	public BattleResult specialBattle(PieceType attacker, Location from, PieceType defender, Location to) {
 		return BattleResult.NOTSPECIAL;
 	}
 

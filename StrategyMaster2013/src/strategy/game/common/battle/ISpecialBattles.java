@@ -9,6 +9,7 @@
  *******************************************************************************/
 package strategy.game.common.battle;
 
+import strategy.game.common.Location;
 import strategy.game.common.PieceType;
 
 /** Classes implementing this interface are responsible for knowing
@@ -27,9 +28,10 @@ public interface ISpecialBattles {
 	 * will reveal the winner.
 	 * 
 	 * @param attacker The attacking piece
+	 * @param from start location
 	 * @param defender The defending piece
-	
+	 * @param to  to location	
 	 * @return The result of the battle if special circumstances apply */
-	BattleResult specialBattle(PieceType attacker, PieceType defender);
+	BattleResult specialBattle(PieceType attacker, Location from, PieceType defender, Location to);
 
 }

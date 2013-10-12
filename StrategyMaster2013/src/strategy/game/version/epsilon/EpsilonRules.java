@@ -35,7 +35,6 @@ import strategy.game.common.validation.move.IMoveSpecialCaseValidator;
 import strategy.game.common.validation.move.StandardMoveDistanceValidator;
 import strategy.game.common.validation.move.StandardMoveSpecialCaseValidator;
 import strategy.game.version.VersionRules;
-import strategy.game.version.delta.DeltaSpecialBattles;
 
 /**
  * @author Dabrowski
@@ -191,7 +190,7 @@ public class EpsilonRules implements VersionRules {
 	 */
 	@Override
 	public IBattleEngine getBattleEngine() {
-		return new StandardBattleEngine(new EpsilonPiecePowers(), new DeltaSpecialBattles());
+		return new StandardBattleEngine(new EpsilonPiecePowers(), new EpsilonSpecialBattles());
 	}
 
 	/* (non-Javadoc)

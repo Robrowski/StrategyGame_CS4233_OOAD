@@ -77,6 +77,7 @@ public class EpsilonStrategyGameControllerTest {
 	private final Piece redColonel = new Piece(PieceType.COLONEL, PlayerColor.RED);
 	private final Piece redCaptain = new Piece(PieceType.CAPTAIN, PlayerColor.RED);
 	private final Piece redLieutenant = new Piece(PieceType.LIEUTENANT, PlayerColor.RED);
+	private final Piece redFirstLieutenant = new Piece(PieceType.FIRST_LIEUTENANT, PlayerColor.RED);
 	private final Piece redSergeant = new Piece(PieceType.SERGEANT, PlayerColor.RED);
 	private final Piece redGeneral = new Piece(PieceType.GENERAL, PlayerColor.RED);
 	private final Piece redMiner = new Piece(PieceType.MINER, PlayerColor.RED);
@@ -92,6 +93,7 @@ public class EpsilonStrategyGameControllerTest {
 	private final Piece blueColonel = new Piece(PieceType.COLONEL, PlayerColor.BLUE);
 	private final Piece blueCaptain = new Piece(PieceType.CAPTAIN, PlayerColor.BLUE);
 	private final Piece blueLieutenant = new Piece(PieceType.LIEUTENANT, PlayerColor.BLUE);
+	private final Piece blueFirstLieutenant = new Piece(PieceType.FIRST_LIEUTENANT, PlayerColor.BLUE);
 	private final Piece blueSergeant = new Piece(PieceType.SERGEANT, PlayerColor.BLUE);
 	private final Piece blueGeneral = new Piece(PieceType.GENERAL, PlayerColor.BLUE);
 	private final Piece blueMiner = new Piece(PieceType.MINER, PlayerColor.BLUE);
@@ -159,8 +161,8 @@ public class EpsilonStrategyGameControllerTest {
 		addToConfiguration(blueCaptain,  2,  6);
 		addToConfiguration(blueLieutenant,  3,  9);
 		addToConfiguration(blueLieutenant,  3,  8);
-		addToConfiguration(blueLieutenant,  3,  7);
-		addToConfiguration(blueLieutenant,  3,  6);
+		addToConfiguration(blueFirstLieutenant,  3,  7);
+		addToConfiguration(blueFirstLieutenant,  3,  6);
 		addToConfiguration(blueSergeant,  4,  9);
 		addToConfiguration(blueFlag,  4,  8);  // EXTRA FLAG
 		addToConfiguration(blueSergeant,  4,  7);
@@ -201,8 +203,8 @@ public class EpsilonStrategyGameControllerTest {
 		addToConfiguration( redCaptain,  2,  3);
 		addToConfiguration( redLieutenant,  3,  0);
 		addToConfiguration( redLieutenant,  3,  1);
-		addToConfiguration( redLieutenant,  3,  2);
-		addToConfiguration( redLieutenant,  3,  3);
+		addToConfiguration( redFirstLieutenant,  3,  2);
+		addToConfiguration( redFirstLieutenant,  3,  3);
 		addToConfiguration( redSergeant,  4,  0);
 		addToConfiguration( redSergeant,  4,  1);
 		addToConfiguration( redSergeant,  4,  2);

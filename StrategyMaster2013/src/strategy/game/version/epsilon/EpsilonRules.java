@@ -22,6 +22,7 @@ import strategy.game.common.PieceType;
 import strategy.game.common.battle.IBattleEngine;
 import strategy.game.common.battle.StandardBattleEngine;
 import strategy.game.common.board.IBoardManager;
+import strategy.game.common.board.MapBoardManager;
 import strategy.game.common.history.IMoveHistory;
 import strategy.game.common.history.StandardMoveHistory;
 import strategy.game.common.validation.configuration.IConfigurationValidator;
@@ -33,10 +34,7 @@ import strategy.game.common.validation.move.IMoveDistanceValidator;
 import strategy.game.common.validation.move.IMoveSpecialCaseValidator;
 import strategy.game.common.validation.move.StandardMoveDistanceValidator;
 import strategy.game.version.VersionRules;
-import strategy.game.version.delta.DeltaBoardManager;
-import strategy.game.version.delta.DeltaMoveSpecialCaseValidator;
 import strategy.game.version.delta.DeltaPieceMoves;
-import strategy.game.version.delta.DeltaPiecePowers;
 import strategy.game.version.delta.DeltaSpecialBattles;
 
 /**
@@ -66,7 +64,9 @@ public class EpsilonRules implements VersionRules {
 	/** The number of captains per team at initialization */
 	private static final int NUM_CAPTAINS_PER_TEAM = 4;
 	/** The number of lieutenants per team at initialization */
-	private static final int NUM_LIEUTENANTS_PER_TEAM = 4;
+	private static final int NUM_LIEUTENANTS_PER_TEAM = 2;
+	/** The number of first lieutenants per team at initialization */
+	private static final int NUM_FIRST_LIEU_PER_TEAM = 2;
 	/** The number of sergeants per team at initialization */
 	private static final int NUM_SERGEANTS_PER_TEAM = 4;
 	/** The number of bombs per team at initialization */
@@ -98,6 +98,7 @@ public class EpsilonRules implements VersionRules {
 		expectedPieceCounts.put(PieceType.COLONEL 		, NUM_COLONELS_PER_TEAM);
 		expectedPieceCounts.put(PieceType.CAPTAIN 		, NUM_CAPTAINS_PER_TEAM);
 		expectedPieceCounts.put(PieceType.LIEUTENANT 	, NUM_LIEUTENANTS_PER_TEAM);
+		expectedPieceCounts.put(PieceType.LIEUTENANT 	, NUM_FIRST_LIEU_PER_TEAM);
 		expectedPieceCounts.put(PieceType.SERGEANT 		, NUM_SERGEANTS_PER_TEAM);
 		expectedPieceCounts.put(PieceType.BOMB 			, NUM_BOMBS_PER_TEAM);
 		expectedPieceCounts.put(PieceType.MAJOR			, NUM_MAJORS_PER_TEAM);
@@ -166,7 +167,7 @@ public class EpsilonRules implements VersionRules {
 	 */
 	@Override
 	public IMoveSpecialCaseValidator getMoveSpecialCaseValidator() {
-		return new DeltaMoveSpecialCaseValidator();
+		return new EpsilonMoveSpecialCaseValidator();
 	}
 
 	/* (non-Javadoc)
@@ -190,7 +191,7 @@ public class EpsilonRules implements VersionRules {
 	 */
 	@Override
 	public IBattleEngine getBattleEngine() {
-		return new StandardBattleEngine(new DeltaPiecePowers(), new DeltaSpecialBattles());
+		return new StandardBattleEngine(new EpsilonPiecePowers(), new DeltaSpecialBattles());
 	}
 
 	/* (non-Javadoc)
@@ -198,6 +199,6 @@ public class EpsilonRules implements VersionRules {
 	 */
 	@Override
 	public IBoardManager getBoard() {
-		return new DeltaBoardManager(new HashMap<String, PieceLocationDescriptor>(), new DeltaPieceMoves());
+		return new MapBoardManager(new HashMap<String, PieceLocationDescriptor>(), new EpsilonPieceMoves());
 	}
 }

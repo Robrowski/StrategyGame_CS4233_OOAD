@@ -233,8 +233,9 @@ public class EpsilonStrategyGameControllerTest {
 		// Fresh valid game
 		game = factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, observers);
 		game.startGame();
-		((EpsilonStrategyGameController) game).register(new LazyStrategyGameReporter());
-		((EpsilonStrategyGameController) game).unregister(new LazyStrategyGameReporter());
+		StrategyGameObserver lazy = new LazyStrategyGameReporter();
+		((EpsilonStrategyGameController) game).register(lazy);
+		((EpsilonStrategyGameController) game).unregister(lazy);
 
 		// For general use
 		badConfig = new LinkedList<PieceLocationDescriptor>();

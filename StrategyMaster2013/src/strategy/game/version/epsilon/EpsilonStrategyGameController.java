@@ -10,8 +10,8 @@
 package strategy.game.version.epsilon;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
@@ -39,7 +39,7 @@ import strategy.game.version.VersionRules;
 public class EpsilonStrategyGameController extends AbstractStrategyGameController implements StrategyGameObservable {
 
 	/** The objects observer this observable */
-	private final Collection<StrategyGameObserver> observers = new LinkedList<StrategyGameObserver>();
+	private final Collection<StrategyGameObserver> observers = new HashSet<StrategyGameObserver>();
 	/** red's configuration */
 	private Collection<PieceLocationDescriptor> redConfiguration = null;
 	/** Blue's configuration */
@@ -165,22 +165,6 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 		}		
 	}
 
-	/* (non-Javadoc)
-	 * @see strategy.game.common.StrategyGameObservable#register(strategy.game.common.StrategyGameObserver)
-	 */
-	@Override
-	public void register(StrategyGameObserver observer) {
-		observers.add(observer);
-	}
-
-	/* (non-Javadoc)
-	 * @see strategy.game.common.StrategyGameObservable#unregister(strategy.game.common.StrategyGameObserver)
-	 */
-	@Override
-	public void unregister(StrategyGameObserver observer) {
-		observers.remove(observer);
-	}
-
 	/** Verify the move distance, locations, and pieces involved.
 	 * 
 	 * This is to be overridden when very special cases arise where both the pieces at the
@@ -220,5 +204,24 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 
 		// The original version
 		super.verifyMove(piece, from, to, atFrom, atTo);
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see strategy.game.common.StrategyGameObservable#register(strategy.game.common.StrategyGameObserver)
+	 */
+	@Override
+	public void register(StrategyGameObserver observer) {
+		observers.add(observer);
+	}
+
+	/* (non-Javadoc)
+	 * @see strategy.game.common.StrategyGameObservable#unregister(strategy.game.common.StrategyGameObserver)
+	 */
+	@Override
+	public void unregister(StrategyGameObserver observer) {
+		if (!observers.remove(observer)){
+			throw new StrategyRuntimeException("That observer was never registered");
+		}
 	}
 }

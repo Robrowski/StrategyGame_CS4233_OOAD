@@ -22,7 +22,10 @@ public interface StrategyGameObservable
 	 */
 	void register(StrategyGameObserver observer);
 	
-	/** Unregister the given observer
+	/** Unregister the given observer 
+	 * 
+	 * NOTED: This will FAIL if the instance of the object
+	 * given is not the SAME as the one registered in first place
 	 * 
 	 * @param observer the observer to retire
 	 */

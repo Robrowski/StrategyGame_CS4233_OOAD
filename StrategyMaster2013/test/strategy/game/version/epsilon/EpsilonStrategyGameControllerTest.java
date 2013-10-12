@@ -40,6 +40,7 @@ import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
 import strategy.game.common.StrategyGameObserver;
+import strategy.game.reporter.LazyStrategyGameReporter;
 import strategy.game.version.delta.DeltaRules;
 
 /** These are the tests for Epsilon Strategy
@@ -124,12 +125,15 @@ public class EpsilonStrategyGameControllerTest {
 	private EpsilonStrategyGameControllerTestDouble EpsilonTestDouble;
 
 	/** Observers */
-	private Collection<StrategyGameObserver> observers = new LinkedList<StrategyGameObserver>();
+	private static Collection<StrategyGameObserver> observers = new LinkedList<StrategyGameObserver>();
 	
 	@BeforeClass
 	public static void setupBefore(){
 		@SuppressWarnings("unused")
 		GameVersion gameVersion = (GameVersion.EPSILON);
+		
+		// Set up observer
+//		observers.add(new LazyStrategyGameReporter());
 	}
 
 	/**

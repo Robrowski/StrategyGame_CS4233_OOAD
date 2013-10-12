@@ -19,8 +19,13 @@ EPSILON TODO LIST
 - move with ALL NULL parameters indicates resignation
 
 
-REPORTER MODULE
+Observer
+X exists
+X is used
+X prints stuff
 
 
-
-OBSERVER
+Observable
+X calls Observer methods
+X implements interface
+X can register observers

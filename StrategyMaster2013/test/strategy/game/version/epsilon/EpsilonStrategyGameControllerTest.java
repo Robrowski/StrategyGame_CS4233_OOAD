@@ -134,7 +134,7 @@ public class EpsilonStrategyGameControllerTest {
 		GameVersion gameVersion = (GameVersion.EPSILON);
 		
 		// Set up observer
-	//	observers.add(new LazyStrategyGameReporter());
+		observers.add(new LazyStrategyGameReporter());
 	}
 
 	/**
@@ -233,7 +233,7 @@ public class EpsilonStrategyGameControllerTest {
 		// Fresh valid game
 		game = factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, observers);
 		game.startGame();
-	//	((EpsilonStrategyGameController) game).register(new LazyStrategyGameReporter());
+		((EpsilonStrategyGameController) game).register(new LazyStrategyGameReporter());
 		((EpsilonStrategyGameController) game).unregister(new LazyStrategyGameReporter());
 
 		// For general use

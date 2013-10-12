@@ -9,7 +9,6 @@
  *******************************************************************************/
 package strategy.game.version.epsilon;
 
-import strategy.common.StrategyRuntimeException;
 import strategy.game.common.Location;
 import strategy.game.common.PieceType;
 import strategy.game.common.battle.BattleResult;
@@ -32,12 +31,7 @@ public class EpsilonSpecialBattles implements ISpecialBattles {
 		// Locations aren't critical in this version
 
 		// Main way of figuring out which special case to deal with
-		int moveDistance = 0;
-		try{
-			moveDistance = from.distanceTo(to);
-		}catch(StrategyRuntimeException sre){
-			// Means distance != 2, so don't care
-		}
+		int moveDistance = from.distanceTo(to);
 		
 		// Very specific attack case
 		if (attacker == PieceType.FIRST_LIEUTENANT && moveDistance == 2){

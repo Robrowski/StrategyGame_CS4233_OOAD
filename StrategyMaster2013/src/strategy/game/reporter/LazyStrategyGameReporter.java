@@ -57,17 +57,17 @@ public class LazyStrategyGameReporter implements StrategyGameObserver {
 	@Override
 	public void moveHappened(PieceType piece, Location from, Location to,
 			MoveResult result, StrategyException fault) {
-		System.out.println("A move was attempted: ");
+		// Catch resignation
+		if (piece == null && from == null && to == null){
+			System.out.println(result.getStatus().toString() + " dishonorably resigned");
+			return;
+		}
 
-		if (piece != null){
-			System.out.println("Piece: " + piece.toString());
-		}
-		if (from != null){
-			System.out.println("From:  " + from.toString());
-		}
-		if (to != null){
-			System.out.println("To:    " + to.toString());
-		}
+		System.out.println("A move was attempted: ");
+		System.out.println("Piece: " + piece.toString());
+		System.out.println("From:  " + from.toString());		
+		System.out.println("To:    " + to.toString());
+
 		if (result != null){
 			System.out.print("Result:");
 			if (result.getBattleWinner() != null){

@@ -15,7 +15,6 @@ import java.util.LinkedList;
 
 import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
-import strategy.game.common.DetailedMoveResult;
 import strategy.game.common.Location;
 import strategy.game.common.MoveResult;
 import strategy.game.common.MoveResultStatus;
@@ -100,16 +99,16 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 			throws StrategyException {
 		// Catch resignations
 		if (piece == null && from == null && to == null){
-			MoveResultStatus winner = (currentTurn == PlayerColor.RED ) ? MoveResultStatus.BLUE_WINS : MoveResultStatus.RED_WINS;
-			MoveResult result = new MoveResult(winner, null);
+			final MoveResultStatus winner = (currentTurn == PlayerColor.RED ) ? MoveResultStatus.BLUE_WINS : MoveResultStatus.RED_WINS;
+			final MoveResult result = new MoveResult(winner, null);
 			notifyMove(piece, from, to, result, null);
 			return result;
 		}
 				
 		// Try to call the normal way
 		try {
-			Piece atTo = this.getPieceAt(to);
-			MoveResult theMove = (DetailedMoveResult) super.move(piece, from, to);
+			final Piece atTo = this.getPieceAt(to);
+			MoveResult theMove = super.move(piece, from, to);
 			// Catch the case where 1 flag is capture but the OTHER remains
 			if (atTo != null && atTo.getType() == PieceType.FLAG){
 				// IF RED flag

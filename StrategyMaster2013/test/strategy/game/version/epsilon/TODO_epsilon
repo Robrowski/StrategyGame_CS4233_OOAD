@@ -11,8 +11,8 @@ EPSILON TODO LIST
 		- if lie wins, moves to def's position
 		new enum FIRST_LIEUTENANT(“First Lieutenant”, “1LT”).
 		
-- 2 flags per side
-	- any other piece may be removed
+x 2 flags per side
+	x any other piece may be removed
 	X FLAG_CAPTURED when one flag is captured, end game when both die
 		
 		

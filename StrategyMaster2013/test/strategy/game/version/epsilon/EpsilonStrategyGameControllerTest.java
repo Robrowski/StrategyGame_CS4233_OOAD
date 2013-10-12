@@ -41,7 +41,6 @@ import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
 import strategy.game.common.StrategyGameObserver;
 import strategy.game.reporter.LazyStrategyGameReporter;
-import strategy.game.version.delta.DeltaRules;
 
 /** These are the tests for Epsilon Strategy
  * 

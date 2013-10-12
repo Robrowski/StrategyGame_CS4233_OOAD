@@ -185,7 +185,7 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 		try{
 			moveDistance = from.distanceTo(to);
 		}catch(StrategyRuntimeException sre){
-			// Means distance != 2, so don't care
+			sre.getMessage();
 		}
 		
 		// Extremely special First_Lieutenant case
@@ -195,7 +195,7 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 				&& (atTo.getType() != PieceType.CHOKE_POINT || atTo.getOwner() != currentTurn)){
 			
 			// Check that the lietenant is attacking and NOT jumping
-			Collection<Piece> path = fieldConfiguration.getPiecesInPath(from, to);
+			final Collection<Piece> path = fieldConfiguration.getPiecesInPath(from, to);
 			if (path.size() == 2 && atTo != null){ // exactly 2 items and the second is not null indicates distance 2 attack
 				return;
 			}
@@ -221,7 +221,7 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 	@Override
 	public void unregister(StrategyGameObserver observer) {
 		if (!observers.remove(observer)){
-			throw new StrategyRuntimeException("That observer was never registered");
+			throw new StrategyRuntimeException("That observer was never registered - USE THE SAME INSTANCE");
 		}
 	}
 }

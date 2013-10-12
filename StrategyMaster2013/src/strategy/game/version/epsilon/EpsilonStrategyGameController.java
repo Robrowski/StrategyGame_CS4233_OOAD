@@ -19,6 +19,7 @@ import strategy.game.common.DetailedMoveResult;
 import strategy.game.common.Location;
 import strategy.game.common.MoveResult;
 import strategy.game.common.MoveResultStatus;
+import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
 import strategy.game.common.StrategyGameObservable;
@@ -43,6 +44,10 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 	private Collection<PieceLocationDescriptor> redConfiguration = null;
 	/** Blue's configuration */
 	private Collection<PieceLocationDescriptor> blueConfiguration = null;
+	/** Number of RedFlags remaining */
+	private int redFlags = 2;
+	/** Number of blueFlags remaining */
+	private int blueFlags = 2;
 	
 	
 	/** Constructor for AbstractStrategyGameController. Takes two configurations, checks their 
@@ -100,12 +105,37 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 			notifyMove(piece, from, to, result, null);
 			return result;
 		}
-		
+				
 		// Try to call the normal way
 		try {
-			final DetailedMoveResult theDMove = (DetailedMoveResult) super.move(piece, from, to);
-			notifyMove(piece, from, to, theDMove, null);
-			return theDMove;
+			Piece atTo = this.getPieceAt(to);
+			MoveResult theMove = (DetailedMoveResult) super.move(piece, from, to);
+			// Catch the case where 1 flag is capture but the OTHER remains
+			if (atTo != null && atTo.getType() == PieceType.FLAG){
+				// IF RED flag
+				if (atTo.getOwner() == PlayerColor.RED){
+					redFlags--; //decrement the count
+
+					// IF a flag still remains, the status is FLAG_CAPTURED
+					if (redFlags == 1){
+						gameOver = false;
+						theMove = new MoveResult(MoveResultStatus.FLAG_CAPTURED, theMove.getBattleWinner());
+					}
+				// ELSE BLUE flag
+				} else {
+					blueFlags--; //decrement the count
+					
+					// IF a flag still remains, the status is FLAG_CAPTURED
+					if (blueFlags == 1){
+						gameOver = false;
+						theMove = new MoveResult(MoveResultStatus.FLAG_CAPTURED, theMove.getBattleWinner());
+					}
+				}
+			}
+			
+			// Notify and finish
+			notifyMove(piece, from, to, theMove, null);
+			return theMove;
 		} catch(StrategyException se){
 			// notify observer of exception, then rethrow
 			notifyMove(piece, from, to, null, se);			

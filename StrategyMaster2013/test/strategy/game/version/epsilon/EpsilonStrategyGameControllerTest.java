@@ -133,7 +133,7 @@ public class EpsilonStrategyGameControllerTest {
 		GameVersion gameVersion = (GameVersion.EPSILON);
 		
 		// Set up observer
-		observers.add(new LazyStrategyGameReporter());
+//		observers.add(new LazyStrategyGameReporter());
 	}
 
 	/**
@@ -232,7 +232,7 @@ public class EpsilonStrategyGameControllerTest {
 		// Fresh valid game
 		game = factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, observers);
 		game.startGame();
-		((EpsilonStrategyGameController) game).register(new LazyStrategyGameReporter());
+	//	((EpsilonStrategyGameController) game).register(new LazyStrategyGameReporter());
 		((EpsilonStrategyGameController) game).unregister(new LazyStrategyGameReporter());
 
 		// For general use
@@ -900,16 +900,38 @@ public class EpsilonStrategyGameControllerTest {
 	 * @throws StrategyException
 	 */
 	@Test
-	public void battle5_blueGetsRedFlag()throws StrategyException {
+	public void battle5_blueGetsRedFlags()throws StrategyException {
 		// Add an extra red piece
 		endConfig.add(new PieceLocationDescriptor( blueSergeant,  L(4,3)));
+		endConfig.add(new PieceLocationDescriptor( blueSergeant,  L(8,7)));
+		endConfig.add(new PieceLocationDescriptor( redFlag,  L(8,8)));
 
 		// Forcibly set the configuration		
 		EpsilonTestDouble.setFieldConfiguration(endConfig);
 
 		EpsilonTestDouble.move(PieceType.MARSHAL,   L(0,1), L(1,1));
-		assertSame(EpsilonTestDouble.move(PieceType.SERGEANT,   L(4,3), L(5,3)).getStatus(), MoveResultStatus.BLUE_WINS );
+		assertSame(EpsilonTestDouble.move(PieceType.SERGEANT,   L(4,3), L(5,3)).getStatus(), MoveResultStatus.FLAG_CAPTURED );
+		EpsilonTestDouble.move(PieceType.MARSHAL,   L(1,1), L(2,1));
+		assertSame(EpsilonTestDouble.move(PieceType.SERGEANT,   L(8,7), L(8,8)).getStatus(), MoveResultStatus.BLUE_WINS );
+	}	
+	
+	/**
+	 * Method battle5_blueGetsRedFlag
+	 * @throws StrategyException
+	 */
+	@Test
+	public void battle6_redGetsBlueFlags()throws StrategyException {
+		// Add an extra red piece
+		endConfig.add(new PieceLocationDescriptor( blueFlag,  L(8,8)));
+		endConfig.add(new PieceLocationDescriptor( redSergeant,  L(8,7)));
 
+
+		// Forcibly set the configuration		
+		EpsilonTestDouble.setFieldConfiguration(endConfig);
+
+		assertSame(EpsilonTestDouble.move(PieceType.MARSHAL,   L(0,1), L(0,0)).getStatus(), MoveResultStatus.FLAG_CAPTURED );
+		EpsilonTestDouble.move(PieceType.MARSHAL,   L(0,2), L(0,1));
+		assertSame(EpsilonTestDouble.move(PieceType.SERGEANT,   L(8,7), L(8,8)).getStatus(), MoveResultStatus.RED_WINS );
 	}	
 
 	/**

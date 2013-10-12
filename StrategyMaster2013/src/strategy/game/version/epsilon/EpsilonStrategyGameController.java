@@ -99,9 +99,13 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 			throws StrategyException {
 		// Catch resignations
 		if (piece == null && from == null && to == null){
+			if (gameOver){
+				throw new StrategyException("Why did you resign AFTER your opponent?!?!?");
+			}
 			final MoveResultStatus winner = (currentTurn == PlayerColor.RED ) ? MoveResultStatus.BLUE_WINS : MoveResultStatus.RED_WINS;
 			final MoveResult result = new MoveResult(winner, null);
 			notifyMove(piece, from, to, result, null);
+			gameOver = true;
 			return result;
 		}
 				

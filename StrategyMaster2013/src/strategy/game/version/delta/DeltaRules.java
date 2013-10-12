@@ -34,6 +34,7 @@ import strategy.game.common.validation.configuration.pieces.StandardPieceAllowan
 import strategy.game.common.validation.move.IMoveDistanceValidator;
 import strategy.game.common.validation.move.IMoveSpecialCaseValidator;
 import strategy.game.common.validation.move.StandardMoveDistanceValidator;
+import strategy.game.common.validation.move.StandardMoveSpecialCaseValidator;
 import strategy.game.version.VersionRules;
 
 /** DeltaRules holds all non-standard game rules that make
@@ -168,7 +169,7 @@ public class DeltaRules implements VersionRules {
 	 */
 	@Override
 	public IMoveSpecialCaseValidator getMoveSpecialCaseValidator() {
-		return new DeltaMoveSpecialCaseValidator();
+		return new StandardMoveSpecialCaseValidator();
 	}
 
 	/* (non-Javadoc)

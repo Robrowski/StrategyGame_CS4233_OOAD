@@ -33,6 +33,7 @@ import strategy.game.common.validation.configuration.pieces.StandardPieceAllowan
 import strategy.game.common.validation.move.IMoveDistanceValidator;
 import strategy.game.common.validation.move.IMoveSpecialCaseValidator;
 import strategy.game.common.validation.move.StandardMoveDistanceValidator;
+import strategy.game.common.validation.move.StandardMoveSpecialCaseValidator;
 import strategy.game.version.VersionRules;
 
 /** GammaRules holds all non-standard game rules that make
@@ -144,7 +145,7 @@ public class GammaRules implements VersionRules {
 	 */
 	@Override
 	public IMoveSpecialCaseValidator getMoveSpecialCaseValidator() {
-		return new GammaMoveSpecialCaseValidator();
+		return new StandardMoveSpecialCaseValidator();
 	}
 
 	/* (non-Javadoc)

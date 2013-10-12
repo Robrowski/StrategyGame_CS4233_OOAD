@@ -176,6 +176,6 @@ public class GammaRules implements VersionRules {
 	 */
 	@Override
 	public IBoardManager getBoard() {
-		return new MapBoardManager(new HashMap<String, PieceLocationDescriptor>());
+		return new MapBoardManager(new HashMap<String, PieceLocationDescriptor>(), new GammaPieceStats());
 	}
 }

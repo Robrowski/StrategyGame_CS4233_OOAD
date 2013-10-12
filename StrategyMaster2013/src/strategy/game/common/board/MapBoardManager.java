@@ -23,6 +23,7 @@ import strategy.game.common.Location2D;
 import strategy.game.common.MoveResultStatus;
 import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
+import strategy.game.common.pieceStats.IPieceMoves;
 
 
 /** This is the board manager responsible for keeping track of a
@@ -36,6 +37,8 @@ public class MapBoardManager implements IBoardManager {
 
 	/** The underlying implementation of the field configuration */
 	protected final Map<String, PieceLocationDescriptor> fieldConfiguration;
+	/** a tool for figuring out the movement capabilities of pieces */
+	private final IPieceMoves pieceMovementCapabilities;
 
 	/** Basic constructor that just initializes variables and take in a map to
 	 *  use to store data. It is requested that a map be passed in to allow 
@@ -45,9 +48,12 @@ public class MapBoardManager implements IBoardManager {
 	 *  the consequences.
 	 * 
 	 * @param emptyMap a map to use  
+ 	 * @param pieceMoves a tool for figuring out the movement capabilities of pieces
 	 */
-	public MapBoardManager(Map<String, PieceLocationDescriptor> emptyMap){
+	public MapBoardManager(Map<String, PieceLocationDescriptor> emptyMap, IPieceMoves pieceMoves ){
 		fieldConfiguration = emptyMap;
+		pieceMovementCapabilities = pieceMoves;
+
 	}
 
 	/* (non-Javadoc)
@@ -90,33 +96,40 @@ public class MapBoardManager implements IBoardManager {
 		if (theDMove.getBattleWinner() != null){
 			this.add(theDMove.getBattleWinner());
 		}
-		// Check for the instance that only a flag remains
+		
+		// Have to check field for bombs and flags
+		// Actually only checking for instances of movable pieces
 		final Iterator<PieceLocationDescriptor> iter = fieldConfiguration.values().iterator();
 		int numReds =0, numBlues=0; // if 1, then only flag remains
 		while (iter.hasNext()){
-			PieceLocationDescriptor next = iter.next();
+			Piece next = iter.next().getPiece();
 			// If not a choke point
-			if (next.getPiece().getOwner() != null){
-				if (next.getPiece().getOwner() == PlayerColor.BLUE) numBlues++;
-				else numReds++;
+			if (next.getOwner() != null){
+				// If movable, count it
+				if (next.getOwner() == PlayerColor.BLUE) numBlues+= pieceMovementCapabilities.getMovementCapability(next.getType());
+				else numReds+= pieceMovementCapabilities.getMovementCapability(next.getType());
 			}
 		}
-		if (numReds == 1 && numBlues ==1 ){
+
+		// Evaluate the counts
+		if (numReds == 0 && numBlues == 0 ){
 			return new DetailedMoveResult(MoveResultStatus.DRAW, 
 					theDMove.getBattleWinner(), 
 					theDMove.getPieceThatMoved(), 
 					theDMove.getLoser());
-		} else if (numReds == 1) {
+		} else if (numReds == 0) {
 			return new DetailedMoveResult(MoveResultStatus.BLUE_WINS, 
 					theDMove.getBattleWinner(), 
 					theDMove.getPieceThatMoved(), 
 					theDMove.getLoser());
-		} else if (numBlues ==1){
+		} else if (numBlues == 0){
 			return new DetailedMoveResult(MoveResultStatus.RED_WINS, 
 					theDMove.getBattleWinner(), 
 					theDMove.getPieceThatMoved(), 
 					theDMove.getLoser());
 		}
+
+		
 		return theDMove;
 	}
 

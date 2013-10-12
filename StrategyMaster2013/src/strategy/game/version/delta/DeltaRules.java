@@ -22,6 +22,7 @@ import strategy.game.common.PieceType;
 import strategy.game.common.battle.IBattleEngine;
 import strategy.game.common.battle.StandardBattleEngine;
 import strategy.game.common.board.IBoardManager;
+import strategy.game.common.board.MapBoardManager;
 import strategy.game.common.history.IMoveHistory;
 import strategy.game.common.history.StandardMoveHistory;
 import strategy.game.common.validation.configuration.ConfigurationValidator2D;
@@ -199,6 +200,6 @@ public class DeltaRules implements VersionRules {
 	 */
 	@Override
 	public IBoardManager getBoard() {
-		return new DeltaBoardManager(new HashMap<String, PieceLocationDescriptor>(), new DeltaPieceMoves());
+		return new MapBoardManager(new HashMap<String, PieceLocationDescriptor>(), new DeltaPieceMoves());
 	}
 }

@@ -16,8 +16,8 @@ import strategy.common.StrategyException;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.StrategyGameObserver;
 import strategy.game.common.board.IBoardManager;
+import strategy.game.common.board.MapBoardManager;
 import strategy.game.version.VersionRules;
-import strategy.game.version.delta.DeltaBoardManager;
 import strategy.game.version.delta.DeltaPieceMoves;
 
 /** Same exact functionality as a EpsilonStrategyGameController + the
@@ -63,7 +63,7 @@ public class EpsilonStrategyGameControllerTestDouble extends
 	 */
 	public void setFieldConfiguration(Collection<PieceLocationDescriptor> toSetTo){
 		// Make a new manager
-		IBoardManager newManager = new DeltaBoardManager(new HashMap<String,PieceLocationDescriptor>(), new DeltaPieceMoves());
+		IBoardManager newManager = new MapBoardManager(new HashMap<String,PieceLocationDescriptor>(), new DeltaPieceMoves());
 		// Add the collection to the manager
 		newManager.addToConfiguration(toSetTo);
 		// Sets the field configuration		

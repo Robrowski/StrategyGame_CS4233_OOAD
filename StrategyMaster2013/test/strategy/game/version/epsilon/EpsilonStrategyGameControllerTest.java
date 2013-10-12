@@ -134,7 +134,7 @@ public class EpsilonStrategyGameControllerTest {
 		GameVersion gameVersion = (GameVersion.EPSILON);
 		
 		// Set up observer
-//		observers.add(new LazyStrategyGameReporter());
+	//	observers.add(new LazyStrategyGameReporter());
 	}
 
 	/**
@@ -1126,8 +1126,59 @@ public class EpsilonStrategyGameControllerTest {
 		assertNull(tie.getBattleWinner());
 	}
 	
-	
+	@Test
+	public void firstLieutenantAttacksOverTwoSpace() throws StrategyException{
+		// Add some pieces for fighting
+		endConfig.add(new PieceLocationDescriptor( redFirstLieutenant,      L(3,1)));
+		endConfig.add(new PieceLocationDescriptor( blueLieutenant,     L(3,3)));
 
+		endConfig.add(new PieceLocationDescriptor(blueFirstLieutenant,      L(4,0)));
+		endConfig.add(new PieceLocationDescriptor( redSpy,    				L(4,2)));
+
+		endConfig.add(new PieceLocationDescriptor( redFirstLieutenant,      L(2,2)));
+
+
+		// Forcibly set the configuration		
+		EpsilonTestDouble.setFieldConfiguration(endConfig);
+
+		// Fight!
+		DetailedMoveResult lieuTie = (DetailedMoveResult)  EpsilonTestDouble.move(PieceType.FIRST_LIEUTENANT,L(3,1), L(3,3));
+		DetailedMoveResult fLieWin = (DetailedMoveResult)   EpsilonTestDouble.move(PieceType.FIRST_LIEUTENANT, L(4,0) , L(4,2));
+		DetailedMoveResult fLieLose = (DetailedMoveResult)   EpsilonTestDouble.move(PieceType.FIRST_LIEUTENANT, L(2,2) , L(0,2));
+
+		// Prove Results
+		assertNull(lieuTie.getBattleWinner() ); // indicates draw
+		assertEquals(fLieWin.getBattleWinner().getLocation(), L(4,2)); // Shows first lieu moved
+		assertSame(fLieLose.getBattleWinner().getPiece().getType(), PieceType.MARSHAL); // shows marshal won
+		assertNull(EpsilonTestDouble.getPieceAt(L(2,2))); // lieu loser is gone
+		assertSame(EpsilonTestDouble.getPieceAt(L(0,2)), blueMarshal); // winner didn't move
+	}
+	
+	@Test(expected=StrategyException.class)
+	public void firstLieutenantCantAttackOverAnything() throws StrategyException{
+		// Add some pieces for fighting
+		endConfig.add(new PieceLocationDescriptor( redFirstLieutenant,      L(1,1)));
+		endConfig.add(new PieceLocationDescriptor( redFlag,     L(1,2)));
+		endConfig.add(new PieceLocationDescriptor( blueLieutenant,     L(1,3)));
+
+		// Forcibly set the configuration		
+		EpsilonTestDouble.setFieldConfiguration(endConfig);
+
+		EpsilonTestDouble.move(PieceType.FIRST_LIEUTENANT,L(1,1), L(1,3));
+	}
+		
+	@Test(expected=StrategyException.class)
+	public void firstLieutenantCantMoveTwoSpacesWithoutStrike() throws StrategyException{
+		// Add some pieces for fighting
+		endConfig.add(new PieceLocationDescriptor( redFirstLieutenant,      L(1,1)));
+
+		// Forcibly set the configuration		
+		EpsilonTestDouble.setFieldConfiguration(endConfig);
+
+		EpsilonTestDouble.move(PieceType.FIRST_LIEUTENANT,L(1,1), L(1,3));
+	}
+	
+	
 	///////////////////// Miscellaneous Epsilon tests
 	@Test 
 	public void redResigns() throws StrategyException {

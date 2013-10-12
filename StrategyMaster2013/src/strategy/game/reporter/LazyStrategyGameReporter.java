@@ -59,7 +59,7 @@ public class LazyStrategyGameReporter implements StrategyGameObserver {
 			MoveResult result, StrategyException fault) {
 		// Catch resignation
 		if (piece == null && from == null && to == null){
-			System.out.println(result.getStatus().toString() + " dishonorably resigned");
+			System.out.println("Dishonorable resignation: " + result.getStatus().toString());
 			return;
 		}
 

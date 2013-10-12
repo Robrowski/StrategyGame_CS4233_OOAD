@@ -4,12 +4,12 @@ EPSILON TODO LIST
 - New piece - first lieutenant
 	x 2 first Lieus, 2 lieus
 	x same rank as lieutenant
-	- move/attack like lieutenants when adjacent
+	X move/attack like lieutenants when adjacent
 	- added strike capability - may hit from 2 units
-		- no obstructions 
-		- straight line
+		X no obstructions 
+		X straight line
 		- if defender wins - no move, lieu dies
-		- if lie wins, moves to def's position
+		X if lie wins, moves to def's position
 	x	new enum FIRST_LIEUTENANT(“First Lieutenant”, “1LT”).
 		
 x 2 flags per side

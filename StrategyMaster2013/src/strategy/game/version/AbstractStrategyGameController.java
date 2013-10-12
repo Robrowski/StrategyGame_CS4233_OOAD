@@ -128,31 +128,14 @@ StrategyGameController {
 			throw new StrategyException("You must start the game!");
 		}
 
-		// A tally of the problems- in the form of an error message string
-		String invalidities = "The following invalidities occured: ";
-
 		// Check if there is a piece at the given "from". If there is not, an exception should
 		// be thrown. This catches the times that a location off of the board is input
 		// into the "from" as well as when legitimate spaces don't have a piece.
 		final Piece atFrom = this.getPieceAt(from);
 		final Piece atTo = this.getPieceAt(to);
 		
-		// Verify the start location and destination
-		invalidities += moveSpecialCaseValidator.verifyDestination(currentTurn,     atTo);
-		invalidities += moveSpecialCaseValidator.verifyStartLocation(currentTurn, atFrom, piece);
-		
-		// Verify the move path
-		invalidities += moveSpecialCaseValidator.verifyMovePath(fieldConfiguration.getPiecesInPath(from, to));
-		
-		// If a piece was found, verify that it can go the distance
-		if (atFrom != null){
-			invalidities += moveDistanceValidator.moveDistanceIsValid(from, to, atFrom);	
-		}
-		
-		// Check if any messages have been added to the error message, throw if necessary
-		if (!invalidities.equals("The following invalidities occured: ")){
-			throw new StrategyException(invalidities);
-		}
+		// Verify the move distance, locations, and pieces involved
+		verifyMove(piece, from, to, atFrom, atTo);
 
 		// Do the battle since the move is valid
 		DetailedMoveResult theDMove = battleEngine.doBattle(atFrom, from, atTo, to); // Have to start somewhere
@@ -181,6 +164,41 @@ StrategyGameController {
 		if (theDMove.getStatus() != MoveResultStatus.OK) gameOver = true;
 				
 		return theDMove;
+	}
+
+	/** Verify the move distance, locations, and pieces involved.
+	 * 
+	 * This is to be overridden when very special cases arise where both the pieces at the
+	 * start and end and the path must all be checked at once
+	 * 
+	 * @param piece piece being moved
+	 * @param from  location to start at
+	 * @param to    location to move to
+	 * @param atFrom piece at the start
+	 * @param atTo   piece at the end
+	 * @throws StrategyException
+	 */
+	protected void verifyMove(PieceType piece, Location from, Location to,
+			final Piece atFrom, final Piece atTo) throws StrategyException {
+		// A tally of the problems- in the form of an error message string
+		String invalidities = "The following invalidities occured: ";
+		
+		// Verify the start location and destination
+		invalidities += moveSpecialCaseValidator.verifyDestination(currentTurn,     atTo);
+		invalidities += moveSpecialCaseValidator.verifyStartLocation(currentTurn, atFrom, piece);
+		
+		// Verify the move path
+		invalidities += moveSpecialCaseValidator.verifyMovePath(fieldConfiguration.getPiecesInPath(from, to));
+		
+		// If a piece was found, verify that it can go the distance
+		if (atFrom != null){
+			invalidities += moveDistanceValidator.moveDistanceIsValid(from, to, atFrom);	
+		}
+		
+		// Check if any messages have been added to the error message, throw if necessary
+		if (!invalidities.equals("The following invalidities occured: ")){
+			throw new StrategyException(invalidities);
+		}
 	}
 
 }

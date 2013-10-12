@@ -15,6 +15,7 @@ import java.util.LinkedList;
 
 import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
+import strategy.common.StrategyRuntimeException;
 import strategy.game.common.Location;
 import strategy.game.common.MoveResult;
 import strategy.game.common.MoveResultStatus;
@@ -179,8 +180,44 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 		observers.remove(observer);
 	}
 
+	/** Verify the move distance, locations, and pieces involved.
+	 * 
+	 * This is to be overridden when very special cases arise where both the pieces at the
+	 * start and end and the path must all be checked at once
+	 * 
+	 * @param piece piece being moved
+	 * @param from  location to start at
+	 * @param to    location to move to
+	 * @param atFrom piece at the start
+	 * @param atTo   piece at the end
+	 * @throws StrategyException
+	 */
+	protected void verifyMove(PieceType piece, Location from, Location to,
+			final Piece atFrom, final Piece atTo) throws StrategyException {
+		
+		// Main way of figuring out which special case to deal with
+		int moveDistance = 0;
+		try{
+			moveDistance = from.distanceTo(to);
+		}catch(StrategyRuntimeException sre){
+			// Means distance != 2, so don't care
+		}
+		
+		// Extremely special First_Lieutenant case
+		if (piece == PieceType.FIRST_LIEUTENANT 
+				&& moveDistance == 2 // First Lieutenants actually have a normal move to, so this is super special
+				&& atTo != null
+				&& (atTo.getType() != PieceType.CHOKE_POINT || atTo.getOwner() != currentTurn)){
+			
+			// Check that the lietenant is attacking and NOT jumping
+			Collection<Piece> path = fieldConfiguration.getPiecesInPath(from, to);
+			if (path.size() == 2 && atTo != null){ // exactly 2 items and the second is not null indicates distance 2 attack
+				return;
+			}
+			throw new StrategyException("The FirstLieutentant attack path was invalid");
+		}
 
-
-
-
+		// The original version
+		super.verifyMove(piece, from, to, atFrom, atTo);
+	}
 }

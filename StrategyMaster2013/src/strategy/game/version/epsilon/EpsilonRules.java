@@ -33,8 +33,8 @@ import strategy.game.common.validation.configuration.pieces.StandardPieceAllowan
 import strategy.game.common.validation.move.IMoveDistanceValidator;
 import strategy.game.common.validation.move.IMoveSpecialCaseValidator;
 import strategy.game.common.validation.move.StandardMoveDistanceValidator;
+import strategy.game.common.validation.move.StandardMoveSpecialCaseValidator;
 import strategy.game.version.VersionRules;
-import strategy.game.version.delta.DeltaPieceMoves;
 import strategy.game.version.delta.DeltaSpecialBattles;
 
 /**
@@ -167,7 +167,7 @@ public class EpsilonRules implements VersionRules {
 	 */
 	@Override
 	public IMoveSpecialCaseValidator getMoveSpecialCaseValidator() {
-		return new EpsilonMoveSpecialCaseValidator();
+		return new StandardMoveSpecialCaseValidator();
 	}
 
 	/* (non-Javadoc)
@@ -175,7 +175,7 @@ public class EpsilonRules implements VersionRules {
 	 */
 	@Override
 	public IMoveDistanceValidator getMoveDistanceValidator() {
-		return new StandardMoveDistanceValidator(xBoardDim, yBoardDim,    new DeltaPieceMoves());
+		return new StandardMoveDistanceValidator(xBoardDim, yBoardDim,    new EpsilonPieceMoves());
 	}
 
 	/* (non-Javadoc)

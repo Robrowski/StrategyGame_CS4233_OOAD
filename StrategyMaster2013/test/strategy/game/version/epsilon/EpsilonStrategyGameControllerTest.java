@@ -40,7 +40,6 @@ import strategy.game.common.Piece;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
 import strategy.game.common.StrategyGameObserver;
-import strategy.game.reporter.LazyStrategyGameReporter;
 import strategy.game.version.delta.DeltaRules;
 
 /** These are the tests for Epsilon Strategy
@@ -262,7 +261,7 @@ public class EpsilonStrategyGameControllerTest {
 	 * @throws StrategyException
 	 */
 	@Test
-	public void controllerHanlesNullObserverList() throws StrategyException
+	public void controllerHandlesNullObserverList() throws StrategyException
 	{
 		game = factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, null);
 		assertTrue(true); // No exceptions thrown!
@@ -1082,7 +1081,20 @@ public class EpsilonStrategyGameControllerTest {
 	}
 
 
-//	///////////////////// Miscellaneous Epsilon tests
+	///////////////////// Miscellaneous Epsilon tests
+	@Test 
+	public void redResigns() throws StrategyException {
+		assertSame(game.move(null, null, null).getStatus(), MoveResultStatus.BLUE_WINS);
+	}
+	
+	@Test 
+	public void blueResigns() throws StrategyException {
+		game.move(PieceType.COLONEL, L(0,3), L(0,4));
+		assertSame(game.move(null, null, null).getStatus(), MoveResultStatus.RED_WINS);
+	}
+	
+		
+	
 //	@Test
 //	public void testIfNullGetsUsedAsPieceType1() throws StrategyException{
 //		assertSame(0, new EpsilonPieceMoves().getMovementCapability(null));

@@ -11,11 +11,14 @@ package strategy.game.version.epsilon;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
 
+import strategy.common.PlayerColor;
 import strategy.common.StrategyException;
 import strategy.game.common.DetailedMoveResult;
 import strategy.game.common.Location;
 import strategy.game.common.MoveResult;
+import strategy.game.common.MoveResultStatus;
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
 import strategy.game.common.StrategyGameObservable;
@@ -35,11 +38,11 @@ import strategy.game.version.VersionRules;
 public class EpsilonStrategyGameController extends AbstractStrategyGameController implements StrategyGameObservable {
 
 	/** The objects observer this observable */
-	private final Collection<StrategyGameObserver> observers;
+	private final Collection<StrategyGameObserver> observers = new LinkedList<StrategyGameObserver>();
 	/** red's configuration */
-	private final Collection<PieceLocationDescriptor> redConfiguration;
+	private Collection<PieceLocationDescriptor> redConfiguration = null;
 	/** Blue's configuration */
-	private final Collection<PieceLocationDescriptor> blueConfiguration;
+	private Collection<PieceLocationDescriptor> blueConfiguration = null;
 	
 	
 	/** Constructor for AbstractStrategyGameController. Takes two configurations, checks their 
@@ -61,8 +64,8 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 		this.blueConfiguration = blueConfiguration; // for the observers only
 		
 		if (observers != null){
-			this.observers = observers; // Automatic registration
-		}
+			this.observers.addAll(observers); // Automatic registration
+		} 
 	}
 
 	
@@ -90,6 +93,14 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 	@Override
 	public MoveResult move(PieceType piece, Location from, Location to)
 			throws StrategyException {
+		// Catch resignations
+		if (piece == null && from == null && to == null){
+			MoveResultStatus winner = (currentTurn == PlayerColor.RED ) ? MoveResultStatus.BLUE_WINS : MoveResultStatus.RED_WINS;
+			MoveResult result = new MoveResult(winner, null);
+			notifyMove(piece, from, to, result, null);
+			return result;
+		}
+		
 		// Try to call the normal way
 		try {
 			final DetailedMoveResult theDMove = (DetailedMoveResult) super.move(piece, from, to);

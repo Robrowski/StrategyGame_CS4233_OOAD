@@ -16,7 +16,7 @@ EPSILON TODO LIST
 	- FLAG_CAPTURED when one flag is captured, end game when both die
 		
 		
-- move with ALL NULL parameters indicates resignation
+X move with ALL NULL parameters indicates resignation
 
 
 Observer

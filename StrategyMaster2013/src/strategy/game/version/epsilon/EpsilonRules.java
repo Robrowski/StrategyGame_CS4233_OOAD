@@ -25,11 +25,12 @@ import strategy.game.common.board.IBoardManager;
 import strategy.game.common.board.MapBoardManager;
 import strategy.game.common.history.IMoveHistory;
 import strategy.game.common.history.StandardMoveHistory;
+import strategy.game.common.validation.configuration.ConfigurationValidator2D;
 import strategy.game.common.validation.configuration.IConfigurationValidator;
 import strategy.game.common.validation.configuration.location.GeneralPieceLocationValidator;
 import strategy.game.common.validation.configuration.location.IPieceLocationValidator;
+import strategy.game.common.validation.configuration.pieces.EpsilonPieceAllowanceValidator;
 import strategy.game.common.validation.configuration.pieces.IPieceAllowanceValidator;
-import strategy.game.common.validation.configuration.pieces.StandardPieceAllowanceValidator;
 import strategy.game.common.validation.move.IMoveDistanceValidator;
 import strategy.game.common.validation.move.IMoveSpecialCaseValidator;
 import strategy.game.common.validation.move.StandardMoveDistanceValidator;
@@ -106,7 +107,7 @@ public class EpsilonRules implements VersionRules {
 		expectedPieceCounts.put(PieceType.SPY 			, NUM_SPIES_PER_TEAM);
 		expectedPieceCounts.put(PieceType.SCOUT 		, NUM_SCOUTS_PER_TEAM);
 
-		return new StandardPieceAllowanceValidator(expectedPieceCounts);
+		return new EpsilonPieceAllowanceValidator(expectedPieceCounts);
 	}
 
 	/* (non-Javadoc)
@@ -122,7 +123,7 @@ public class EpsilonRules implements VersionRules {
 	 */
 	@Override
 	public IConfigurationValidator getConfigurationValidator() {
-		return new EpsilonConfigurationValidator(this);	
+		return new ConfigurationValidator2D(this);	
 	}
 
 	/* (non-Javadoc)

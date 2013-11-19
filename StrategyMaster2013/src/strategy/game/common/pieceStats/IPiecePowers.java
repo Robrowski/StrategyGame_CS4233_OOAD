@@ -19,12 +19,14 @@ import strategy.game.common.PieceType;
  */
 public interface IPiecePowers {
 	
-	/** Get the power of the associated piece type
+	/** Get the atk power of the associated piece type
 	 * @param type the type of the piece. 	
-	 * @return the power as an int. Returns 0 if the piece type is not recognized or does not have a power */
-	int getPower(PieceType type);
+	 * @return the atk power as an int. Returns 0 if the piece type is not recognized or does not have a power */
+	int getAtk(PieceType type);
 
-	
-	
+	/** Get the def power of the associated piece type
+	 * @param type the type of the piece. 	
+	 * @return the def power as an int. Returns 0 if the piece type is not recognized or does not have a power */
+	int getDef(PieceType type);
 	
 }

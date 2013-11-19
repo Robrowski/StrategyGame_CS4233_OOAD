@@ -76,8 +76,8 @@ public class StandardBattleEngine implements IBattleEngine {
 			final BattleResult result = specialBattles.specialBattle(attacker, moveFrom, defender, moveTo);
 			
 			// Evaluate winner by power
-			final int atkPower = pieceStats.getPower(attacker);
-			final int defPower = pieceStats.getPower(defender);	
+			final int atkPower = pieceStats.getAtk(attacker);
+			final int defPower = pieceStats.getDef(defender);	
 			
 			// Attacker wins
 			if (result == BattleResult.ATTACKERWINS || (atkPower > defPower && result == BattleResult.NOTSPECIAL)){  

@@ -36,8 +36,8 @@ public class EpsilonSpecialBattles implements ISpecialBattles {
 		// Very specific attack case
 		if (attacker == PieceType.FIRST_LIEUTENANT && moveDistance == 2){
 			IPiecePowers epsilonPowers = new EpsilonPiecePowers(); // absolutely necessary here
-			int atkStr = epsilonPowers.getPower(attacker);
-			int defStr = epsilonPowers.getPower(defender);
+			int atkStr = epsilonPowers.getAtk(attacker);
+			int defStr = epsilonPowers.getDef(defender);
 			
 			// Now evaluate battle for the very special case that first lieutenant lost on a 2 move attack
 			if (defStr > atkStr){

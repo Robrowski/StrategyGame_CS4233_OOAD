@@ -42,5 +42,21 @@ public class EpsilonPiecePowers implements IPiecePowers{
 		else return 0;
 	}
 
+	/* (non-Javadoc)
+	 * @see strategy.game.common.pieceStats.IPiecePowers#getAtk(strategy.game.common.PieceType)
+	 */
+	@Override
+	public int getAtk(PieceType type) {
+		return getPower(type);
+	}
+
+	/* (non-Javadoc)
+	 * @see strategy.game.common.pieceStats.IPiecePowers#getDef(strategy.game.common.PieceType)
+	 */
+	@Override
+	public int getDef(PieceType type) {
+		return getPower(type);
+	}
+
 
 }

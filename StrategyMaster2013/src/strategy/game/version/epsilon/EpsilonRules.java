@@ -29,7 +29,6 @@ import strategy.game.common.validation.configuration.ConfigurationValidator2D;
 import strategy.game.common.validation.configuration.IConfigurationValidator;
 import strategy.game.common.validation.configuration.location.GeneralPieceLocationValidator;
 import strategy.game.common.validation.configuration.location.IPieceLocationValidator;
-import strategy.game.common.validation.configuration.pieces.EpsilonPieceAllowanceValidator;
 import strategy.game.common.validation.configuration.pieces.IPieceAllowanceValidator;
 import strategy.game.common.validation.move.IMoveDistanceValidator;
 import strategy.game.common.validation.move.IMoveSpecialCaseValidator;

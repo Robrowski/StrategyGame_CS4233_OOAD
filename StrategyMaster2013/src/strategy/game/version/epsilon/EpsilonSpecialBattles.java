@@ -31,13 +31,13 @@ public class EpsilonSpecialBattles implements ISpecialBattles {
 		// Locations aren't critical in this version
 
 		// Main way of figuring out which special case to deal with
-		int moveDistance = from.distanceTo(to);
+		final int moveDistance = from.distanceTo(to);
 		
 		// Very specific attack case
 		if (attacker == PieceType.FIRST_LIEUTENANT && moveDistance == 2){
-			IPiecePowers epsilonPowers = new EpsilonPiecePowers(); // absolutely necessary here
-			int atkStr = epsilonPowers.getAtk(attacker);
-			int defStr = epsilonPowers.getDef(defender);
+			final IPiecePowers epsilonPowers = new EpsilonPiecePowers(); // absolutely necessary here
+			final int atkStr = epsilonPowers.getAtk(attacker);
+			final int defStr = epsilonPowers.getDef(defender);
 			
 			// Now evaluate battle for the very special case that first lieutenant lost on a 2 move attack
 			if (defStr > atkStr){

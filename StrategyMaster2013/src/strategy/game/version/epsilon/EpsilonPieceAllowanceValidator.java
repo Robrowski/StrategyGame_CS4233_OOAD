@@ -7,13 +7,14 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package strategy.game.common.validation.configuration.pieces;
+package strategy.game.version.epsilon;
 
 import java.util.Collection;
 import java.util.Map;
 
 import strategy.game.common.PieceLocationDescriptor;
 import strategy.game.common.PieceType;
+import strategy.game.common.validation.configuration.pieces.StandardPieceAllowanceValidator;
 
 /** Modification of the 2D piece validator to allow for the
  * off by one errors allowed in Epsilon Strategy

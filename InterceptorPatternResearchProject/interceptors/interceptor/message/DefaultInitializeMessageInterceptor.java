@@ -9,16 +9,16 @@
  *******************************************************************************/
 package interceptor.message;
 
+import common.StrategyException;
+import game.GameController;
+import game.GameFactory;
+import game.common.GameVersion;
 import interceptor.StrategyMessageInterceptor;
 import message.Sendable;
 import message.StrategyMessageType;
 import message.implementations.CommandMessage;
 import server.SampleConfigurations;
 import server.StrategyServer;
-import strategy.common.StrategyException;
-import strategy.game.StrategyGameController;
-import strategy.game.StrategyGameFactory;
-import strategy.game.common.GameVersion;
 
 
 /** This interceptor handles initialization of games
@@ -42,12 +42,12 @@ public class DefaultInitializeMessageInterceptor implements StrategyMessageInter
 	 * @param game a reference to the current game
 	 * @return the result of the move
 	 */
-	public Sendable handleMessage(Sendable message, StrategyGameController game) {
+	public Sendable handleMessage(Sendable message, GameController game) {
 		// The version of the message
 		final GameVersion version = ((CommandMessage) message).getVersion();
 
 		/** The factory that provides StrategyGames   */
-		final StrategyGameFactory theFactory = StrategyGameFactory.getInstance();
+		final GameFactory theFactory = GameFactory.getInstance();
 
 
 		final SampleConfigurations sample = SampleConfigurations.getInstance();

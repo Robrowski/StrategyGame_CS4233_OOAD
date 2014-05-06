@@ -10,13 +10,14 @@
 package server;
 
 
+import game.GameController;
+
 import java.util.Collection;
 import java.util.LinkedList;
 
+import common.StrategyException;
 import message.Sendable;
 import server.message.MessageProcessingDispatcher;
-import strategy.common.StrategyException;
-import strategy.game.StrategyGameController;
 
 
 /** A basic server to take in messages from the client over the 
@@ -35,7 +36,7 @@ public class StrategyServer {
 	/** An instance of the StrategyServer         */
 	protected final static StrategyServer instance = new StrategyServer();
 	/** The current game */
-	protected static StrategyGameController game = null;
+	protected static GameController game = null;
 	/** A log of messages */
 	protected static Collection<Sendable> log = new LinkedList<Sendable>();
 	
@@ -92,7 +93,7 @@ public class StrategyServer {
 	 * @param game2 game to set to
 	 * @throws StrategyException if game was already set
 	 */
-	public static void setGame(StrategyGameController game2) throws StrategyException {
+	public static void setGame(GameController game2) throws StrategyException {
 		// Check to see if the game was started already
 		if (game == null){
 			game = game2;

@@ -9,12 +9,12 @@
  *******************************************************************************/
 package interceptor.message;
 
+import game.GameController;
+import game.common.Piece;
 import interceptor.StrategyMessageInterceptor;
 import message.Sendable;
 import message.StrategyMessageType;
 import message.implementations.QueryMessage;
-import strategy.game.StrategyGameController;
-import strategy.game.common.Piece;
 
 
 /** An interceptor specifically made to handle board Queries
@@ -38,7 +38,7 @@ public class QueryMessageInterceptor implements StrategyMessageInterceptor {
 	 * @param message contains the information about the query
 	 * @return the result
 	 */
-	public Sendable handleMessage(Sendable message, StrategyGameController game) {
+	public Sendable handleMessage(Sendable message, GameController game) {
 		// If this is called, we know what type the message was
 		final QueryMessage theMessage = (QueryMessage) message;
 		

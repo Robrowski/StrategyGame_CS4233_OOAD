@@ -9,15 +9,16 @@
  *******************************************************************************/
 package server;
 
+import game.common.Location;
+import game.common.Location2D;
+import game.common.Piece;
+import game.common.PieceLocationDescriptor;
+import game.common.PieceType;
+
 import java.util.Collection;
 import java.util.LinkedList;
 
-import strategy.common.PlayerColor;
-import strategy.game.common.Location;
-import strategy.game.common.Location2D;
-import strategy.game.common.Piece;
-import strategy.game.common.PieceLocationDescriptor;
-import strategy.game.common.PieceType;
+import common.PlayerColor;
 
 /** This class provides sample piece configurations for 
  *  different versions of Strategy and lets the StrategyServer

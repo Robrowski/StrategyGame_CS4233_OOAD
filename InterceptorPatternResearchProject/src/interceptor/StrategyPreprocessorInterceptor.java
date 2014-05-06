@@ -9,8 +9,8 @@
  *******************************************************************************/
 package interceptor;
 
+import game.GameController;
 import message.Sendable;
-import strategy.game.StrategyGameController;
 
 
 /** This class is to be implemented by all classes
@@ -35,7 +35,7 @@ public interface StrategyPreprocessorInterceptor extends StrategyInterceptor {
 	 * @param game a reference to the current game, if needed
 	 * @return a message to send back
 	 */
-	Sendable handleMessage(Sendable message, StrategyGameController game);
+	Sendable handleMessage(Sendable message, GameController game);
 
 	
 }

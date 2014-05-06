@@ -9,6 +9,7 @@
  *******************************************************************************/
 package common.messages;
 
+import game.common.GameVersion;
 import message.MessageRuntimeException;
 import message.StrategyMessageType;
 import message.implementations.CommandMessage;
@@ -16,7 +17,6 @@ import message.implementations.CommandMessage;
 import org.junit.Test;
 
 
-import strategy.game.common.GameVersion;
 
 /**
  * @author Dabrowski

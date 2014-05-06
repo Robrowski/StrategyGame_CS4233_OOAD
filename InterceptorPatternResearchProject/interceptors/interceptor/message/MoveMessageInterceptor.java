@@ -9,13 +9,13 @@
  *******************************************************************************/
 package interceptor.message;
 
+import common.StrategyException;
+import game.GameController;
+import game.common.MoveResult;
 import interceptor.StrategyMessageInterceptor;
 import message.Sendable;
 import message.StrategyMessageType;
 import message.implementations.MoveMessage;
-import strategy.common.StrategyException;
-import strategy.game.StrategyGameController;
-import strategy.game.common.MoveResult;
 
 
 /** An interceptor specifically made to handle Move messages
@@ -40,7 +40,7 @@ public class MoveMessageInterceptor implements StrategyMessageInterceptor {
 	 * @param game a reference to the current game
 	 * @return the result of the move
 	 */
-	public Sendable handleMessage(Sendable message, StrategyGameController game) {
+	public Sendable handleMessage(Sendable message, GameController game) {
 		// If this is called, we know what type the message was
 		final MoveMessage theMessage = (MoveMessage) message;
 		

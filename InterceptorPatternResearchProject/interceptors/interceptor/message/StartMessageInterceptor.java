@@ -9,11 +9,11 @@
  *******************************************************************************/
 package interceptor.message;
 
+import common.StrategyException;
+import game.GameController;
 import interceptor.StrategyMessageInterceptor;
 import message.Sendable;
 import message.StrategyMessageType;
-import strategy.common.StrategyException;
-import strategy.game.StrategyGameController;
 
 
 /** An interceptor specifically made to handle START command messages
@@ -37,7 +37,7 @@ public class StartMessageInterceptor implements StrategyMessageInterceptor {
 	 * @param game a referen`ce to the current game
 	 * @return the result of the move
 	 */
-	public Sendable handleMessage(Sendable message, StrategyGameController game) {
+	public Sendable handleMessage(Sendable message, GameController game) {
 		// Try to start the game
 		if (game != null){
 			try {

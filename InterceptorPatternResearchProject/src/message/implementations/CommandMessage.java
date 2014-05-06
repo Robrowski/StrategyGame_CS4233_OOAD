@@ -9,10 +9,10 @@
  *******************************************************************************/
 package message.implementations;
 
+import game.common.GameVersion;
 import message.AbstractMessage;
 import message.MessageRuntimeException;
 import message.StrategyMessageType;
-import strategy.game.common.GameVersion;
 
 /** A message that only contains a MessageType. This 
  *  message is used to request a command such as

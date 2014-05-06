@@ -16,6 +16,10 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 
+import game.common.GameVersion;
+import game.common.Location;
+import game.common.Location2D;
+import game.common.PieceType;
 import message.StrategyMessageType;
 import message.implementations.CommandMessage;
 import message.implementations.GenericMessage;
@@ -25,11 +29,6 @@ import message.implementations.QueryMessage;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import strategy.game.common.GameVersion;
-import strategy.game.common.Location;
-import strategy.game.common.Location2D;
-import strategy.game.common.PieceType;
 
 
 

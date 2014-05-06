@@ -9,6 +9,7 @@
  *******************************************************************************/
 package server.message;
 
+import game.GameController;
 import interceptor.StrategyMessageInterceptor;
 import interceptor.StrategyPreprocessorInterceptor;
 
@@ -22,9 +23,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
+import common.StrategyRuntimeException;
 import message.Sendable;
-import strategy.common.StrategyRuntimeException;
-import strategy.game.StrategyGameController;
 
 
 /** This dispatcher is responsible for finding an
@@ -47,7 +47,7 @@ public class MessageProcessingDispatcher {
 	/** A counter that says which interceptor list to add to */
 	private int counter = 0;
 
-	/** Basic constructor that takes a reference to a StrategyGameController.
+	/** Basic constructor that takes a reference to a GameController.
 	 *  This is from the server and is here to be used by the Interceptors
 	 * 
 	 * Tries to read in classes from text files.. gives up at the first sign of trouble
@@ -142,7 +142,7 @@ public class MessageProcessingDispatcher {
 	 * @param game a reference to the current game because interceptors need that
 	 * @return the result
 	 */
-	public Sendable handleMessageProcessing(Sendable message, StrategyGameController game) {
+	public Sendable handleMessageProcessing(Sendable message, GameController game) {
 		// Time to process the message
 		Sendable theMessage = message;
 

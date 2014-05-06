@@ -9,10 +9,10 @@
  *******************************************************************************/
 package message.implementations;
 
+import game.common.Location;
+import game.common.Piece;
 import message.AbstractMessage;
 import message.StrategyMessageType;
-import strategy.game.common.Location;
-import strategy.game.common.Piece;
 
 /** A message used to hold the information to 
  *  request a query at a location. It can

@@ -9,10 +9,10 @@
  *******************************************************************************/
 package interceptor.message;
 
+import game.GameController;
 import interceptor.StrategyMessageInterceptor;
 import interceptor.StrategyPreprocessorInterceptor;
 import message.Sendable;
-import strategy.game.StrategyGameController;
 
 
 /** A silly interceptor simply for the purposes of demonstrating
@@ -37,7 +37,7 @@ public class SillyInterceptor implements StrategyMessageInterceptor, StrategyPre
 	 * @param message the message to add
 	 * @param a reference to the current game
 	 */
-	public Sendable handleMessage(Sendable message, StrategyGameController game) {
+	public Sendable handleMessage(Sendable message, GameController game) {
 		System.out.println("I'm a silly interceptor... I was dynamically loaded from");
 		System.out.println("   MessageProcessingInterceptors.txt   :D  ");
 		System.out.println("   Make sure you look at the 'interceptors' folder  ");

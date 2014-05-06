@@ -9,11 +9,11 @@
  *******************************************************************************/
 package interceptor.message;
 
+import game.GameController;
 import interceptor.StrategyMessageInterceptor;
 import interceptor.StrategyPreprocessorInterceptor;
 import message.Sendable;
 import server.StrategyServer;
-import strategy.game.StrategyGameController;
 
 
 /** An interceptor for intercepting messages and logging them.
@@ -37,7 +37,7 @@ public class MessageLoggingInterceptor implements StrategyMessageInterceptor, St
 	 * @param message the message to add
 	 * @param a reference to the current game
 	 */
-	public Sendable handleMessage(Sendable message, StrategyGameController game) {
+	public Sendable handleMessage(Sendable message, GameController game) {
 			
 		// Add it to the log
 		StrategyServer.getInstance().addToLog(message);

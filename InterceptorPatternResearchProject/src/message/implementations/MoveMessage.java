@@ -9,12 +9,11 @@
  *******************************************************************************/
 package message.implementations;
 
+import game.common.Location;
+import game.common.MoveResult;
+import game.common.PieceType;
 import message.AbstractMessage;
 import message.StrategyMessageType;
-
-import strategy.game.common.Location;
-import strategy.game.common.MoveResult;
-import strategy.game.common.PieceType;
 
 
 /** A message containing the information about a move

@@ -9,9 +9,9 @@
  *******************************************************************************/
 package client;
 
-import strategy.game.common.GameVersion;
-import strategy.game.common.Location2D;
-import strategy.game.common.PieceType;
+import game.common.GameVersion;
+import game.common.Location2D;
+import game.common.PieceType;
 
 
 import message.Sendable;

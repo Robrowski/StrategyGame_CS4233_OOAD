@@ -12,14 +12,14 @@ package game;
 
 import game.common.PieceLocationDescriptor;
 import game.common.StrategyGameObserver;
-import game.version.alpha.AlphaStrategyGameController;
-import game.version.beta.BetaStrategyGameController;
-import game.version.delta.DeltaRules;
-import game.version.delta.DeltaStrategyGameController;
-import game.version.epsilon.EpsilonRules;
-import game.version.epsilon.EpsilonStrategyGameController;
-import game.version.gamma.GammaRules;
-import game.version.gamma.GammaStrategyGameController;
+import game.strategy.alpha.AlphaStrategyGameController;
+import game.strategy.beta.BetaStrategyGameController;
+import game.strategy.delta.DeltaRules;
+import game.strategy.delta.DeltaStrategyGameController;
+import game.strategy.epsilon.EpsilonRules;
+import game.strategy.epsilon.EpsilonStrategyGameController;
+import game.strategy.gamma.GammaRules;
+import game.strategy.gamma.GammaStrategyGameController;
 
 import java.util.Collection;
 import java.util.Iterator;

@@ -9,10 +9,10 @@
  *******************************************************************************/
 package game.common.validation.configuration;
 
+import game.VersionRules;
 import game.common.PieceLocationDescriptor;
 import game.common.validation.configuration.location.IPieceLocationValidator;
 import game.common.validation.configuration.pieces.IPieceAllowanceValidator;
-import game.version.VersionRules;
 
 import java.util.Collection;
 
@@ -43,7 +43,7 @@ public class ConfigurationValidator2D implements IConfigurationValidator {
 	}
 
 	/* (non-Javadoc)
-	 * @see game.version.common.validation.configuration.IConfigurationValidator#validatePlayerConfigurations(java.util.Collection, java.util.Collection)
+	 * @see game.strategy.common.validation.configuration.IConfigurationValidator#validatePlayerConfigurations(java.util.Collection, java.util.Collection)
 	 */
 	@Override
 	public void validatePlayerConfigurations(

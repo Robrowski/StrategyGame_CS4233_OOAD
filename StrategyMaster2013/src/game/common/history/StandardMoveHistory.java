@@ -40,7 +40,7 @@ public class StandardMoveHistory implements IMoveHistory {
 
 
 	/* (non-Javadoc)
-	 * @see game.version.common.history.IMoveHistory#recordMove(game.common.MoveResult)
+	 * @see game.strategy.common.history.IMoveHistory#recordMove(game.common.MoveResult)
 	 */
 	@Override
 	public void recordMove(DetailedMoveResult theMove) throws StrategyException {

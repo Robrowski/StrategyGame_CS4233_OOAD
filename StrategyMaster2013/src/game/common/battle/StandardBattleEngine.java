@@ -45,7 +45,7 @@ public class StandardBattleEngine implements IBattleEngine {
 	}
 
 	/* (non-Javadoc)
-	 * @see game.version.common.battle.IBattleEngine#doBattle(game.common.Piece, game.common.Location, game.common.Piece, game.common.Location)
+	 * @see game.strategy.common.battle.IBattleEngine#doBattle(game.common.Piece, game.common.Location, game.common.Piece, game.common.Location)
 	 */
 	@Override
 	public DetailedMoveResult doBattle(Piece atFrom, Location moveFrom,	Piece atTo, Location moveTo) {

@@ -44,7 +44,7 @@ public class StandardPieceAllowanceValidator implements IPieceAllowanceValidator
 	}
 
 	/* (non-Javadoc)
-	 * @see game.version.common.validation.configuration.pieces.IPieceAllowanceValidator#validatePieceCounts(java.util.Collection)
+	 * @see game.strategy.common.validation.configuration.pieces.IPieceAllowanceValidator#validatePieceCounts(java.util.Collection)
 	 */
 	@Override
 	public String validatePieceCounts(

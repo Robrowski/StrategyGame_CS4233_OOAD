@@ -26,7 +26,7 @@ public class StandardMoveSpecialCaseValidator implements
 		IMoveSpecialCaseValidator {
 
 	/* (non-Javadoc)
-	 * @see game.version.common.validation.IMoveSpecialCaseValidator#verifyDestination(common.PlayerColor, game.common.Piece)
+	 * @see game.strategy.common.validation.IMoveSpecialCaseValidator#verifyDestination(common.PlayerColor, game.common.Piece)
 	 */
 	@Override
 	public String verifyDestination(PlayerColor currentTurn, Piece atTo) {
@@ -42,7 +42,7 @@ public class StandardMoveSpecialCaseValidator implements
 	}
 
 	/* (non-Javadoc)
-	 * @see game.version.common.validation.IMoveSpecialCaseValidator#verifyStartLocation(common.PlayerColor, game.common.Piece)
+	 * @see game.strategy.common.validation.IMoveSpecialCaseValidator#verifyStartLocation(common.PlayerColor, game.common.Piece)
 	 */
 	@Override
 	public String verifyStartLocation(PlayerColor currentTurn, Piece atFrom, PieceType piece) {

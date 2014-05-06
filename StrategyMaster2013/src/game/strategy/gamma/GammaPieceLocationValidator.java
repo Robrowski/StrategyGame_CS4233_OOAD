@@ -7,10 +7,11 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package game.common.validation.configuration.location;
+package game.strategy.gamma;
 
 import game.common.Location;
 import game.common.Location2D;
+import game.common.validation.configuration.location.AbstractPieceLocationValidator;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -25,13 +26,8 @@ import common.PlayerColor;
  * @author Dabrowski
  * @version $Revision: 1.0 $
  */
-public class GeneralPieceLocationValidator  extends AbstractPieceLocationValidator  {
+public class GammaPieceLocationValidator  extends AbstractPieceLocationValidator  {
 
-	/** The upper bounds of the redZone */
-	int bottomOfRedZone;
-	/** The Lower bounds of the blueZone */
-	int bottomOfBlueZone;
-	
 	/** General constructor to take the number of players, as well as the X and Y 
 	 *  dimensions of the field. This constructor is here because the existence
 	 *  of these parameters is not a variable point, and thus should be extended
@@ -42,13 +38,9 @@ public class GeneralPieceLocationValidator  extends AbstractPieceLocationValidat
 	 * @param numberOfPlayers The number of players in the game
 	 * @param fieldXDim The number of units the field goes on the X axis
 	 * @param fieldYDim The number of units the field goes on the Y axis 
-	 * @param bottomOfRedZone int noting the bottom of the red zone
-	 * @param bottomOfBlueZone int noting the bottom of the blue zone
 	 */
-	public GeneralPieceLocationValidator(int numberOfPlayers, int fieldXDim,	int fieldYDim, int bottomOfRedZone, int bottomOfBlueZone) {
+	public GammaPieceLocationValidator(int numberOfPlayers, int fieldXDim,	int fieldYDim) {
 		super(numberOfPlayers, fieldXDim, fieldYDim);
-		this.bottomOfRedZone = bottomOfRedZone;
-		this.bottomOfBlueZone = bottomOfBlueZone;
 	}
 
 	/* (non-Javadoc)
@@ -68,14 +60,15 @@ public class GeneralPieceLocationValidator  extends AbstractPieceLocationValidat
 		final List<Location> validLocations = new LinkedList<Location>();
 		
 		// Figure out the offset for Y. This offset sets the Y bounds of the starting location
-		final int yOffset = (givenPlayer.equals(PlayerColor.RED)) ?  bottomOfRedZone :  bottomOfBlueZone;
+		final int yOffset = (givenPlayer.equals(PlayerColor.RED)) ?  0 :  4;
 		
 		// Go through each possible location combination and make a location for it
 		for (int x = 0; x < fieldXDim; x++){
-			for (int y = yOffset; y <= yOffset + fieldYDim/2 - 2 ; y++){
+			for (int y = yOffset; y <= yOffset + 1; y++){
 				validLocations.add(new Location2D(x,y));
 			}
 		}		
+		
 		return validLocations;
 	}
 

@@ -52,7 +52,7 @@ public abstract class AbstractPieceLocationValidator implements IPieceLocationVa
 	
 
 	/* (non-Javadoc)
-	 * @see game.version.common.validation.configuration.IPieceLocationValidator#checkPieceLocations(java.util.Collection,java.util.Collection)
+	 * @see game.strategy.common.validation.configuration.IPieceLocationValidator#checkPieceLocations(java.util.Collection,java.util.Collection)
 	 */
 	public String checkPieceLocations(
 			Collection<PieceLocationDescriptor> aConfiguration,

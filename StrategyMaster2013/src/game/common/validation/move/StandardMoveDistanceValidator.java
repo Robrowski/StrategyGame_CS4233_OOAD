@@ -46,7 +46,7 @@ public class StandardMoveDistanceValidator implements IMoveDistanceValidator {
 	
 	
 	/* (non-Javadoc)
-	 * @see game.version.common.validation.IMoveDistanceValidator#moveDistanceIsValid(game.common.Location2D, game.common.Location2D, game.common.Piece)
+	 * @see game.strategy.common.validation.IMoveDistanceValidator#moveDistanceIsValid(game.common.Location2D, game.common.Location2D, game.common.Piece)
 	 */
 	@Override
 	public String moveDistanceIsValid(Location from, Location to, Piece piece) {

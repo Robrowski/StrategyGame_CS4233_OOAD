@@ -11,13 +11,11 @@ package game.go;
 
 import game.GameController;
 import game.common.Location2D;
-import game.common.Piece;
 import game.common.PieceType;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import common.PlayerColor;
 import common.StrategyException;
 
 /** Tests for a controller for Go, the CHinese game of strategy and skill.
@@ -54,5 +52,17 @@ public class GoControllerTest {
 	{
 		game.move( PieceType.STONE, new Location2D(0, 0),new Location2D(0, 1));
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

@@ -1,0 +1,22 @@
+To add Interceptors to the server implementation, do the following
+
+0.) Make an interceptor that follows either StrategyMessageInterceptor or StrategyPreprocessorInterceptor
+
+1.) Add the YOURINTERCEPTOR.java file to the interceptors folder
+
+2.) Add the class BINARY to the appropriate file -  MessageProcessingInterceptors.txt or PreprocessingInterceptors.txt
+Binaries are in the following form
+	package.package.package.class     <- don't use folder names, don't use "./", don't use quotes, don't put .java at the end
+
+
+
+
+
+TO use this new interceptor
+- If it is a preprocessor it will be used automatically for everymessage
+
+- If it is a new version of the message interceptors....
+ 	you can can instantiate a new "BasicClient" and call
+ 	aBasicClient.sendAMessage(new GenericMessage("name of your service", (Object[]) args);
+ 	- make sure "name of your service" is what you put in your interceptor
+ 	- args can be null if you don't want to send more information

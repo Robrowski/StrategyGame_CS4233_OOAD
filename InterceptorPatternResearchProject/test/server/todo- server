@@ -1,0 +1,21 @@
+TODO LIST = Server
+
+
+X Take messages
+	-- just take the messages!
+
+
+	MOVE,  				// For sending move details
+X		-- perform a move
+X		-- send a result
+	QUERY,  			// For requesting information, like "getPieceAt"
+X		-- perform a query
+X		-- send it back
+	INITIALIZE_GAME,	// To initialize a game - the game version should be included
+X		-- initialize the game
+X		-- for this version, default configuration made by factory
+	START; 	
+X		- starts a game
+
+
+proper handling of basic cases for requests to a StrategyGameController

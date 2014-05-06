@@ -1,0 +1,6 @@
+interceptor.message.DefaultInitializeMessageInterceptor
+interceptor.message.MoveMessageInterceptor
+interceptor.message.StartMessageInterceptor
+interceptor.message.QueryMessageInterceptor
+interceptor.message.MessageLoggingInterceptor
+interceptor.message.SillyInterceptor

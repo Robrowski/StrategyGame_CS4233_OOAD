@@ -225,4 +225,13 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 			throw new StrategyRuntimeException("That observer was never registered - USE THE SAME INSTANCE");
 		}
 	}
+
+
+	/* (non-Javadoc)
+	 * @see game.GameController#placePiece(game.common.Piece, game.common.Location)
+	 */
+	@Override
+	public void placePiece(Piece piece, Location at) throws StrategyException {
+		throw new StrategyException("HAHA not implemented.");	
+	}
 }

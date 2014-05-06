@@ -192,6 +192,15 @@ public class GammaStrategyGameControllerTest {
 		badConfig = new LinkedList<PieceLocationDescriptor>();
 	}
 
+	
+	@Test(expected=StrategyException.class)
+	public void cannotPlacePiece() throws StrategyException
+	{
+		game.placePiece(new Piece(PieceType.FLAG, PlayerColor.RED), L42);
+	}
+	
+	
+	
 	/////////// TESTING makeGammaStrategyGame -- number of pieces
 	/**
 	 * Method controllerTakesValidConfigurations.

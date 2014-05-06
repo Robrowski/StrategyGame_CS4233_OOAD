@@ -238,6 +238,14 @@ public class DeltaStrategyGameControllerTest {
 		endConfig.add(new PieceLocationDescriptor( redFlag,     L(5,3)));
 	}
 
+	
+	
+	@Test(expected=StrategyException.class)
+	public void cannotPlacePiece() throws StrategyException
+	{
+		game.placePiece(new Piece(PieceType.FLAG, PlayerColor.RED), new Location2D(0, 0));
+	}
+	
 	/////////// TESTING makeDeltaStrategyGame -- number of pieces
 	/**
 	 * Method controllerTakesValidConfigurations.

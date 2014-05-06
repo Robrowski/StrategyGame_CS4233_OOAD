@@ -18,5 +18,5 @@ package common;
  */
 public enum PlayerColor
 {
-	RED, BLUE;
+	RED, BLUE, BLACK, WHITE;
 }

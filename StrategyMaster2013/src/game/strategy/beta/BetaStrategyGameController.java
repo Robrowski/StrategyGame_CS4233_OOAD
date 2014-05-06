@@ -309,4 +309,13 @@ public class BetaStrategyGameController implements GameController {
 		}
 		return null; // else
 	}
+	
+	
+	/* (non-Javadoc)
+	 * @see game.GameController#placePiece(game.common.Piece, game.common.Location)
+	 */
+	@Override
+	public void placePiece(Piece piece, Location at) throws StrategyException {
+		throw new StrategyException("HAHA not implemented.");	
+	}
 }

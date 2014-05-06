@@ -58,4 +58,18 @@ public interface GameController
 	 * @return the piece located at the specified location or null if there is none
 	 */
 	Piece getPieceAt(Location location);
+	
+	
+	
+	
+	
+	/** Places a piece on the board. Only certain games may actually use this feature
+	 * 
+	 * @param piece   piece to place
+	 * @param at      location to place piece
+	 * @throws StrategyException Thrown upon failure or error
+	 */
+	void placePiece(Piece piece, Location at) throws StrategyException;
+	
+	
 }

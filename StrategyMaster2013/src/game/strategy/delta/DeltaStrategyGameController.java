@@ -11,6 +11,8 @@ package game.strategy.delta;
 
 import game.AbstractStrategyGameController;
 import game.VersionRules;
+import game.common.Location;
+import game.common.Piece;
 import game.common.PieceLocationDescriptor;
 
 import java.util.Collection;
@@ -39,5 +41,14 @@ public class DeltaStrategyGameController extends AbstractStrategyGameController 
 			Collection<PieceLocationDescriptor>  blueConfiguration,
 			VersionRules DeltaRules)throws StrategyException {
 		super(redConfiguration, blueConfiguration, DeltaRules);		
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see game.GameController#placePiece(game.common.Piece, game.common.Location)
+	 */
+	@Override
+	public void placePiece(Piece piece, Location at) throws StrategyException {
+		throw new StrategyException("HAHA not implemented.");	
 	}
 }

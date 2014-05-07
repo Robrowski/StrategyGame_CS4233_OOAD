@@ -25,7 +25,6 @@ import common.StrategyException;
 public class GoBoard extends AbstractBoardManager {
 
 	/** Square, odd number sides for board size */
-	@SuppressWarnings("unused")
 	private int boardSize; 
 	
 	/** theBoard[x][y]  = piece  */
@@ -36,6 +35,7 @@ public class GoBoard extends AbstractBoardManager {
 	 * @throws StrategyException for invalid input
 	 */
 	public GoBoard(int sideLength) throws StrategyException {
+		// Check that the board is bigger than 5x5 and is odd length
 		if (sideLength < 5 || sideLength % 2 == 0){
 			throw new StrategyException("Invalid board size");
 		}

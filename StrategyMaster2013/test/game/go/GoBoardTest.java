@@ -9,12 +9,13 @@
  *******************************************************************************/
 package game.go;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import game.common.Location2D;
-import game.common.PieceType;
 import game.common.board.IBoardManager;
 
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import common.StrategyException;
 import common.StrategyRuntimeException;

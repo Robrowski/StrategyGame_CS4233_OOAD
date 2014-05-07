@@ -52,7 +52,7 @@ public class GoController implements GameController {
 	 */
 	@Override
 	public void placePiece(Piece piece, Location at) throws StrategyException {
-		throw new StrategyException("HAHA not implemented.");	
+		board.placePiece(piece, at);
 	}
 
 	/* (non-Javadoc)

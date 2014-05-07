@@ -42,6 +42,10 @@ public class GoControllerTest {
 	private  List<PieceLocationDescriptor> config;
 	
 	
+	final Piece blk = new Piece(PieceType.STONE, PlayerColor.BLACK);
+	final Piece wht = new Piece(PieceType.STONE, PlayerColor.WHITE);
+
+	
 	@Before
 	public void setup() throws StrategyException{
 		game = GameFactory.getInstance().makeGoGame(boardSize, null);
@@ -110,9 +114,18 @@ public class GoControllerTest {
 	
 	
 	
+	// placePiece
+	@Test(expected=StrategyException.class)
+	public void cannotPlacePiecesOnPieces() throws StrategyException{
+		gameDouble.placePiece(blk, new Location2D(0,0));
+	}
 	
-	
-	
+	@Test
+	public void canPlacePieces() throws StrategyException{
+		gameDouble.placePiece(blk, new Location2D(3,0));
+		gameDouble.placePiece(wht, new Location2D(3,1));
+
+	}
 	
 	
 	

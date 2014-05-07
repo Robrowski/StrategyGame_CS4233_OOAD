@@ -9,13 +9,11 @@
  *******************************************************************************/
 package game.go;
 
-import java.util.Collection;
-import java.util.HashMap;
-
 import game.common.PieceLocationDescriptor;
 import game.common.board.IBoardManager;
-import game.common.board.MapBoardManager;
-import game.strategy.delta.DeltaPieceMoves;
+
+import java.util.Collection;
+
 import common.StrategyException;
 
 /**

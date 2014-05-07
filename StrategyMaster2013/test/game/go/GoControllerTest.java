@@ -150,16 +150,39 @@ public class GoControllerTest {
 	
 	@Test
 	public void placePiece_InOrder() throws StrategyException{
-		fail();
+		playStone("b",0,0);
+		playStone("w",1,0);
+		playStone("b",1,1);
+		playStone("w",0,1);
 	}
 	
 
-	@Test(expected=StrategyException.class)
+	@Test
 	public void placePiece_OutOfOrder() throws StrategyException{
-		fail();
+		try {
+			playStone("w",0,0);
+			fail();
+		} catch (StrategyException se){
+			assertSame(se.getMessage(), "Cannot place pieces during the other player's turn.");
+		}
+
 	}
-
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 ///////////////////////////////
 	// Helper functions
 	

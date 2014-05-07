@@ -52,9 +52,20 @@ public class GoController implements GameController {
 	 */
 	@Override
 	public void placePiece(Piece piece, Location at) throws StrategyException {
+		// Check game states to see if a piece can even be played by this player
 		if (!gameStarted) throw new StrategyException("Cannot place pieces before the game has started.");
 		if (gameOver) throw new StrategyException("Cannot place pieces after the game has ended.");
+		if (currentTurn != piece.getOwner()) throw new StrategyException("Cannot place pieces during the other player's turn.");
+		
+		// Place it
 		board.placePiece(piece, at);
+		
+		// Set up next turn
+		if (currentTurn == PlayerColor.BLACK){
+			currentTurn = PlayerColor.WHITE;
+		} else {
+			currentTurn = PlayerColor.BLACK;
+		}	
 	}
 
 	/* (non-Javadoc)

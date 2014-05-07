@@ -115,26 +115,54 @@ public class GoControllerTest {
 	
 	
 	// placePiece
-	@Test(expected=StrategyException.class)
+	@Test
 	public void cannotPlacePiecesOnPieces() throws StrategyException{
-		gameDouble.placePiece(blk, new Location2D(0,0));
+		try {
+			gameDouble.placePiece(blk, new Location2D(0,0));
+			fail();
+		} catch (StrategyException se){
+			assertSame(se.getMessage(), "Cannot place pieces on top of other pieces.");
+		}
 	}
 	
-
+	@Test
+	public void cannotPlacePiecesBeforeGame()throws StrategyException{
+		try{
+			GameFactory.getInstance().makeGoGame(boardSize, null).placePiece(blk, new Location2D(0,0));
+			fail();
+		} catch (StrategyException se){
+			assertSame(se.getMessage(), "Cannot place pieces before the game has started.");
+		}
+		
+	}
+	
+	@Test
+	public void cannotPlacePiecesAfterGame()throws StrategyException{
+		gameDouble.setGameOver();
+		try{
+			gameDouble.placePiece(blk, new Location2D(0,0));
+			fail();
+		} catch (StrategyException se){
+			assertSame(se.getMessage(), "Cannot place pieces after the game has ended.");
+		}
+		
+	}
 	
 	@Test
 	public void placePiece_InOrder() throws StrategyException{
-
+		fail();
 	}
 	
 
 	@Test(expected=StrategyException.class)
 	public void placePiece_OutOfOrder() throws StrategyException{
-
+		fail();
 	}
 
 
-
+///////////////////////////////
+	// Helper functions
+	
 	/** Make a move
 	 * 
 	 * @param c Player color who is playing

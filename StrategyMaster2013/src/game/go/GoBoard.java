@@ -57,10 +57,11 @@ public class GoBoard extends AbstractBoardManager {
 	 */
 	@Override
 	public void placePiece(Piece piece, Location l) throws StrategyException {
+		// Make sure the space is empty, then place
 		if (getPieceAt(l) == null){
 			theBoard[l.getCoordinate(Coordinate.X_COORDINATE)][l.getCoordinate(Coordinate.Y_COORDINATE)] = piece;
 		} else {
-			throw new StrategyException("There is already a piece there :P");
+			throw new StrategyException("Cannot place pieces on top of other pieces.");
 		}
 	}
 	

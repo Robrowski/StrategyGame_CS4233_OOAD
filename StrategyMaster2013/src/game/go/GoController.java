@@ -28,11 +28,11 @@ public class GoController implements GameController {
 	
 	
 	/** Boolean flag for whether the game has started or not */
-	protected boolean gameStarted;
+	protected boolean gameStarted = false;
 	/** Boolean flag for whether the game is over or not */
-	protected boolean gameOver;
-	/** The current turn the next move is expected by */
-	protected PlayerColor currentTurn;
+	protected boolean gameOver = false;
+	/** The current turn the next move is expected by. Black goes first */
+	protected PlayerColor currentTurn = PlayerColor.BLACK;
 	/** THE BOARD */
 	protected IBoardManager board;
 	/** Board size */
@@ -52,6 +52,8 @@ public class GoController implements GameController {
 	 */
 	@Override
 	public void placePiece(Piece piece, Location at) throws StrategyException {
+		if (!gameStarted) throw new StrategyException("Cannot place pieces before the game has started.");
+		if (gameOver) throw new StrategyException("Cannot place pieces after the game has ended.");
 		board.placePiece(piece, at);
 	}
 

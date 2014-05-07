@@ -55,6 +55,13 @@ public class GoControllerTestDouble extends GoController {
 		setBoardConfiguration(newManager);
 	}
 	
+	/** Sets the game to over
+	 * @throws StrategyException on error
+	 * 
+	 */
+	void setGameOver() throws StrategyException{
+		this.gameOver = true;
+	}
 	
 	
 }

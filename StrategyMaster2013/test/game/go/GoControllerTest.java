@@ -10,6 +10,7 @@
 package game.go;
 
 import game.GameController;
+import game.GameFactory;
 import game.common.Location2D;
 import game.common.PieceType;
 
@@ -27,20 +28,24 @@ import common.StrategyException;
 public class GoControllerTest {
 
 	// The game!
+	private final int boardSize = 7;
 	private  GameController game;
-
+	private  GameController gameDouble;
 	
 	
 	
 	@Before
 	public void setup() throws StrategyException{
-		game = new GoController();
+		game = GameFactory.getInstance().makeGoGame(boardSize, null);
 		game.startGame();
+		
+		gameDouble = new GoControllerTestDouble(boardSize);
+		gameDouble.startGame();
 	}
 	
 	
 	
-	
+	////// Initialization
 
 	@Test(expected=StrategyException.class)
 	public void startGameAfterStarting() throws StrategyException{
@@ -54,7 +59,7 @@ public class GoControllerTest {
 	}
 	
 	
-	
+
 	
 	
 	

@@ -14,11 +14,11 @@ import game.common.Location;
 import game.common.MoveResult;
 import game.common.Piece;
 import game.common.PieceType;
-
+import game.common.board.IBoardManager;
 import common.PlayerColor;
 import common.StrategyException;
 
-/** A controller for Go, the CHinese game of strategy and skill.
+/** A controller for Go, the Chinese game of strategy and skill.
  * 
  * 
  * @author Dabrowski
@@ -33,8 +33,20 @@ public class GoController implements GameController {
 	protected boolean gameOver;
 	/** The current turn the next move is expected by */
 	protected PlayerColor currentTurn;
+	/** THE BOARD */
+	protected IBoardManager board;
+	/** Board size */
+	protected int boardSize;
 	
 	
+	/** Makes a Go controller
+	 * @param boardSize the size of the board
+	 */
+	public GoController(int boardSize) throws StrategyException {
+		this.boardSize = boardSize;
+		this.board = new GoBoard(boardSize);
+	}
+
 	/* (non-Javadoc)
 	 * @see game.GameController#placePiece(game.common.Piece, game.common.Location)
 	 */

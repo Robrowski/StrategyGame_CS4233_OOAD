@@ -26,7 +26,7 @@ import common.StrategyRuntimeException;
  * @author Dabrowski
  *
  */
-public class AbstractBoardManager implements IBoardManager {
+public abstract class AbstractBoardManager implements IBoardManager {
 
 	
 	
@@ -50,14 +50,6 @@ public class AbstractBoardManager implements IBoardManager {
 
 
 	/* (non-Javadoc)
-	 * @see game.common.board.IBoardManager#getPieceAt(game.common.Location)
-	 */
-	@Override
-	public Piece getPieceAt(Location location) {
-		throw new StrategyRuntimeException("NOT IMPLEMENTED!");	
-	}
-
-	/* (non-Javadoc)
 	 * @see game.common.board.IBoardManager#updateField(game.common.DetailedMoveResult)
 	 */
 	@Override
@@ -73,11 +65,4 @@ public class AbstractBoardManager implements IBoardManager {
 		throw new StrategyRuntimeException("NOT IMPLEMENTED!");	
 	}
 
-	/* (non-Javadoc)
-	 * @see game.common.board.IBoardManager#placePiece(game.common.Piece, game.common.Location)
-	 */
-	@Override
-	public void placePiece(Piece piece, Location loc) throws StrategyException {
-		throw new StrategyException("NOT IMPLEMENTED!");		
-	}
 }

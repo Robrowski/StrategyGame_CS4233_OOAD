@@ -12,6 +12,7 @@ package game;
 
 import game.common.PieceLocationDescriptor;
 import game.common.StrategyGameObserver;
+import game.go.GoController;
 import game.strategy.alpha.AlphaStrategyGameController;
 import game.strategy.beta.BetaStrategyGameController;
 import game.strategy.delta.DeltaRules;
@@ -162,7 +163,17 @@ public class GameFactory
 		}
 	}
 
-
-
+	/** Makes a Go game controller
+	 * 
+	 * @param boardSize the size of the board
+	 * @param observers the observers
+	 * @return a good game
+	 * @throws StrategyException thrown on error
+	 */
+	public GameController makeGoGame(int boardSize, Collection<StrategyGameObserver> observers) throws StrategyException {
+		return new GoController(boardSize);
+		
+		
+	}
 
 }

@@ -10,9 +10,14 @@
 package game.go;
 
 import static org.junit.Assert.*;
+import game.common.Location2D;
+import game.common.PieceType;
+import game.common.board.IBoardManager;
 
 import org.junit.*;
+
 import common.StrategyException;
+import common.StrategyRuntimeException;
 
 /**
  * @author Dabrowski
@@ -20,7 +25,12 @@ import common.StrategyException;
  */
 public class GoBoardTest {
 
+	IBoardManager goBoard;
 	
+	@Before
+	public void setup() throws StrategyException{
+		goBoard = new GoBoard(7);
+	}
 	
 	@Test
 	public void cannotMakeEvenLengthBoard() throws StrategyException{
@@ -61,7 +71,17 @@ public class GoBoardTest {
 	}
 	
 	
+	@Test(expected=StrategyRuntimeException.class)
+	public void cannotCall_updateField() throws StrategyException
+	{
+		goBoard.updateField(null);
+	}
 	
+	@Test(expected=StrategyRuntimeException.class)
+	public void cannotCall_getPiecesInPath() throws StrategyException
+	{
+		goBoard.getPiecesInPath(new Location2D(0,1), new Location2D(1,0));
+	}
 	
 	
 	

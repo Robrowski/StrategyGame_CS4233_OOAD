@@ -79,8 +79,7 @@ public class GoController implements GameController {
 	 */
 	@Override
 	public Piece getPieceAt(Location location) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.board.getPieceAt(location);
 	}
 
 

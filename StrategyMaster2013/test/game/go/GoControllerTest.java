@@ -9,14 +9,22 @@
  *******************************************************************************/
 package game.go;
 
+import static org.junit.Assert.*;
+
+import java.util.LinkedList;
+import java.util.List;
+
 import game.GameController;
 import game.GameFactory;
 import game.common.Location2D;
+import game.common.Piece;
+import game.common.PieceLocationDescriptor;
 import game.common.PieceType;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import common.PlayerColor;
 import common.StrategyException;
 
 /** Tests for a controller for Go, the CHinese game of strategy and skill.
@@ -30,8 +38,8 @@ public class GoControllerTest {
 	// The game!
 	private final int boardSize = 7;
 	private  GameController game;
-	private  GameController gameDouble;
-	
+	private  GoControllerTestDouble gameDouble;
+	private  List<PieceLocationDescriptor> config;
 	
 	
 	@Before
@@ -41,12 +49,28 @@ public class GoControllerTest {
 		
 		gameDouble = new GoControllerTestDouble(boardSize);
 		gameDouble.startGame();
+		
+		
+		// Basic configuration setup for testing
+		config = new LinkedList<PieceLocationDescriptor>();
+		for (int x = 0; x < boardSize; x++){
+			for (int y = 0; y < boardSize; y++){
+				if (x < 3){		
+					config.add(new PieceLocationDescriptor(new Piece(PieceType.STONE,PlayerColor.BLACK )  , new Location2D(x,y)  ));
+				} else if (x > 5){
+					config.add(new PieceLocationDescriptor(new Piece(PieceType.STONE,PlayerColor.WHITE )  , new Location2D(x,y)  ));
+				}
+			}
+		}
+		gameDouble.setBoardConfiguration(config);
+		
+		
+		
 	}
 	
 	
 	
-	////// Initialization
-
+	////// Initialization stoof
 	@Test(expected=StrategyException.class)
 	public void startGameAfterStarting() throws StrategyException{
 		game.startGame();
@@ -59,7 +83,31 @@ public class GoControllerTest {
 	}
 	
 	
-
+	//// getPieceAt - tests the entire board
+	@Test
+	public void getBlackorWhiteorNullPieces() throws StrategyException{
+		// Expecting Nulls
+		for (int x = 3; x <= 5; x++){
+			for (int y = 0; y < boardSize; y++){
+				assertNull(gameDouble.getPieceAt(new Location2D(x,y)));
+			}
+		}
+		
+		// Expecting BLACK pieces
+		for (int x = 0; x < 3; x++){
+			for (int y = 0; y < boardSize; y++){
+				assertSame(gameDouble.getPieceAt(new Location2D(x,y)).getOwner(), PlayerColor.BLACK);
+			}
+		}
+		
+		// Expecting BLACK pieces
+		for (int x = 6; x < boardSize; x++){
+			for (int y = 0; y < boardSize; y++){
+				assertSame(gameDouble.getPieceAt(new Location2D(x,y)).getOwner(), PlayerColor.WHITE);
+			}
+		}
+	}
+	
 	
 	
 	

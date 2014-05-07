@@ -16,6 +16,8 @@ import game.common.PieceLocationDescriptor;
 
 import java.util.Collection;
 
+import common.StrategyException;
+
 /** A BoardManager is responsible for all additions and removals
  *  of pieces during a Strategy game. For most versions, the work 
  *  of getPieceAt is also deffered to the board manager from the
@@ -29,9 +31,9 @@ public interface IBoardManager {
 
 	/** Adds the given pieces+locations to the configuration
 	 * 
-	 * @param redConfiguration the given pieces+locations to add to the configuration
+	 * @param config the given pieces+locations to add to the configuration
 	 */
-	void addToConfiguration(Collection<PieceLocationDescriptor> redConfiguration);
+	void addToConfiguration(Collection<PieceLocationDescriptor> config);
 
 	/* (non-Javadoc)
 	 * @see game.GameController#getPieceAt(game.common.Location)
@@ -54,4 +56,13 @@ public interface IBoardManager {
 	 * @return a list of the pieces in the path, cannot contain null
 	 */
 	Collection<Piece> getPiecesInPath(Location from, Location to); 
+	
+	/** Adds a piece to the board. In certain implementations, piece removal
+	 *  is also handled. EX: GO
+	 * 
+	 * @param piece to add
+	 * @param loc   at location
+	 * @throws StrategyException thrown upon error
+	 */
+	void placePiece(Piece piece, Location loc) throws StrategyException;
 }

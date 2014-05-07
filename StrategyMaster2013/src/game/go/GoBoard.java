@@ -9,14 +9,11 @@
  *******************************************************************************/
 package game.go;
 
-import java.util.Collection;
-
-import common.StrategyException;
-import game.common.DetailedMoveResult;
 import game.common.Location;
 import game.common.Piece;
-import game.common.PieceLocationDescriptor;
-import game.common.board.IBoardManager;
+import game.common.board.AbstractBoardManager;
+
+import common.StrategyException;
 
 /** Implementation of a Go board of variable size
  * 
@@ -24,18 +21,14 @@ import game.common.board.IBoardManager;
  * @author Dabrowski
  *
  */
-public class GoBoard implements IBoardManager {
+public class GoBoard extends AbstractBoardManager {
 
 	// Square, odd number sides 
 	@SuppressWarnings("unused")
 	private int boardSize; 
 	
 	
-	
-	
-	
-	
-	
+		
 	
 	/** Creates a Go board. Throws exception for invalid input
 	 * @param sideLength length of one side of a square Go board
@@ -49,15 +42,17 @@ public class GoBoard implements IBoardManager {
 		boardSize = sideLength;
 	}
 
+	
 	/* (non-Javadoc)
-	 * @see game.common.board.IBoardManager#addToConfiguration(java.util.Collection)
+	 * @see game.common.board.IBoardManager#placePiece(game.common.Piece, game.common.Location)
 	 */
 	@Override
-	public void addToConfiguration(
-			Collection<PieceLocationDescriptor> redConfiguration) {
+	public void placePiece(Piece piece, Location loc) throws StrategyException {
 		// TODO Auto-generated method stub
-
+		
 	}
+	
+
 
 	/* (non-Javadoc)
 	 * @see game.common.board.IBoardManager#getPieceAt(game.common.Location)
@@ -67,23 +62,4 @@ public class GoBoard implements IBoardManager {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	/* (non-Javadoc)
-	 * @see game.common.board.IBoardManager#updateField(game.common.DetailedMoveResult)
-	 */
-	@Override
-	public DetailedMoveResult updateField(DetailedMoveResult theDMove) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see game.common.board.IBoardManager#getPiecesInPath(game.common.Location, game.common.Location)
-	 */
-	@Override
-	public Collection<Piece> getPiecesInPath(Location from, Location to) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

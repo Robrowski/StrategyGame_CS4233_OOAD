@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import common.PlayerColor;
+import common.StrategyException;
 import common.StrategyRuntimeException;
 
 
@@ -34,7 +35,7 @@ import common.StrategyRuntimeException;
  * @author Dabrowski
  * @version 1.0
  */
-public class MapBoardManager implements IBoardManager {
+public class MapBoardManager extends AbstractBoardManager {
 
 	/** The underlying implementation of the field configuration */
 	protected final Map<String, PieceLocationDescriptor> fieldConfiguration;
@@ -57,17 +58,7 @@ public class MapBoardManager implements IBoardManager {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see game.common.board.IBoardManager#addAll(java.util.Collection)
-	 */
-	@Override
-	public void addToConfiguration(Collection<PieceLocationDescriptor> config) {
-		final Iterator<PieceLocationDescriptor> allIter = config.iterator();
-		while (allIter.hasNext()){
-			PieceLocationDescriptor next = allIter.next();
-			this.add(next);
-		}
-	}
+
 
 	/* (non-Javadoc)
 	 * @see game.common.board.IBoardManager#getPieceAt(game.common.Location)
@@ -95,7 +86,11 @@ public class MapBoardManager implements IBoardManager {
 		}
 		// Add the winner back in (if there was one)
 		if (theDMove.getBattleWinner() != null){
-			this.add(theDMove.getBattleWinner());
+			try {
+				this.placePiece(theDMove.getBattleWinner().getPiece(),theDMove.getBattleWinner().getLocation() );
+			} catch (StrategyException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		// Have to check field for bombs and flags
@@ -143,15 +138,15 @@ public class MapBoardManager implements IBoardManager {
 		fieldConfiguration.remove(aLoc.toString());
 	}
 
-
-
-	/** Add a single piece at a location to the configuration
-	 *
-	 * @param piece PieceLocationDescriptor
+	/* (non-Javadoc)
+	 * @see game.common.board.IBoardManager#placePiece(game.common.Piece, game.common.Location)
 	 */
-	protected void add(PieceLocationDescriptor piece) {
-		fieldConfiguration.put(piece.getLocation().toString(), piece);
+	@Override
+	public void placePiece(Piece piece, Location loc) throws StrategyException {
+		fieldConfiguration.put(loc.toString(), new PieceLocationDescriptor( piece, loc));	
 	}
+
+
 
 	/* (non-Javadoc)
 	 * @see game.common.board.IBoardManager#getPiecesInPath(game.common.Location, game.common.Location)
@@ -204,5 +199,5 @@ public class MapBoardManager implements IBoardManager {
 		}
 
 		return piecesInPath;
-	}	
+	}
 }

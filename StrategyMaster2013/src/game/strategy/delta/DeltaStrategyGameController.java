@@ -11,8 +11,6 @@ package game.strategy.delta;
 
 import game.AbstractStrategyGameController;
 import game.VersionRules;
-import game.common.Location;
-import game.common.Piece;
 import game.common.PieceLocationDescriptor;
 
 import java.util.Collection;

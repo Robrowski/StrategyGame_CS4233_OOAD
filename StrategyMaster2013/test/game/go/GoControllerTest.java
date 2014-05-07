@@ -120,14 +120,48 @@ public class GoControllerTest {
 		gameDouble.placePiece(blk, new Location2D(0,0));
 	}
 	
+
+	
 	@Test
-	public void canPlacePieces() throws StrategyException{
-		gameDouble.placePiece(blk, new Location2D(3,0));
-		gameDouble.placePiece(wht, new Location2D(3,1));
+	public void placePiece_InOrder() throws StrategyException{
 
 	}
 	
+
+	@Test(expected=StrategyException.class)
+	public void placePiece_OutOfOrder() throws StrategyException{
+
+	}
+
+
+
+	/** Make a move
+	 * 
+	 * @param c Player color who is playing
+	 * @param x position
+	 * @param y position
+	 * @throws StrategyException thrown on error
+	 */
+	void playStone(PlayerColor c, int x, int y) throws StrategyException{
+		game.placePiece(new Piece(PieceType.STONE,c), new Location2D(x,y));
+	}
 	
+	/** Make a move
+	 * 
+	 * @param c Player color who is playing
+	 * @param x position
+	 * @param y position
+	 * @throws StrategyException thrown on error
+	 */
+	void playStone(String c, int x, int y) throws StrategyException{
+		if (c == "w" || c == "W" || c == "WHITE" || c == "white"){
+			playStone(PlayerColor.WHITE, x,y);
+		} else {
+			playStone(PlayerColor.BLACK, x,y);
+		}
+		
+		
+	}
 	
 	
 	

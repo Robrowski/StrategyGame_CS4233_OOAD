@@ -170,9 +170,29 @@ public class GoControllerTest {
 	
 	
 	
+	@Test
+	public void canPassTurn() throws StrategyException {
+		game.placePiece(new Piece(PieceType.PASS, PlayerColor.BLACK), null);
+		playStone("w",0,0);
+	}
 	
 	
-	
+	@Test 
+	public void twoPassesEndsGame() throws StrategyException {
+		playStone("b",0,0);
+		playStone("w",1,0);
+		
+		game.placePiece(new Piece(PieceType.PASS, PlayerColor.BLACK), null);
+		game.placePiece(new Piece(PieceType.PASS, PlayerColor.WHITE), null);
+		
+		try{
+			playStone("b",0,1);
+			fail();
+		} catch (StrategyException se){
+			assertSame(se.getMessage(), "Cannot place pieces after the game has ended.");
+		}
+		
+	}
 	
 	
 	

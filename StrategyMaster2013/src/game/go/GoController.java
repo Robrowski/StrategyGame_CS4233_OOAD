@@ -33,6 +33,8 @@ public class GoController implements GameController {
 	protected boolean gameOver = false;
 	/** The current turn the next move is expected by. Black goes first */
 	protected PlayerColor currentTurn = PlayerColor.BLACK;
+	/** Keep track of "passes" */
+	protected boolean previousMoveWasPass = false;		
 	/** THE BOARD */
 	protected IBoardManager board;
 	/** Board size */
@@ -58,7 +60,15 @@ public class GoController implements GameController {
 		if (currentTurn != piece.getOwner()) throw new StrategyException("Cannot place pieces during the other player's turn.");
 		
 		// Place it
-		board.placePiece(piece, at);
+		if (piece.getType() == PieceType.PASS){
+			if (previousMoveWasPass){
+				gameOver = true;
+			}
+			previousMoveWasPass = true;			
+		} else {
+			board.placePiece(piece, at);
+			previousMoveWasPass = false;
+		}
 		
 		// Set up next turn
 		if (currentTurn == PlayerColor.BLACK){

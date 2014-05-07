@@ -32,7 +32,8 @@ public enum PieceType
 	BOMB("Bomb", "b"),
 	FLAG("Flag", "f"),
 	CHOKE_POINT("Choke Point", "CP"),
-	STONE("Stone","st");
+	STONE("Stone","st"),
+	PASS("Pass","pass");
 	
 	private final String printableName;
 	private final String symbol;

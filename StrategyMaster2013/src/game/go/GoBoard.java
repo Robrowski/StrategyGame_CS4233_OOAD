@@ -73,7 +73,9 @@ public class GoBoard extends AbstractBoardManager {
 		}
 
 
-		// Check for captures
+		//////////// Check for captures
+		
+		// TODO: Use BFS with edge detection = null positions
 		LinkedList<PieceLocationDescriptor> piecesRemoved = new LinkedList<PieceLocationDescriptor>();
 
 		// Basic Capture in corner
@@ -88,6 +90,12 @@ public class GoBoard extends AbstractBoardManager {
 			// meh
 		}
 
+		
+		
+		
+		
+		
+		
 		// Remove the pieces
 		Iterator<PieceLocationDescriptor> toRemove = piecesRemoved.iterator();
 		while (toRemove.hasNext()){

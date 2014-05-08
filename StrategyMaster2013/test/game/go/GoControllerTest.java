@@ -41,7 +41,7 @@ import common.StrategyException;
 public class GoControllerTest {
 
 	// The game!
-	private final int boardSize = 7;
+	private final int boardSize = 19;
 	private  GameController game;
 	private  GoControllerTestDouble gameDouble;
 	private  Collection<PieceLocationDescriptor> config;
@@ -194,7 +194,7 @@ public class GoControllerTest {
 
 
 	@Test
-	public void cornerCapture() throws StrategyException{
+	public void cornerCapture1() throws StrategyException{
 		// Setup configuration
 		int[][] blackConfig = {	 {1,0} };
 		int[][] whiteConfig = {	 {0,0} };
@@ -202,7 +202,33 @@ public class GoControllerTest {
 		runCaptureTest(blackConfig, whiteConfig, new Location2D(0,1));
 	}
 
+	@Test
+	public void cornerCapture2() throws StrategyException{
+		// Setup configuration
+		int[][] blackConfig = {	 {0,17} };
+		int[][] whiteConfig = {	 {0,18} };
 
+		runCaptureTest(blackConfig, whiteConfig, new Location2D(1,18));
+	}
+	
+	@Test
+	public void cornerCapture3() throws StrategyException{
+		// Setup configuration
+		int[][] blackConfig = {	 {17,0} };
+		int[][] whiteConfig = {	 {18,0} };
+
+		runCaptureTest(blackConfig, whiteConfig, new Location2D(18,1));
+	}
+	
+	@Test
+	public void cornerCapture4() throws StrategyException{
+		// Setup configuration
+		int[][] blackConfig = {	 {18,17} };
+		int[][] whiteConfig = {	 {18,18} };
+
+		runCaptureTest(blackConfig, whiteConfig, new Location2D(17,18));
+	}
+	
 
 
 	///////////////////////////////

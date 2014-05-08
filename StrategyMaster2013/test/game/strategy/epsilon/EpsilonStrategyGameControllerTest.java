@@ -30,11 +30,14 @@ import game.common.turnResult.ITurnResult;
 import game.common.turnResult.MoveResultStatus;
 import game.reporter.LazyStrategyGameReporter;
 
+import java.io.PrintStream;
+import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -127,22 +130,42 @@ public class EpsilonStrategyGameControllerTest {
 
 	/** Observers */
 	private static Collection<StrategyGameObserver> observers = new LinkedList<StrategyGameObserver>();
-	
+
+	/** The original printing stream.. its suppressed */
+	private static PrintStream originalStream;
+
 	@BeforeClass
 	public static void setupBefore(){
 		@SuppressWarnings("unused")
 		GameVersion gameVersion = (GameVersion.EPSILON);
-		
+
 		// Set up observer
 		observers.add(new LazyStrategyGameReporter());
+
+		// Suppress prints
+		originalStream = System.out;
+
+		System.setOut(new PrintStream(	new OutputStream(){	
+			public void write(int b) {/* NO-OP */	}
+		}
+				));
+
+		System.out.println("NOW YOU CAN NOT");
 	}
 
+	@AfterClass
+	public static void after(){
+		// Put printing back on
+		System.setOut(originalStream);
+	}
+	
 	/**
 	 * Method setup.
 	 * @throws StrategyException
 	 */
 	@Before
 	public void setup() throws StrategyException{
+
 		validBlueConfiguration = new LinkedList<PieceLocationDescriptor>();
 		validRedConfiguration = new LinkedList<PieceLocationDescriptor>();
 
@@ -249,14 +272,14 @@ public class EpsilonStrategyGameControllerTest {
 		endConfig.add(new PieceLocationDescriptor( redFlag,     L(5,3)));
 	}
 
-	
+
 	@Test(expected=StrategyException.class)
 	public void cannotPlacePiece() throws StrategyException
 	{
 		game.placePiece(new Piece(PieceType.FLAG, PlayerColor.RED), new Location2D(0, 0));
 	}
-	
-	
+
+
 	/////////// TESTING makeEpsilonStrategyGame -- number of pieces
 	/**
 	 * Method controllerTakesValidConfigurations.
@@ -279,7 +302,7 @@ public class EpsilonStrategyGameControllerTest {
 		game = factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, null);
 		assertTrue(true); // No exceptions thrown!
 	} 
-	
+
 	/**
 	 * Method startGameAfterStarting.
 	 * @throws StrategyException
@@ -893,10 +916,10 @@ public class EpsilonStrategyGameControllerTest {
 		endConfig.add(new PieceLocationDescriptor( redCaptain,  L(4,3)));
 		endConfig.add(new PieceLocationDescriptor( blueColonel,  L(1,2)));
 		endConfig.add(new PieceLocationDescriptor( blueColonel,  L(1,3)));
-		
+
 		// Forcibly set the configuration		
 		EpsilonTestDouble.setFieldConfiguration(endConfig);
-		
+
 		// Do some battles
 		assertSame(EpsilonTestDouble.move(PieceType.CAPTAIN, L(9,8), L(9,9)).getStatus(), MoveResultStatus.OK );
 		assertSame(EpsilonTestDouble.move(PieceType.LIEUTENANT, L(1,1), L(0,1)).getStatus(), MoveResultStatus.OK );
@@ -924,7 +947,7 @@ public class EpsilonStrategyGameControllerTest {
 		EpsilonTestDouble.move(PieceType.MARSHAL,   L(1,1), L(2,1));
 		assertSame(EpsilonTestDouble.move(PieceType.SERGEANT,   L(8,7), L(8,8)).getStatus(), MoveResultStatus.BLUE_WINS );
 	}	
-	
+
 	/**
 	 * Method battle5_blueGetsRedFlag
 	 * @throws StrategyException
@@ -1134,7 +1157,7 @@ public class EpsilonStrategyGameControllerTest {
 		assertSame(firstLieuLose.getBattleWinner().getPiece(),  redMarshal);
 		assertNull(tie.getBattleWinner());
 	}
-	
+
 	@Test
 	public void firstLieutenantAttacksOverTwoSpace() throws StrategyException{
 		// Add some pieces for fighting
@@ -1162,7 +1185,7 @@ public class EpsilonStrategyGameControllerTest {
 		assertNull(EpsilonTestDouble.getPieceAt(L(2,2))); // lieu loser is gone
 		assertSame(EpsilonTestDouble.getPieceAt(L(0,2)), blueMarshal); // winner didn't move
 	}
-	
+
 	@Test(expected=StrategyException.class)
 	public void firstLieutenantCantAttackOverAnything() throws StrategyException{
 		// Add some pieces for fighting
@@ -1175,7 +1198,7 @@ public class EpsilonStrategyGameControllerTest {
 
 		EpsilonTestDouble.move(PieceType.FIRST_LIEUTENANT,L(1,1), L(1,3));
 	}
-		
+
 	@Test(expected=StrategyException.class)
 	public void firstLieutenantCantMoveTwoSpacesWithoutStrike() throws StrategyException{
 		// Add some pieces for fighting
@@ -1186,26 +1209,26 @@ public class EpsilonStrategyGameControllerTest {
 
 		EpsilonTestDouble.move(PieceType.FIRST_LIEUTENANT,L(1,1), L(1,3));
 	}
-	
-	
+
+
 	///////////////////// Miscellaneous Epsilon tests
 	@Test 
 	public void redResigns() throws StrategyException {
 		assertSame(game.move(null, null, null).getStatus(), MoveResultStatus.BLUE_WINS);
 	}
-	
+
 	@Test 
 	public void blueResigns() throws StrategyException {
 		game.move(PieceType.COLONEL, L(0,3), L(0,4));
 		assertSame(game.move(null, null, null).getStatus(), MoveResultStatus.RED_WINS);
 	}
-	
+
 	@Test(expected=StrategyException.class)
 	public void resignAfterResign() throws StrategyException {
 		assertSame(game.move(null, null, null).getStatus(), MoveResultStatus.BLUE_WINS);
 		assertSame(game.move(null, null, null).getStatus(), MoveResultStatus.RED_WINS);
 	}
-		
+
 	@Test
 	public void testIfNullGetsUsedAsPieceType1() throws StrategyException{
 		assertSame(0, new EpsilonPieceMoves().getMovementCapability(null));

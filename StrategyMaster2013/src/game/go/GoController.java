@@ -15,7 +15,8 @@ import game.common.Piece;
 import game.common.PieceType;
 import game.common.board.IBoardManager;
 import game.common.turnResult.ITurnResult;
-
+import game.common.turnResult.MoveResult;
+import game.common.turnResult.MoveResultStatus;
 import common.PlayerColor;
 import common.StrategyException;
 
@@ -61,13 +62,16 @@ public class GoController implements GameController {
 		if (currentTurn != piece.getOwner()) throw new StrategyException("Cannot place pieces during the other player's turn.");
 		
 		// Place it
+		ITurnResult result;
 		if (piece.getType() == PieceType.PASS){
 			if (previousMoveWasPass){
 				gameOver = true;
+				return new MoveResult(MoveResultStatus.DRAW, null);
 			}
-			previousMoveWasPass = true;			
+			previousMoveWasPass = true;
+			result = new MoveResult(MoveResultStatus.OK, null);
 		} else {
-			board.placePiece(piece, at);
+			result = board.placePiece(piece, at);
 			previousMoveWasPass = false;
 		}
 		
@@ -78,7 +82,7 @@ public class GoController implements GameController {
 			currentTurn = PlayerColor.BLACK;
 		}
 		
-		return null;	
+		return result;	
 	}
 
 	/* (non-Javadoc)
@@ -89,6 +93,7 @@ public class GoController implements GameController {
 		if (gameStarted) throw new StrategyException("A game is already started!");
 		gameStarted = true;
 		gameOver = false;
+		currentTurn = PlayerColor.BLACK;
 	}
 
 	/* (non-Javadoc)

@@ -16,6 +16,7 @@ import game.common.Piece;
 import game.common.PieceLocationDescriptor;
 import game.common.pieceStats.IPieceMoves;
 import game.common.turnResult.DetailedMoveResult;
+import game.common.turnResult.ITurnResult;
 import game.common.turnResult.MoveResultStatus;
 
 import java.util.Collection;
@@ -142,8 +143,9 @@ public class MapBoardManager extends AbstractBoardManager {
 	 * @see game.common.board.IBoardManager#placePiece(game.common.Piece, game.common.Location)
 	 */
 	@Override
-	public void placePiece(Piece piece, Location loc) throws StrategyException {
-		fieldConfiguration.put(loc.toString(), new PieceLocationDescriptor( piece, loc));	
+	public ITurnResult placePiece(Piece piece, Location loc) throws StrategyException {
+		fieldConfiguration.put(loc.toString(), new PieceLocationDescriptor( piece, loc));
+		return null;	
 	}
 
 

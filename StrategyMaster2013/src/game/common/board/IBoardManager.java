@@ -13,6 +13,7 @@ import game.common.Location;
 import game.common.Piece;
 import game.common.PieceLocationDescriptor;
 import game.common.turnResult.DetailedMoveResult;
+import game.common.turnResult.ITurnResult;
 
 import java.util.Collection;
 
@@ -62,7 +63,8 @@ public interface IBoardManager {
 	 * 
 	 * @param piece to add
 	 * @param loc   at location
+	 * @return 
 	 * @throws StrategyException thrown upon error
 	 */
-	void placePiece(Piece piece, Location loc) throws StrategyException;
+	ITurnResult placePiece(Piece piece, Location loc) throws StrategyException;
 }

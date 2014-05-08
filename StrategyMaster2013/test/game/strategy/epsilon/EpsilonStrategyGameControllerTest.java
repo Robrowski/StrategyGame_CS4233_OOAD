@@ -136,9 +136,6 @@ public class EpsilonStrategyGameControllerTest {
 
 	@BeforeClass
 	public static void setupBefore(){
-		@SuppressWarnings("unused")
-		GameVersion gameVersion = (GameVersion.EPSILON);
-
 		// Set up observer
 		observers.add(new LazyStrategyGameReporter());
 
@@ -149,8 +146,6 @@ public class EpsilonStrategyGameControllerTest {
 			public void write(int b) {/* NO-OP */	}
 		}
 				));
-
-		System.out.println("NOW YOU CAN NOT");
 	}
 
 	@AfterClass

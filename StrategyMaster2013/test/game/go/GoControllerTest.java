@@ -193,6 +193,7 @@ public class GoControllerTest {
 	}
 
 
+	//************ Basic Corner Captures          **************** /
 	@Test
 	public void cornerCapture1() throws StrategyException{
 		// Setup configuration
@@ -210,7 +211,7 @@ public class GoControllerTest {
 
 		runCaptureTest(blackConfig, whiteConfig, new Location2D(1,18));
 	}
-	
+
 	@Test
 	public void cornerCapture3() throws StrategyException{
 		// Setup configuration
@@ -219,7 +220,7 @@ public class GoControllerTest {
 
 		runCaptureTest(blackConfig, whiteConfig, new Location2D(18,1));
 	}
-	
+
 	@Test
 	public void cornerCapture4() throws StrategyException{
 		// Setup configuration
@@ -228,9 +229,142 @@ public class GoControllerTest {
 
 		runCaptureTest(blackConfig, whiteConfig, new Location2D(17,18));
 	}
+
+	//************  edge Captures          **************** /
+	// The same starting configuration is used for these tests
+	int[][] edgeBlackConfig = {	 {0,16}, {0 ,14 } ,{1 ,12 } ,{0 ,11 } ,{1 ,10 } ,{1 , 8} ,{0 ,7 } ,{1 ,5 } ,{1 ,4 } ,{1 ,3 } ,{0 ,2 }  };
+	int[][] edgeWhiteConfig = {	 {0,15}, {0 ,13 } ,{0 , 12} ,{0 ,10 } ,{0 ,9 } ,{0 , 8} ,{0 , 6} ,{0 ,5 } ,{0 , 4} ,{0 ,3 }   };
+
+	@Test
+	public void edgeCapture1() throws StrategyException{
+		// Setup configuration
+
+		int[][] expectedRemoval = { edgeWhiteConfig[0]};
+		runCaptureTest(edgeBlackConfig, edgeWhiteConfig, expectedRemoval, new Location2D(1, 15  ));
+	}
+
+	@Test
+	public void edgeCapture2() throws StrategyException{
+		// Setup configuration
+
+		int[][] expectedRemoval = { edgeWhiteConfig[1],edgeWhiteConfig[2]};
+		runCaptureTest(edgeBlackConfig, edgeWhiteConfig, expectedRemoval, new Location2D(1, 13  ));
+	}
+	@Test
+	public void edgeCapture3() throws StrategyException{
+		// Setup configuration
+
+		int[][] expectedRemoval = { edgeWhiteConfig[3],edgeWhiteConfig[4],edgeWhiteConfig[5]};
+		runCaptureTest(edgeBlackConfig, edgeWhiteConfig, expectedRemoval, new Location2D(1,  9 ));
+	}
+	@Test
+	public void edgeCapture4() throws StrategyException{
+		// Setup configuration
+
+		int[][] expectedRemoval = { edgeWhiteConfig[6],edgeWhiteConfig[7],edgeWhiteConfig[8],edgeWhiteConfig[9]};
+		runCaptureTest(edgeBlackConfig, edgeWhiteConfig, expectedRemoval, new Location2D(1,  6 ));
+	}
+
+
+	//************  edge Captures          **************** /
+	// The same starting configuration is used for these tests
+	int[][] centerBlackConfig = {	{7,7 },{7,8 },{7,9 },  {7,11 },{7,12 },{7,13 },{7,14 },  {9,7 },{9,8 },{9,9 },  {9,11 },{9,12 },{9,13 },{9,14 },  {10,9 },{10,11 }  };
+	int[][] centerWhiteConfig = {	{ 7,10 }, 	{9 ,10 },	{ 10,10 }, 	{8 ,7 },{8 ,8 },{8 ,9 },  {8 ,11 },{8 ,12 },{8 ,13 },{8 ,14 } };
+
+	@Test
+	public void centerCapture1() throws StrategyException{
+		// Setup configuration
+
+		int[][] expectedRemoval = { centerWhiteConfig[0]};
+		runCaptureTest(centerBlackConfig, centerWhiteConfig, expectedRemoval, new Location2D(6, 10  ));
+	}
+
+	@Test
+	public void centerCapture2() throws StrategyException{
+		// Setup configuration
+
+		int[][] expectedRemoval = { centerWhiteConfig[1],centerWhiteConfig[2]};
+		runCaptureTest(centerBlackConfig, centerWhiteConfig, expectedRemoval, new Location2D(11, 10  ));
+	}
+	@Test
+	public void centerCapture3() throws StrategyException{
+		// Setup configuration
+
+		int[][] expectedRemoval = { centerWhiteConfig[3],centerWhiteConfig[4],centerWhiteConfig[5]};
+		runCaptureTest(centerBlackConfig, centerWhiteConfig, expectedRemoval, new Location2D(8,  6 ));
+	}
+	@Test
+	public void centerCapture4() throws StrategyException{
+		// Setup configuration
+
+		int[][] expectedRemoval = { centerWhiteConfig[6],centerWhiteConfig[7],centerWhiteConfig[8],centerWhiteConfig[9]};
+		runCaptureTest(centerBlackConfig, centerWhiteConfig, expectedRemoval, new Location2D(6,  15 ));
+	}
+
+	//************  complex Captures          **************** /
+	// The same starting configuration is used for these tests
+	int[][] complexBlackConfig = {	{ 1,0},{ 7,0},{8 ,0},{10 ,0},    {1 ,1},{ 2,1},{3 ,1},{4 ,1},{5,1},{7,1},{11 ,1},    { 7,2},{8 ,2},{9 ,2},  {0 ,3},{1 ,3},{2 ,3},{5 ,3},{6 ,3},    { 0,5},{ 2,5},  {1 ,6} };
+	int[][] complexWhiteConfig  = {  {0 ,0 },{0 ,1 },{0 , 2},{1 ,2 },{2 , 2},   { 0,4 },{1 ,4 },{2 ,4 },{1 ,5 },   {2 ,0 },{3 ,0 },{4 ,0 },{5 ,0 },{ 6,0 },{ 6, 1},{ 6,2 },{ 5, 2},     { 8,1 }, {9 ,1 },{ 9,0 },{10 ,1 },      { 3,5 },{3 ,6 },{4 ,4 },{4 ,3 },{5 ,4 },{11 , 2}    };
+
+	@Test
+	public void complexCaptureA() throws StrategyException{
+		int[][] expectedRemoval = { {0 ,0 },{0 ,1 },{0 , 2},{1 ,2 },{2 , 2}   };
+		runCaptureTest(complexBlackConfig, complexWhiteConfig, expectedRemoval, new Location2D( 3  ,   2));
+
+	}
 	
+	@Test
+	public void complexCaptureB() throws StrategyException{
+		int[][] expectedRemoval = { { 0,4 },{1 ,4 },{2 ,4 },{1 ,5 }  };
+		runCaptureTest(complexBlackConfig, complexWhiteConfig, expectedRemoval, new Location2D( 3  , 4  ));
 
+	}
+	
+	@Test
+	public void complexCaptureC() throws StrategyException{
+		int[][] expectedRemoval = {{2 ,0 },{3 ,0 },{4 ,0 },{5 ,0 },{ 6,0 },{ 6, 1},{ 6,2 },{ 5, 2}   };
+		runCaptureTest(complexBlackConfig, complexWhiteConfig, expectedRemoval, new Location2D(  4 ,   2));
 
+	}
+	
+	@Test
+	public void complexCaptureD() throws StrategyException{
+		int[][] expectedRemoval = {  { 8,1 }, {9 ,1 },{ 9,0 },{10 ,1 }  };
+		runCaptureTest(complexBlackConfig, complexWhiteConfig, expectedRemoval, new Location2D(  10 ,2   ));
+	}
+
+	//************  MultiCaptures          **************** /
+	// The same starting configuration is used for these tests
+	int[][] multiBlackConfig = { { 7,9 },{8 ,10 },{8 ,8 },{9 ,7 },{9 ,11 },{10 ,6 },{10 ,8 },{10 ,10 },{10 ,12 },{11 ,9 },{12 ,6 },{12 ,8 },{12 ,10 },{13 ,7 }  };
+	int[][] multiWhiteConfig = { { 10,11 },{11 ,10 },   {11 , 8},{10 , 7},{12 ,7 },     {8 ,9 },{9 ,10 },{9 ,8 },{ 10, 9} };
+	
+	@Test
+	public void multiCapture2() throws StrategyException{
+		int[][] expectedRemoval = {  { 10,11 },{11 ,10 }  };
+		runCaptureTest(multiBlackConfig, multiWhiteConfig, expectedRemoval, new Location2D( 11 ,  11 ));
+	}
+	
+	@Test
+	public void multiCapture3() throws StrategyException{
+		int[][] expectedRemoval = { {11 , 8},{10 , 7},{12 ,7 }  };
+		runCaptureTest(multiBlackConfig, multiWhiteConfig, expectedRemoval, new Location2D(11  , 7  ));
+	}	
+	
+	@Test
+	public void multiCapture4() throws StrategyException{
+		int[][] expectedRemoval = {   {8 ,9 },{9 ,10 },{9 ,8 },{ 10, 9}  };
+		runCaptureTest(multiBlackConfig, multiWhiteConfig, expectedRemoval, new Location2D( 9 ,  9 ));
+	}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	///////////////////////////////
 	// Helper functions
 

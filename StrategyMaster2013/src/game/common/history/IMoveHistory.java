@@ -9,7 +9,7 @@
  *******************************************************************************/
 package game.common.history;
 
-import game.common.DetailedMoveResult;
+import game.common.turnResult.DetailedMoveResult;
 import common.StrategyException;
 
 /** This interface should be implemented by any class wishing to store 

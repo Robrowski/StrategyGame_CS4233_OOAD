@@ -12,13 +12,14 @@ package game.strategy.epsilon;
 import game.AbstractStrategyGameController;
 import game.VersionRules;
 import game.common.Location;
-import game.common.MoveResult;
-import game.common.MoveResultStatus;
 import game.common.Piece;
 import game.common.PieceLocationDescriptor;
 import game.common.PieceType;
 import game.common.StrategyGameObservable;
 import game.common.StrategyGameObserver;
+import game.common.turnResult.ITurnResult;
+import game.common.turnResult.MoveResult;
+import game.common.turnResult.MoveResultStatus;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -97,7 +98,7 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 	 * @see game.GameController#move(game.common.PieceType, game.common.Location, game.common.Location)
 	 */
 	@Override
-	public MoveResult move(PieceType piece, Location from, Location to)
+	public ITurnResult move(PieceType piece, Location from, Location to)
 			throws StrategyException {
 		// Catch resignations
 		if (piece == null && from == null && to == null){
@@ -114,7 +115,7 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 		// Try to call the normal way
 		try {
 			final Piece atTo = this.getPieceAt(to);
-			MoveResult theMove = super.move(piece, from, to);
+			ITurnResult theMove = super.move(piece, from, to);
 			
 			// Catch the case where 1 flag is capture but the OTHER remains
 			if (atTo != null && atTo.getType() == PieceType.FLAG){
@@ -159,7 +160,7 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 	 * @param fault      fault if there is one
 	 */
 	private void notifyMove(PieceType piece, Location from, Location to,
-			MoveResult result, StrategyException fault) {
+			ITurnResult result, StrategyException fault) {
 		final Iterator<StrategyGameObserver> obsIter = observers.iterator();
 		while (obsIter.hasNext()){
 			obsIter.next().moveHappened(piece, from, to, result, fault);

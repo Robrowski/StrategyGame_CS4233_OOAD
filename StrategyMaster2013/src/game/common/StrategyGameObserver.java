@@ -9,6 +9,8 @@
  *******************************************************************************/
 package game.common;
 
+import game.common.turnResult.ITurnResult;
+
 import java.util.Collection;
 
 import common.StrategyException;
@@ -42,6 +44,6 @@ public interface StrategyGameObserver {
 	 * @param fault  any faults 
 	 */
 	void moveHappened(PieceType piece, Location from, Location to,
-			MoveResult result, StrategyException fault);
+			ITurnResult result, StrategyException fault);
 
 }

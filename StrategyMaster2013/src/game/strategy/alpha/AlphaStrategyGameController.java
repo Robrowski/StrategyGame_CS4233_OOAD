@@ -12,6 +12,9 @@ package game.strategy.alpha;
 
 import game.*;
 import game.common.*;
+import game.common.turnResult.ITurnResult;
+import game.common.turnResult.MoveResult;
+import game.common.turnResult.MoveResultStatus;
 import common.*;
 
 /**
@@ -53,7 +56,7 @@ public class AlphaStrategyGameController implements GameController
 	 * @see game.GameController#move(game.common.PieceType, game.common.Location, game.common.Location)
 	 */
 	@Override
-	public MoveResult move(PieceType piece, Location from, Location to)
+	public ITurnResult move(PieceType piece, Location from, Location to)
 			throws StrategyException
 	{
 		if (gameOver) {
@@ -117,7 +120,7 @@ public class AlphaStrategyGameController implements GameController
 	 * @see game.GameController#placePiece(game.common.Piece, game.common.Location)
 	 */
 	@Override
-	public void placePiece(Piece piece, Location at) throws StrategyException {
+	public ITurnResult placePiece(Piece piece, Location at) throws StrategyException {
 		throw new StrategyException("HAHA not implemented.");	
 	}
 	

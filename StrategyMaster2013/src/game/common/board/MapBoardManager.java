@@ -10,13 +10,13 @@
 package game.common.board;
 
 import game.common.Coordinate;
-import game.common.DetailedMoveResult;
 import game.common.Location;
 import game.common.Location2D;
-import game.common.MoveResultStatus;
 import game.common.Piece;
 import game.common.PieceLocationDescriptor;
 import game.common.pieceStats.IPieceMoves;
+import game.common.turnResult.DetailedMoveResult;
+import game.common.turnResult.MoveResultStatus;
 
 import java.util.Collection;
 import java.util.Iterator;

@@ -8,7 +8,12 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package game.common;
+package game.common.turnResult;
+
+import java.util.Collection;
+import java.util.LinkedList;
+
+import game.common.PieceLocationDescriptor;
 
 /**
  * This class contains the complete results of a move.
@@ -16,10 +21,13 @@ package game.common;
  * @author gpollice
  * @version Sep 7, 2013
  */
-public class MoveResult
+public class MoveResult implements ITurnResult
 {
 	private final MoveResultStatus status;
 	private final PieceLocationDescriptor battleWinner;
+	/** The pieces removed */
+	Collection<PieceLocationDescriptor> piecesRemoved;
+	
 	
 	/**
 	 * Constructor that sets the properties.
@@ -29,10 +37,24 @@ public class MoveResult
 	 */
 	public MoveResult(MoveResultStatus status, PieceLocationDescriptor battleWinner)
 	{
-		this.status = status;
-		this.battleWinner = battleWinner;
+		this(status, battleWinner, new LinkedList<PieceLocationDescriptor>());
 	}
 
+	/**
+	 * Constructor that sets the properties.
+	 * @param status the move result status
+	 * @param battleWinner if there were a strike, this contains the information
+	 * 		about the winner.
+	 */
+	public MoveResult(MoveResultStatus status, PieceLocationDescriptor battleWinner, Collection<PieceLocationDescriptor> piecesRemoved)
+	{
+		this.status = status;
+		this.battleWinner = battleWinner;
+		this.piecesRemoved = piecesRemoved;
+	}
+	
+	
+	
 	/**
 	 * @return the status
 	 */
@@ -47,5 +69,13 @@ public class MoveResult
 	public PieceLocationDescriptor getBattleWinner()
 	{
 		return battleWinner;
+	}
+
+	/* (non-Javadoc)
+	 * @see game.common.turnResult.ITurnResult#getPiecesRemoved()
+	 */
+	@Override
+	public Collection<PieceLocationDescriptor> getPiecesRemoved() {
+		return piecesRemoved;
 	}
 }

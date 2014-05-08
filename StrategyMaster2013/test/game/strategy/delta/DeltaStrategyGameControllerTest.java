@@ -16,20 +16,17 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import game.GameController;
 import game.GameFactory;
-import game.common.DetailedMoveResult;
 import game.common.GameVersion;
 import game.common.Location;
 import game.common.Location1D;
 import game.common.Location2D;
 import game.common.Location3D;
-import game.common.MoveResult;
-import game.common.MoveResultStatus;
 import game.common.Piece;
 import game.common.PieceLocationDescriptor;
 import game.common.PieceType;
-import game.strategy.delta.DeltaPieceMoves;
-import game.strategy.delta.DeltaPiecePowers;
-import game.strategy.delta.DeltaRules;
+import game.common.turnResult.DetailedMoveResult;
+import game.common.turnResult.ITurnResult;
+import game.common.turnResult.MoveResultStatus;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -795,7 +792,7 @@ public class DeltaStrategyGameControllerTest {
 		deltaTestDouble.setFieldConfiguration(endConfig);	
 
 		// Move a spy
-		MoveResult spyMove = deltaTestDouble.move(PieceType.SCOUT, L(4,0) , L(4,5));	
+		ITurnResult spyMove = deltaTestDouble.move(PieceType.SCOUT, L(4,0) , L(4,5));	
 
 		// Validate the move
 		assertSame(spyMove.getBattleWinner().getPiece(), redScout);

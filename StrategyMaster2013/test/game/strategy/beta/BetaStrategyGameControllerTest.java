@@ -9,24 +9,28 @@
  *******************************************************************************/
 package game.strategy.beta;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import game.GameController;
 import game.GameFactory;
 import game.common.GameVersion;
 import game.common.Location;
 import game.common.Location2D;
-import game.common.MoveResult;
-import game.common.MoveResultStatus;
 import game.common.Piece;
 import game.common.PieceLocationDescriptor;
 import game.common.PieceType;
-import game.strategy.beta.BetaStrategyGameController;
+import game.common.turnResult.ITurnResult;
+import game.common.turnResult.MoveResultStatus;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.junit.*;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import common.PlayerColor;
 import common.StrategyException;
@@ -765,7 +769,7 @@ public class BetaStrategyGameControllerTest {
 		assertSame(game.move(PieceType.SERGEANT, blueSergeantLocation2, L53).getStatus(), MoveResultStatus.OK );
 		assertSame(game.move(PieceType.CAPTAIN, L32,         L33).getStatus(), MoveResultStatus.OK );
 		assertSame(game.move(PieceType.SERGEANT, L53,    L52).getStatus(), MoveResultStatus.OK );
-		final MoveResult drawResult= game.move(PieceType.SERGEANT, redSergeantLocation3,       L52);
+		final ITurnResult drawResult= game.move(PieceType.SERGEANT, redSergeantLocation3,       L52);
 		assertNull(drawResult.getBattleWinner());
 		assertSame(drawResult.getStatus(), MoveResultStatus.OK );
 		assertNull(game.getPieceAt(redSergeantLocation3));

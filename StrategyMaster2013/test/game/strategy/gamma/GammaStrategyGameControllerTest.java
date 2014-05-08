@@ -20,10 +20,10 @@ import game.common.Location;
 import game.common.Location1D;
 import game.common.Location2D;
 import game.common.Location3D;
-import game.common.MoveResultStatus;
 import game.common.Piece;
 import game.common.PieceLocationDescriptor;
 import game.common.PieceType;
+import game.common.turnResult.MoveResultStatus;
 
 import java.util.Iterator;
 import java.util.LinkedList;

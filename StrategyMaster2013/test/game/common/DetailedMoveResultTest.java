@@ -10,10 +10,10 @@
 package game.common;
 
 import static org.junit.Assert.*;
-import game.common.DetailedMoveResult;
 import game.common.Location;
 import game.common.Location2D;
 import game.common.PieceLocationDescriptor;
+import game.common.turnResult.DetailedMoveResult;
 
 import org.junit.Test;
 

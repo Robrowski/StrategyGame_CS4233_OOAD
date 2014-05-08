@@ -17,11 +17,11 @@ import game.common.Coordinate;
 import game.common.GameVersion;
 import game.common.Location;
 import game.common.Location2D;
-import game.common.MoveResultStatus;
 import game.common.Piece;
 import game.common.PieceLocationDescriptor;
 import game.common.PieceType;
 import game.common.battle.BattleResult;
+import game.common.turnResult.MoveResultStatus;
 
 import org.junit.Test;
 

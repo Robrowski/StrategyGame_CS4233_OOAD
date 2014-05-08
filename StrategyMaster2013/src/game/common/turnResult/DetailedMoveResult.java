@@ -7,7 +7,10 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package game.common;
+package game.common.turnResult;
+
+import game.common.Location;
+import game.common.PieceLocationDescriptor;
 
 /** This extension of MoveResult provides some extra information about
  *  the result of a move so that field configurations may be updated

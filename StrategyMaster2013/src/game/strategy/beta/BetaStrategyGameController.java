@@ -12,11 +12,12 @@ package game.strategy.beta;
 import game.GameController;
 import game.common.Coordinate;
 import game.common.Location;
-import game.common.MoveResult;
-import game.common.MoveResultStatus;
 import game.common.Piece;
 import game.common.PieceLocationDescriptor;
 import game.common.PieceType;
+import game.common.turnResult.ITurnResult;
+import game.common.turnResult.MoveResult;
+import game.common.turnResult.MoveResultStatus;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -315,7 +316,7 @@ public class BetaStrategyGameController implements GameController {
 	 * @see game.GameController#placePiece(game.common.Piece, game.common.Location)
 	 */
 	@Override
-	public void placePiece(Piece piece, Location at) throws StrategyException {
+	public ITurnResult placePiece(Piece piece, Location at) throws StrategyException {
 		throw new StrategyException("HAHA not implemented.");	
 	}
 }

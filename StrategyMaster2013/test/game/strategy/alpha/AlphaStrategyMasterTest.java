@@ -10,14 +10,25 @@
 
 package game.strategy.alpha;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import game.GameController;
 import game.GameFactory;
-import game.common.*;
+import game.common.GameVersion;
+import game.common.Location;
+import game.common.Location2D;
+import game.common.Piece;
+import game.common.PieceLocationDescriptor;
+import game.common.PieceType;
+import game.common.turnResult.ITurnResult;
+import game.common.turnResult.MoveResultStatus;
 
-import org.junit.*;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import common.*;
+import common.PlayerColor;
+import common.StrategyException;
 
 /**
  * Description
@@ -66,7 +77,7 @@ public class AlphaStrategyMasterTest
 	public void makeValidFirstMoveRedWins() throws StrategyException
 	{
 		game.startGame();
-		final MoveResult result = 
+		final ITurnResult result = 
 				game.move(PieceType.MARSHAL, redMarshalLocation, blueFlagLocation);
 		assertEquals(MoveResultStatus.RED_WINS, result.getStatus());
 		assertEquals(new PieceLocationDescriptor(redMarshal, blueFlagLocation), 

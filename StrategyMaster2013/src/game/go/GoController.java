@@ -11,10 +11,11 @@ package game.go;
 
 import game.GameController;
 import game.common.Location;
-import game.common.MoveResult;
 import game.common.Piece;
 import game.common.PieceType;
 import game.common.board.IBoardManager;
+import game.common.turnResult.ITurnResult;
+
 import common.PlayerColor;
 import common.StrategyException;
 
@@ -53,7 +54,7 @@ public class GoController implements GameController {
 	 * @see game.GameController#placePiece(game.common.Piece, game.common.Location)
 	 */
 	@Override
-	public void placePiece(Piece piece, Location at) throws StrategyException {
+	public ITurnResult placePiece(Piece piece, Location at) throws StrategyException {
 		// Check game states to see if a piece can even be played by this player
 		if (!gameStarted) throw new StrategyException("Cannot place pieces before the game has started.");
 		if (gameOver) throw new StrategyException("Cannot place pieces after the game has ended.");
@@ -75,7 +76,9 @@ public class GoController implements GameController {
 			currentTurn = PlayerColor.WHITE;
 		} else {
 			currentTurn = PlayerColor.BLACK;
-		}	
+		}
+		
+		return null;	
 	}
 
 	/* (non-Javadoc)
@@ -92,7 +95,7 @@ public class GoController implements GameController {
 	 * @see game.GameController#move(game.common.PieceType, game.common.Location, game.common.Location)
 	 */
 	@Override
-	public MoveResult move(PieceType piece, Location from, Location to)
+	public ITurnResult move(PieceType piece, Location from, Location to)
 			throws StrategyException {
 		throw new StrategyException("HAHA not implemented.");	
 	}
@@ -105,12 +108,5 @@ public class GoController implements GameController {
 		return this.board.getPieceAt(location);
 	}
 
-
-	
-	
-	
-	
-	
-	
 
 }

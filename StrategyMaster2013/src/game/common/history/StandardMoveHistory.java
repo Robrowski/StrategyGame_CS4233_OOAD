@@ -9,8 +9,8 @@
  *******************************************************************************/
 package game.common.history;
 
-import game.common.DetailedMoveResult;
 import game.common.PieceType;
+import game.common.turnResult.DetailedMoveResult;
 
 import java.util.LinkedList;
 

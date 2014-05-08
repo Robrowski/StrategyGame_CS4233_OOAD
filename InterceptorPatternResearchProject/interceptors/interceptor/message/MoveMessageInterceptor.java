@@ -9,13 +9,14 @@
  *******************************************************************************/
 package interceptor.message;
 
-import common.StrategyException;
 import game.GameController;
-import game.common.MoveResult;
+import game.common.turnResult.ITurnResult;
 import interceptor.StrategyMessageInterceptor;
 import message.Sendable;
 import message.StrategyMessageType;
 import message.implementations.MoveMessage;
+
+import common.StrategyException;
 
 
 /** An interceptor specifically made to handle Move messages
@@ -48,7 +49,7 @@ public class MoveMessageInterceptor implements StrategyMessageInterceptor {
 		if (game != null){
 			try {
 				// Try to move.. could throw an exception
-				final MoveResult theResult = game.move(theMessage.getPieceType(),
+				final ITurnResult theResult = game.move(theMessage.getPieceType(),
 						theMessage.getFrom() ,
 						theMessage.getTo());
 				

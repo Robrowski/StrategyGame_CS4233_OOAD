@@ -9,13 +9,13 @@
  *******************************************************************************/
 package game.common.battle;
 
-import game.common.DetailedMoveResult;
 import game.common.Location;
-import game.common.MoveResultStatus;
 import game.common.Piece;
 import game.common.PieceLocationDescriptor;
 import game.common.PieceType;
 import game.common.pieceStats.IPiecePowers;
+import game.common.turnResult.DetailedMoveResult;
+import game.common.turnResult.MoveResultStatus;
 import common.PlayerColor;
 
 /** The standard battle engine responsible for handling battles

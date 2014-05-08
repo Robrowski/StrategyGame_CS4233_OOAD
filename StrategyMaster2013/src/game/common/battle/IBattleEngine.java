@@ -9,9 +9,9 @@
  *******************************************************************************/
 package game.common.battle;
 
-import game.common.DetailedMoveResult;
 import game.common.Location;
 import game.common.Piece;
+import game.common.turnResult.DetailedMoveResult;
 
 /** Classes implementing this interface are responsible for handling battle
  *  and creating detailed move results. Those results contain all the 

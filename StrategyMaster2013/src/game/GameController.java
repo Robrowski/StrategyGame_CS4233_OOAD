@@ -10,8 +10,12 @@
 
 package game;
 
-import game.common.*;
-import common.*;
+import game.common.Location;
+import game.common.Piece;
+import game.common.PieceType;
+import game.common.turnResult.ITurnResult;
+
+import common.StrategyException;
 
 /**
  * The GameController is the interface for any version of a Strategy game
@@ -49,7 +53,7 @@ public interface GameController
 	 *             location that does not have the specified piece, or the color of
 	 *             the piece is not the color of the player who is moving).
 	 */
-	MoveResult move(PieceType piece, Location from, Location to) throws StrategyException;
+	ITurnResult move(PieceType piece, Location from, Location to) throws StrategyException;
 	
 	/**
 	 * This method returns the piece on the game board that is located at the
@@ -67,9 +71,10 @@ public interface GameController
 	 * 
 	 * @param piece   piece to place
 	 * @param at      location to place piece
+	 * @return TODO
 	 * @throws StrategyException Thrown upon failure or error
 	 */
-	void placePiece(Piece piece, Location at) throws StrategyException;
+	ITurnResult placePiece(Piece piece, Location at) throws StrategyException;
 	
 	
 }

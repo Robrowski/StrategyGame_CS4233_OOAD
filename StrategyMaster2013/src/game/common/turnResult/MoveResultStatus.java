@@ -8,7 +8,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package game.common;
+package game.common.turnResult;
 
 /**
  * This is an enumeration of the possible outcomes of any legal move in Strategy.
@@ -17,5 +17,5 @@ package game.common;
  */
 public enum MoveResultStatus
 {
-	OK, BLUE_WINS, RED_WINS, DRAW, FLAG_CAPTURED;
+	OK, BLUE_WINS, RED_WINS, DRAW, FLAG_CAPTURED, WHITE_WINS, BLACK_WINS;
 }

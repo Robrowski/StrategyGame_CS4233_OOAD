@@ -10,8 +10,8 @@
 package message.implementations;
 
 import game.common.Location;
-import game.common.MoveResult;
 import game.common.PieceType;
+import game.common.turnResult.ITurnResult;
 import message.AbstractMessage;
 import message.StrategyMessageType;
 
@@ -35,7 +35,7 @@ public class MoveMessage extends AbstractMessage {
 	/** The location to move the piece to */
 	private final Location to;
 	/** The result of a message */
-	private MoveResult result = null;
+	private ITurnResult result = null;
 	
 	/** Basic constructor to take the pieces of a move
 	 * 
@@ -79,7 +79,7 @@ public class MoveMessage extends AbstractMessage {
 	 *  
 	 * @param theResult the result of the move
 	 */
-	public void setMoveResult(MoveResult theResult){
+	public void setMoveResult(ITurnResult theResult){
 		result = theResult;
 		type = StrategyMessageType.RESULT.toString();
 	}
@@ -88,7 +88,7 @@ public class MoveMessage extends AbstractMessage {
 	 *  
 	 * @param theResult the result of the move
 	 */
-	public MoveResult getMoveResult(){
+	public ITurnResult getMoveResult(){
 		return result;
 	}
 	

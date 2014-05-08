@@ -10,10 +10,10 @@
 package game.reporter;
 
 import game.common.Location;
-import game.common.MoveResult;
 import game.common.PieceLocationDescriptor;
 import game.common.PieceType;
 import game.common.StrategyGameObserver;
+import game.common.turnResult.ITurnResult;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -57,7 +57,7 @@ public class LazyStrategyGameReporter implements StrategyGameObserver {
 	 */
 	@Override
 	public void moveHappened(PieceType piece, Location from, Location to,
-			MoveResult result, StrategyException fault) {
+			ITurnResult result, StrategyException fault) {
 		// Catch resignation
 		if (piece == null && from == null && to == null){
 			System.out.println("Dishonorable resignation: " + result.getStatus().toString());

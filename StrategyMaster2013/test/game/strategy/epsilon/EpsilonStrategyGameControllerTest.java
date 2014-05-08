@@ -16,23 +16,19 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import game.GameController;
 import game.GameFactory;
-import game.common.DetailedMoveResult;
 import game.common.GameVersion;
 import game.common.Location;
 import game.common.Location1D;
 import game.common.Location2D;
 import game.common.Location3D;
-import game.common.MoveResult;
-import game.common.MoveResultStatus;
 import game.common.Piece;
 import game.common.PieceLocationDescriptor;
 import game.common.PieceType;
 import game.common.StrategyGameObserver;
+import game.common.turnResult.DetailedMoveResult;
+import game.common.turnResult.ITurnResult;
+import game.common.turnResult.MoveResultStatus;
 import game.reporter.LazyStrategyGameReporter;
-import game.strategy.epsilon.EpsilonPieceMoves;
-import game.strategy.epsilon.EpsilonPiecePowers;
-import game.strategy.epsilon.EpsilonRules;
-import game.strategy.epsilon.EpsilonStrategyGameController;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -821,7 +817,7 @@ public class EpsilonStrategyGameControllerTest {
 		EpsilonTestDouble.setFieldConfiguration(endConfig);	
 
 		// Move a spy
-		MoveResult spyMove = EpsilonTestDouble.move(PieceType.SCOUT, L(4,0) , L(4,5));	
+		ITurnResult spyMove = EpsilonTestDouble.move(PieceType.SCOUT, L(4,0) , L(4,5));	
 
 		// Validate the move
 		assertSame(spyMove.getBattleWinner().getPiece(), redScout);

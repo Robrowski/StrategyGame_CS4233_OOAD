@@ -9,9 +9,6 @@
  *******************************************************************************/
 package game.go;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-
 import game.common.Coordinate;
 import game.common.Location;
 import game.common.Location2D;
@@ -21,8 +18,13 @@ import game.common.board.AbstractBoardManager;
 import game.common.turnResult.ITurnResult;
 import game.common.turnResult.MoveResult;
 import game.common.turnResult.MoveResultStatus;
-import common.PlayerColor;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import common.StrategyException;
+import common.StrategyRuntimeException;
 
 /** Implementation of a Go board of variable size
  * 
@@ -73,37 +75,75 @@ public class GoBoard extends AbstractBoardManager {
 		}
 
 
-		//////////// Check for captures
-		
-		// TODO: Use BFS with edge detection = null positions
-		LinkedList<PieceLocationDescriptor> piecesRemoved = new LinkedList<PieceLocationDescriptor>();
+		/******************* Check for captures   ***********************************/
+		// Pieces that are confirmed as captured go in this list
+		LinkedList<PieceLocationDescriptor> capturePieces = new LinkedList<PieceLocationDescriptor>();
+		// All non-null pieces that are visited go here
+		LinkedList<PieceLocationDescriptor> nodesVisited  = new LinkedList<PieceLocationDescriptor>();
 
-		// Basic Capture in corner
-		try {
-			Location2D L00 = new Location2D(0,0);
-			if (this.getPieceAt(new Location2D(1,0)).getOwner() == PlayerColor.BLACK &
-					this.getPieceAt(new Location2D(0,1)).getOwner() == PlayerColor.BLACK &
-					this.getPieceAt(new Location2D(0,0)).getOwner() == PlayerColor.WHITE){
-				piecesRemoved.add(new PieceLocationDescriptor(this.getPieceAt(L00), L00 ));
-			} 
-		} catch (NullPointerException npe){
-			// meh
+		//////////////////////   Find captures based on the piece just placed.
+		Iterator<PieceLocationDescriptor> fourPossibleCaptureGroups = get4Adjacent( l).iterator();
+		while (fourPossibleCaptureGroups.hasNext()){
+			// The start of the current cluster search
+			PieceLocationDescriptor groupSeed = fourPossibleCaptureGroups.next();
+			
+			// If the group seed is null or allied or visited, ignore the cluster
+			if (groupSeed.getPiece() == null || groupSeed.getPiece().getOwner() == piece.getOwner()  || nodesVisited.contains(groupSeed)){
+				continue;
+			}
+			
+			// BFS along group, searching for "enemies" of piece only. If a null is found, terminate search
+			// If search ends and no "null" is found, the group is to be removed because it is surrounded
+			// by enemies/walls
+			boolean nullFound = false;
+			Collection<PieceLocationDescriptor> enemiesFound = new LinkedList<PieceLocationDescriptor>();
+			
+			// Use the linked list as a search queue
+			// **This search lets nodes get visited up to 4 times.. not efficient...
+			LinkedList<PieceLocationDescriptor> toSearch = new LinkedList<PieceLocationDescriptor>();
+			toSearch.add(groupSeed);
+			
+			// Do the search
+			while (!toSearch.isEmpty()){
+				// The next search
+				PieceLocationDescriptor aPiece = toSearch.pop();
+				
+				// If null is found, end the search
+				if (aPiece.getPiece() == null ){
+					nullFound = true;
+					break;
+				}
+				
+				// Ignore if visited 
+				if (nodesVisited.contains(aPiece) ){ 
+					continue;
+				}
+				nodesVisited.add(aPiece);
+				
+				// ignore if allied
+				if (aPiece.getPiece().getOwner() == piece.getOwner()){
+					continue;
+				}
+				
+				// Search the next 4 for more enemies/ replenish the search
+				enemiesFound.add(aPiece);
+				toSearch.addAll(get4Adjacent(aPiece.getLocation()));				
+			}
+			
+			// If null wasn't found, add all found enemies
+			if (!nullFound && toSearch.isEmpty()){
+				capturePieces.addAll(enemiesFound);
+			}	
 		}
 
-		
-		
-		
-		
-		
-		
 		// Remove the pieces
-		Iterator<PieceLocationDescriptor> toRemove = piecesRemoved.iterator();
+		Iterator<PieceLocationDescriptor> toRemove = capturePieces.iterator();
 		while (toRemove.hasNext()){
 			this.removePiece(toRemove.next().getLocation());
 		}
 
 		// Return!
-		return new MoveResult(MoveResultStatus.OK, new PieceLocationDescriptor(piece,l), piecesRemoved );
+		return new MoveResult(MoveResultStatus.OK, new PieceLocationDescriptor(piece,l), capturePieces );
 	}
 
 
@@ -116,13 +156,48 @@ public class GoBoard extends AbstractBoardManager {
 	}
 
 
-
-
 	/* (non-Javadoc)
 	 * @see game.common.board.IBoardManager#getPieceAt(game.common.Location)
 	 */
 	@Override
 	public Piece getPieceAt(Location l) {
-		return theBoard[l.getCoordinate(Coordinate.X_COORDINATE)][l.getCoordinate(Coordinate.Y_COORDINATE)];
+		int x = l.getCoordinate(Coordinate.X_COORDINATE);
+		int y = l.getCoordinate(Coordinate.Y_COORDINATE);
+
+		// Make sure its on the board
+		if (x >= boardSize || x < 0 || y < 0 || y >= boardSize){
+			throw new StrategyRuntimeException("Query was off the board");
+		}
+		return theBoard[x][y];
+	}
+
+	/** Get the 4 adjacent pieces, along with their locations
+	 * 
+	 * @param l
+	 * @return
+	 */
+	private Collection<PieceLocationDescriptor> get4Adjacent(Location l){
+		Collection<PieceLocationDescriptor> fourAdj = new LinkedList<PieceLocationDescriptor>();
+		int x = l.getCoordinate(Coordinate.X_COORDINATE);
+		int y = l.getCoordinate(Coordinate.Y_COORDINATE);
+
+		// The change in x/y to get to 4adj
+		int [] dx = { 0, 0, -1, 1};
+		int [] dy = { -1, 1, 0 ,0 };
+
+		// Find the four adjacent pieces
+		for (int i = 0; i < 4; i++ ){
+			Location adjLoc = new Location2D(x + dx[i], y + dy[i] );
+
+			// Add the piece if it is on the board
+			try {
+				Piece adjPiece = getPieceAt(adjLoc);
+				fourAdj.add(new PieceLocationDescriptor( adjPiece, adjLoc ) );
+			} catch (StrategyRuntimeException sre){
+				// don't add... 
+			}
+		}
+
+		return fourAdj;
 	}
 }

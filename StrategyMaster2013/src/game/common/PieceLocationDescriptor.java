@@ -58,6 +58,10 @@ public class PieceLocationDescriptor
 		if (other == this) return true;
 		if (!(other instanceof PieceLocationDescriptor)) return false;
 		final PieceLocationDescriptor that = (PieceLocationDescriptor)other;
+		
+		// Check for null piece
+		if (this.getPiece() == null) return that.getPiece() == null;
+		
 		return (piece.equals(that.piece) && location.equals(that.location));
 	}
 	
@@ -66,4 +70,20 @@ public class PieceLocationDescriptor
 	{
 		return piece.hashCode() * location.hashCode();
 	}
+	
+	
+	public String toString(){
+		String piece;
+		if (this.piece == null){
+			piece = "null";
+		} else {
+			piece = this.piece.toString();
+		}
+		
+		return piece + " " + this.location.toString();
+		
+		
+	}
+	
+	
 }

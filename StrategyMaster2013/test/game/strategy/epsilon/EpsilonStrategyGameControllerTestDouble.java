@@ -11,7 +11,6 @@ package game.strategy.epsilon;
 
 import game.VersionRules;
 import game.common.PieceLocationDescriptor;
-import game.common.StrategyGameObserver;
 import game.common.board.IBoardManager;
 import game.common.board.MapBoardManager;
 import game.strategy.delta.DeltaPieceMoves;
@@ -21,6 +20,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import common.StrategyException;
+import common.observer.GameObserver;
 
 /** Same exact functionality as a EpsilonStrategyGameController + the
  *  internal configuration can be set after initialization
@@ -45,7 +45,7 @@ public class EpsilonStrategyGameControllerTestDouble extends
 			Collection<PieceLocationDescriptor> redConfiguration,
 			Collection<PieceLocationDescriptor> blueConfiguration,
 			VersionRules EpsilonRules,
-			Collection<StrategyGameObserver> observers) throws StrategyException {
+			Collection<GameObserver> observers) throws StrategyException {
 		super(redConfiguration, blueConfiguration, EpsilonRules, observers);
 	}
 	

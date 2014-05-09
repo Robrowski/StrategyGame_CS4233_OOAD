@@ -24,7 +24,6 @@ import game.common.Location3D;
 import game.common.Piece;
 import game.common.PieceLocationDescriptor;
 import game.common.PieceType;
-import game.common.StrategyGameObserver;
 import game.common.turnResult.DetailedMoveResult;
 import game.common.turnResult.ITurnResult;
 import game.common.turnResult.MoveResultStatus;
@@ -44,6 +43,7 @@ import org.junit.Test;
 
 import common.PlayerColor;
 import common.StrategyException;
+import common.observer.GameObserver;
 
 /** These are the tests for Epsilon Strategy
  * 
@@ -129,7 +129,7 @@ public class EpsilonStrategyGameControllerTest {
 	private EpsilonStrategyGameControllerTestDouble EpsilonTestDouble;
 
 	/** Observers */
-	private static Collection<StrategyGameObserver> observers = new LinkedList<StrategyGameObserver>();
+	private static Collection<GameObserver> observers = new LinkedList<GameObserver>();
 
 	/** The original printing stream.. its suppressed */
 	private static PrintStream originalStream;
@@ -251,7 +251,7 @@ public class EpsilonStrategyGameControllerTest {
 		// Fresh valid game
 		game = factory.makeEpsilonStrategyGame(validRedConfiguration, validBlueConfiguration, observers);
 		game.startGame();
-		StrategyGameObserver lazy = new LazyStrategyGameReporter();
+		GameObserver lazy = new LazyStrategyGameReporter();
 		((EpsilonStrategyGameController) game).register(lazy);
 		((EpsilonStrategyGameController) game).unregister(lazy);
 

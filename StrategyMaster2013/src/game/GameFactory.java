@@ -11,7 +11,6 @@
 package game;
 
 import game.common.PieceLocationDescriptor;
-import game.common.StrategyGameObserver;
 import game.go.GoController;
 import game.strategy.alpha.AlphaStrategyGameController;
 import game.strategy.beta.BetaStrategyGameController;
@@ -27,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import common.StrategyException;
+import common.observer.GameObserver;
 
 /**
  * <p>
@@ -133,7 +133,7 @@ public class GameFactory
 	public GameController makeEpsilonStrategyGame(
 			List<PieceLocationDescriptor> redConfiguration,
 			List<PieceLocationDescriptor> blueConfiguration,
-			Collection<StrategyGameObserver> observers) throws StrategyException {
+			Collection<GameObserver> observers) throws StrategyException {
 
 		checkConfigurationForNull(redConfiguration);
 		checkConfigurationForNull(blueConfiguration);
@@ -170,7 +170,7 @@ public class GameFactory
 	 * @return a good game
 	 * @throws StrategyException thrown on error
 	 */
-	public GameController makeGoGame(int boardSize, Collection<StrategyGameObserver> observers) throws StrategyException {
+	public GameController makeGoGame(int boardSize, Collection<GameObserver> observers) throws StrategyException {
 		return new GoController(boardSize);
 		
 		

@@ -11,6 +11,7 @@ package game.common.score;
 
 import game.common.board.IBoardManager;
 import common.PlayerColor;
+import common.observer.GameObserver;
 
 /** Interface for classes used to keep score of games
  * 
@@ -18,7 +19,7 @@ import common.PlayerColor;
  * @author Dabrowski
  *
  */
-public interface IScoreKeeper {
+public interface IScoreKeeper extends GameObserver{
 
 	/** Gets the current score for the given player
 	 * 

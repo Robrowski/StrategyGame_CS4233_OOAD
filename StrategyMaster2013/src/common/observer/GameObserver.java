@@ -7,8 +7,11 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package game.common;
+package common.observer;
 
+import game.common.Location;
+import game.common.PieceLocationDescriptor;
+import game.common.PieceType;
 import game.common.turnResult.ITurnResult;
 
 import java.util.Collection;
@@ -20,7 +23,7 @@ import common.StrategyException;
  * @author Dabrowski
  * @version $Revision: 1.0 $
  */
-public interface StrategyGameObserver {
+public interface GameObserver {
 
 	/** Called at the beginning of the game with the initial
 	 * configurations.
@@ -46,4 +49,13 @@ public interface StrategyGameObserver {
 	void moveHappened(PieceType piece, Location from, Location to,
 			ITurnResult result, StrategyException fault);
 
+	
+	
+	/** Report the result of placement
+	 * 
+	 * @param result the result
+	 * @param fault faults if any
+	 */
+	void notifyPlacement(ITurnResult result, StrategyException fault);
+	
 }

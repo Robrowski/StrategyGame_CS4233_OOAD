@@ -12,6 +12,7 @@ package game.go;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import game.GameController;
 import game.GameFactory;
@@ -20,6 +21,7 @@ import game.common.Location2D;
 import game.common.Piece;
 import game.common.PieceLocationDescriptor;
 import game.common.PieceType;
+import game.common.score.IScoreKeeper;
 import game.common.turnResult.ITurnResult;
 
 import java.util.Collection;
@@ -27,11 +29,14 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import common.PlayerColor;
 import common.StrategyException;
+import common.StrategyRuntimeException;
 
 /** Tests for a controller for Go, the CHinese game of strategy and skill.
  * 
@@ -42,25 +47,27 @@ import common.StrategyException;
 public class GoControllerTest {
 
 	// The game!
-	private final int boardSize = 19;
-	private  GameController game;
-	private  GoControllerTestDouble gameDouble;
-	private  Collection<PieceLocationDescriptor> config;
+	private final static int boardSize = 19;
+	private static  GameController game;
+	private static  GoControllerTestDouble gameDouble;
+	private static  Collection<PieceLocationDescriptor> config;
 
-
+	// Score Keepers
+	private static IScoreKeeper gameScore;
+	private static IScoreKeeper gameDoubleScore;
+	
+	
 	final Piece blk = new Piece(PieceType.STONE, PlayerColor.BLACK);
 	final Piece wht = new Piece(PieceType.STONE, PlayerColor.WHITE);
 
 
-	@Before
-	public void setup() throws StrategyException{
-		game = GameFactory.getInstance().makeGoGame(boardSize, null);
-		game.startGame();
-
-		gameDouble = new GoControllerTestDouble(boardSize);
-		gameDouble.startGame();
-
-
+	@BeforeClass 
+	public static void preSetupSetup() throws StrategyException {
+		// Score Keepers
+		gameScore = new GoScoreKeeper();
+		gameDoubleScore = new GoScoreKeeper();
+		
+		
 		// Basic configuration setup for testing
 		config = new LinkedList<PieceLocationDescriptor>();
 		for (int x = 0; x < boardSize; x++){
@@ -73,12 +80,39 @@ public class GoControllerTest {
 			}
 		}
 	}
+	
+	
+	@Before
+	public void setup() throws StrategyException{
+
+		game = GameFactory.getInstance().makeGoGame(boardSize, null);
+		( (GoController) game).register(gameScore); // use cast because not all controllers may be observed
+		game.startGame();
+
+		gameDouble = new GoControllerTestDouble(boardSize);
+		( (GoController) gameDouble).register(gameDoubleScore);
+		gameDouble.startGame();
+	}
 
 	@After
 	public void tearDown() throws StrategyException{
-		gameDouble.setBoardConfiguration(new LinkedList<PieceLocationDescriptor>());
+		gameDouble.setBoardConfiguration(new LinkedList<PieceLocationDescriptor>());		
 	}
 
+	@AfterClass
+	public static void afterAllThatTesting(){
+		( (GoController) game).unregister(gameScore);
+		( (GoController) gameDouble).unregister(gameDoubleScore);
+		
+		
+		// Just try to unregister again
+		try {
+			( (GoController) game).unregister(gameScore);
+			fail();
+		} catch (StrategyRuntimeException sre){
+			
+		}
+	}
 
 	////// Initialization stoof
 	@Test(expected=StrategyException.class)
@@ -398,28 +432,28 @@ public class GoControllerTest {
 	public void suicide1() throws StrategyException{
 		int [][] blackPiecesLostToSuicide = {{0 ,0 }};
 				
-		//runCaptureTest(blackSuicideConfig,whiteSuicideConfig,blackPiecesLostToSuicide, new Location2D(0,0));		
+		//new Location2D(0,0));		
 	}
 	
 	@Test
 	public void suicide2() throws StrategyException{
 		int [][] blackPiecesLostToSuicide = {{ 0, 3},{0 ,2 }};
 				
-		//runCaptureTest(blackSuicideConfig,whiteSuicideConfig,blackPiecesLostToSuicide, new Location2D(0,2));		
+		// new Location2D(0,2));		
 	}
 	
 	@Test
 	public void suicide3() throws StrategyException{
 		int [][] blackPiecesLostToSuicide = { {2 ,3 },{ 3,3 },{4 ,3 }};
 				
-		//runCaptureTest(blackSuicideConfig,whiteSuicideConfig,blackPiecesLostToSuicide, new Location2D(4,3));		
+		// new Location2D(4,3));		
 	}
 	
 	@Test
 	public void suicide4() throws StrategyException{
 		int [][] blackPiecesLostToSuicide = {{1 ,4 }};
 				
-		//runCaptureTest(blackSuicideConfig,whiteSuicideConfig,blackPiecesLostToSuicide, new Location2D(1,4));		
+		// new Location2D(1,4));		
 	}
 	
 	///////////////////////////////
@@ -523,7 +557,7 @@ public class GoControllerTest {
 		runCaptureTest(blkStart, whtStart, whtStart, blkMoveToCapture);
 	}
 
-	/** Run the capture test expecting all white pieces to be removed
+	/** Run the capture test expecting white pieces to be removed and black to get points 
 	 * 
 	 * @param blkStart
 	 * @param whtStart
@@ -544,5 +578,7 @@ public class GoControllerTest {
 		// Check the results
 		verifyAccurateTurnResult( expectedRemoved, res);
 		verifyPiecesRemovedFromBoard(expectedRemoved);
+		
+		assertEquals(whtExpectedRemoved.length, gameDoubleScore.getPlayerScore(PlayerColor.BLACK));
 	}
 }

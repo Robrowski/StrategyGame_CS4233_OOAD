@@ -12,13 +12,14 @@ package game.reporter;
 import game.common.Location;
 import game.common.PieceLocationDescriptor;
 import game.common.PieceType;
-import game.common.StrategyGameObserver;
 import game.common.turnResult.ITurnResult;
 
 import java.util.Collection;
 import java.util.Iterator;
 
 import common.StrategyException;
+import common.StrategyRuntimeException;
+import common.observer.GameObserver;
 
 /** This is a lazy reporter that simply prints what ever it is given
  *  whenever it is notified about events. 
@@ -26,10 +27,10 @@ import common.StrategyException;
  * @author Dabrowski
  * @version $Revision: 6.9 $
  */
-public class LazyStrategyGameReporter implements StrategyGameObserver {
+public class LazyStrategyGameReporter implements GameObserver {
 
 	/* (non-Javadoc)
-	 * @see game.common.StrategyGameObserver#gameStart(java.util.Collection, java.util.Collection)
+	 * @see game.common.GameObserver#gameStart(java.util.Collection, java.util.Collection)
 	 */
 	@Override
 	public void gameStart(Collection<PieceLocationDescriptor> redConfiguration,
@@ -48,12 +49,12 @@ public class LazyStrategyGameReporter implements StrategyGameObserver {
 		final Iterator<PieceLocationDescriptor> configIter =   config.iterator();
 		while (configIter.hasNext()){
 			PieceLocationDescriptor next = configIter.next();
-			System.out.println("Piece: " + next.getPiece().toString() + "  At: " + next.getLocation().toString());			
+			System.out.println(next.toString());
 		}
 	}
 
 	/* (non-Javadoc)
-	 * @see game.common.StrategyGameObserver#moveHappened(game.common.PieceType, game.common.Location, game.common.Location, game.common.MoveResult, common.StrategyException)
+	 * @see game.common.GameObserver#moveHappened(game.common.PieceType, game.common.Location, game.common.Location, game.common.MoveResult, common.StrategyException)
 	 */
 	@Override
 	public void moveHappened(PieceType piece, Location from, Location to,
@@ -86,5 +87,13 @@ public class LazyStrategyGameReporter implements StrategyGameObserver {
 		}
 		if (fault != null)	System.out.println("Fault :" + fault.getMessage());
 		System.out.println(" ");
+	}
+
+	/* (non-Javadoc)
+	 * @see common.observer.GameObserver#placeHappened(game.common.turnResult.ITurnResult, common.StrategyException)
+	 */
+	@Override
+	public void notifyPlacement(ITurnResult result, StrategyException fault) {
+		throw new StrategyRuntimeException("Not implemented");
 	}
 }

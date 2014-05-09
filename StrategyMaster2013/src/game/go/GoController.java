@@ -9,9 +9,14 @@
  *******************************************************************************/
 package game.go;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+
 import game.GameController;
 import game.common.Location;
 import game.common.Piece;
+import game.common.PieceLocationDescriptor;
 import game.common.PieceType;
 import game.common.board.IBoardManager;
 import game.common.turnResult.ITurnResult;
@@ -19,6 +24,9 @@ import game.common.turnResult.MoveResult;
 import game.common.turnResult.MoveResultStatus;
 import common.PlayerColor;
 import common.StrategyException;
+import common.StrategyRuntimeException;
+import common.observer.GameObservable;
+import common.observer.GameObserver;
 
 /** A controller for Go, the Chinese game of strategy and skill.
  * 
@@ -26,9 +34,9 @@ import common.StrategyException;
  * @author Dabrowski
  * @author Catt Mosti
  */
-public class GoController implements GameController {
-	
-	
+public class GoController implements GameController, GameObservable {
+
+
 	/** Boolean flag for whether the game has started or not */
 	protected boolean gameStarted = false;
 	/** Boolean flag for whether the game is over or not */
@@ -41,8 +49,9 @@ public class GoController implements GameController {
 	protected IBoardManager board;
 	/** Board size */
 	protected int boardSize;
-	
-	
+	/** The objects observer this observable */
+	private final Collection<GameObserver> observers = new HashSet<GameObserver>();
+
 	/** Makes a Go controller
 	 * @param boardSize the size of the board
 	 */
@@ -56,33 +65,40 @@ public class GoController implements GameController {
 	 */
 	@Override
 	public ITurnResult placePiece(Piece piece, Location at) throws StrategyException {
-		// Check game states to see if a piece can even be played by this player
-		if (!gameStarted) throw new StrategyException("Cannot place pieces before the game has started.");
-		if (gameOver) throw new StrategyException("Cannot place pieces after the game has ended.");
-		if (currentTurn != piece.getOwner()) throw new StrategyException("Cannot place pieces during the other player's turn.");
-		
-		// Place it
-		ITurnResult result;
-		if (piece.getType() == PieceType.PASS){
-			if (previousMoveWasPass){
-				gameOver = true;
-				return new MoveResult(MoveResultStatus.DRAW, null);
+		try {
+			// Check game states to see if a piece can even be played by this player
+
+			if (!gameStarted) throw new StrategyException("Cannot place pieces before the game has started.");
+			if (gameOver) throw new StrategyException("Cannot place pieces after the game has ended.");
+			if (currentTurn != piece.getOwner()) throw new StrategyException("Cannot place pieces during the other player's turn.");
+
+			// Place it
+			ITurnResult result;
+			if (piece.getType() == PieceType.PASS){
+				if (previousMoveWasPass){
+					gameOver = true;
+					return new MoveResult(MoveResultStatus.DRAW, null);
+				}
+				previousMoveWasPass = true;
+				result = new MoveResult(MoveResultStatus.OK, null);
+			} else {
+				result = board.placePiece(piece, at);
+				previousMoveWasPass = false;
 			}
-			previousMoveWasPass = true;
-			result = new MoveResult(MoveResultStatus.OK, null);
-		} else {
-			result = board.placePiece(piece, at);
-			previousMoveWasPass = false;
+
+			// Set up next turn
+			if (currentTurn == PlayerColor.BLACK){
+				currentTurn = PlayerColor.WHITE;
+			} else {
+				currentTurn = PlayerColor.BLACK;
+			}
+			
+			notifyPlacement(result, null);
+			return result;	
+		}catch (StrategyException se){
+			notifyPlacement(null, se);
+			throw se;
 		}
-		
-		// Set up next turn
-		if (currentTurn == PlayerColor.BLACK){
-			currentTurn = PlayerColor.WHITE;
-		} else {
-			currentTurn = PlayerColor.BLACK;
-		}
-		
-		return result;	
 	}
 
 	/* (non-Javadoc)
@@ -94,6 +110,7 @@ public class GoController implements GameController {
 		gameStarted = true;
 		gameOver = false;
 		currentTurn = PlayerColor.BLACK;
+		notifyGameStart();
 	}
 
 	/* (non-Javadoc)
@@ -114,4 +131,38 @@ public class GoController implements GameController {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see common.observer.GameObservable#register(common.observer.GameObserver)
+	 */
+	@Override
+	public void register(GameObserver observer) {
+		observers.add(observer);
+	}
+
+	/* (non-Javadoc)
+	 * @see common.observer.GameObservable#unregister(common.observer.GameObserver)
+	 */
+	@Override
+	public void unregister(GameObserver observer) {
+		if (!observers.remove(observer)){
+			throw new StrategyRuntimeException("That observer was never registered - USE THE SAME INSTANCE");
+		}		
+	}
+
+
+	/** Notifies the observers that the game has started  */
+	private void notifyGameStart() {
+		final Iterator<GameObserver> obsIter = observers.iterator();
+		while (obsIter.hasNext()){
+			obsIter.next().gameStart(new HashSet<PieceLocationDescriptor>(), new HashSet<PieceLocationDescriptor>());		
+		}
+	}
+	
+	/** Notifies the observers that the game has started  */
+	private void notifyPlacement(ITurnResult res, StrategyException fault) {
+		final Iterator<GameObserver> obsIter = observers.iterator();
+		while (obsIter.hasNext()){
+			obsIter.next().notifyPlacement(res, fault);		
+		}
+	}
 }

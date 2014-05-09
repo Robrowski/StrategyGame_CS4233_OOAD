@@ -7,20 +7,20 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package game.common;
+package common.observer;
 
 /** Components that may be observed should implement this interface
  * 
  * @author Dabrowski, gpollice
  * @version $Revision: 1.0 $
  */
-public interface StrategyGameObservable
+public interface GameObservable
 {
 	/** Registers an observer with the observable
 	 * 
 	 * @param observer to do the observing
 	 */
-	void register(StrategyGameObserver observer);
+	void register(GameObserver observer);
 	
 	/** Unregister the given observer 
 	 * 
@@ -29,5 +29,5 @@ public interface StrategyGameObservable
 	 * 
 	 * @param observer the observer to retire
 	 */
-	void unregister(StrategyGameObserver observer);
+	void unregister(GameObserver observer);
 }

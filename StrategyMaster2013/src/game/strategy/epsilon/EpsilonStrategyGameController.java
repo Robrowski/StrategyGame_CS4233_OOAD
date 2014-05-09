@@ -15,8 +15,6 @@ import game.common.Location;
 import game.common.Piece;
 import game.common.PieceLocationDescriptor;
 import game.common.PieceType;
-import game.common.StrategyGameObservable;
-import game.common.StrategyGameObserver;
 import game.common.turnResult.ITurnResult;
 import game.common.turnResult.MoveResult;
 import game.common.turnResult.MoveResultStatus;
@@ -28,6 +26,8 @@ import java.util.Iterator;
 import common.PlayerColor;
 import common.StrategyException;
 import common.StrategyRuntimeException;
+import common.observer.GameObservable;
+import common.observer.GameObserver;
 
 /** The Epsilon game engine for the Epsilon version of Strategy. This class handles
  *  validating piece configurations, validating and recording moves and also
@@ -38,10 +38,10 @@ import common.StrategyRuntimeException;
  * @author Dabrowski
  * @version $Revision: 6.9 $
  */
-public class EpsilonStrategyGameController extends AbstractStrategyGameController implements StrategyGameObservable {
+public class EpsilonStrategyGameController extends AbstractStrategyGameController implements GameObservable {
 
 	/** The objects observer this observable */
-	private final Collection<StrategyGameObserver> observers = new HashSet<StrategyGameObserver>();
+	private final Collection<GameObserver> observers = new HashSet<GameObserver>();
 	/** red's configuration */
 	private Collection<PieceLocationDescriptor> redConfiguration = null;
 	/** Blue's configuration */
@@ -64,7 +64,7 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 			Collection<PieceLocationDescriptor> redConfiguration,
 			Collection<PieceLocationDescriptor> blueConfiguration,
 			VersionRules theRules, 
-			Collection<StrategyGameObserver> observers) throws StrategyException {
+			Collection<GameObserver> observers) throws StrategyException {
 		super(redConfiguration, blueConfiguration, theRules);
 	
 		this.redConfiguration = redConfiguration;   // for the observers only
@@ -88,7 +88,7 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 
 	/** Notifies the observers that the game has started  */
 	private void notifyGameStart() {
-		final Iterator<StrategyGameObserver> obsIter = observers.iterator();
+		final Iterator<GameObserver> obsIter = observers.iterator();
 		while (obsIter.hasNext()){
 			obsIter.next().gameStart(redConfiguration, blueConfiguration);		
 		}
@@ -161,7 +161,7 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 	 */
 	private void notifyMove(PieceType piece, Location from, Location to,
 			ITurnResult result, StrategyException fault) {
-		final Iterator<StrategyGameObserver> obsIter = observers.iterator();
+		final Iterator<GameObserver> obsIter = observers.iterator();
 		while (obsIter.hasNext()){
 			obsIter.next().moveHappened(piece, from, to, result, fault);
 		}		
@@ -210,18 +210,18 @@ public class EpsilonStrategyGameController extends AbstractStrategyGameControlle
 	
 	
 	/* (non-Javadoc)
-	 * @see game.common.StrategyGameObservable#register(game.common.StrategyGameObserver)
+	 * @see game.common.GameObservable#register(game.common.GameObserver)
 	 */
 	@Override
-	public void register(StrategyGameObserver observer) {
+	public void register(GameObserver observer) {
 		observers.add(observer);
 	}
 
 	/* (non-Javadoc)
-	 * @see game.common.StrategyGameObservable#unregister(game.common.StrategyGameObserver)
+	 * @see game.common.GameObservable#unregister(game.common.GameObserver)
 	 */
 	@Override
-	public void unregister(StrategyGameObserver observer) {
+	public void unregister(GameObserver observer) {
 		if (!observers.remove(observer)){
 			throw new StrategyRuntimeException("That observer was never registered - USE THE SAME INSTANCE");
 		}

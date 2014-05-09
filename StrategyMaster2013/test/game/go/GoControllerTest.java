@@ -363,6 +363,32 @@ public class GoControllerTest {
 	}
 	
 	
+	@Test
+	public void moreComplexCapture2() throws StrategyException {
+		int [][] blackConfig = new int[boardSize*2 -1][2];
+		int [][] whiteConfig = new int[boardSize][2];
+		
+		int x = 0, y = 1;
+		
+		for (int i = 0; i < boardSize -1; i++){
+			blackConfig[i][x] = 14;
+			blackConfig[i][y] = i;
+		
+			whiteConfig[i][x] = 15;
+			whiteConfig[i][y] = i;
+		
+			blackConfig[i + boardSize][x] = 16;
+			blackConfig[i + boardSize][y] = i;
+		}
+		int lastRow = boardSize-1;
+		blackConfig[lastRow][x] = 14;
+		blackConfig[lastRow][y] = lastRow;
+	
+		whiteConfig[lastRow][x] = 15;
+		whiteConfig[lastRow][y] = lastRow;
+
+		runCaptureTest(blackConfig, whiteConfig, whiteConfig, new Location2D( 16 ,  18 ));
+	}
 	
 	
 	

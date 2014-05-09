@@ -16,6 +16,7 @@ import game.common.PieceLocationDescriptor;
 /**
  * @author Dabrowski
  *
+ * @version $Revision: 1.0 $
  */
 public interface ITurnResult {
 
@@ -23,13 +24,13 @@ public interface ITurnResult {
 	 * 
 	 * @return winner of battle
 	 */
-	public PieceLocationDescriptor getBattleWinner();
+	PieceLocationDescriptor getBattleWinner();
 	
 	/** Gives the state of the game: Ex DRAW
 	 * 
 	 * @return state of game
 	 */
-	public MoveResultStatus getStatus();
+	MoveResultStatus getStatus();
 	
 	
 	
@@ -38,7 +39,7 @@ public interface ITurnResult {
 	 * 
 	 * @return collection of pieces to remove
 	 */
-	public Collection<PieceLocationDescriptor> getPiecesRemoved();
+	Collection<PieceLocationDescriptor> getPiecesRemoved();
 	
 	
 }

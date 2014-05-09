@@ -22,6 +22,7 @@ import game.common.turnResult.MoveResultStatus;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import common.StrategyException;
 import common.StrategyRuntimeException;
@@ -31,19 +32,20 @@ import common.StrategyRuntimeException;
  * 
  * @author Dabrowski
  *
+ * @version $Revision: 1.0 $
  */
 public class GoBoard extends AbstractBoardManager {
 
 	/** Square, odd number sides for board size */
-	private int boardSize; 
+	private final int boardSize; 
 
 	/** theBoard[x][y]  = piece  */
 	protected final Piece[][] theBoard; 
 
 	/** Creates a Go board. Throws exception for invalid input
 	 * @param sideLength length of one side of a square Go board
-	 * @throws StrategyException for invalid input
-	 */
+	
+	 * @throws StrategyException for invalid input */
 	public GoBoard(int sideLength) throws StrategyException {
 		// Check that the board is bigger than 5x5 and is odd length
 		if (sideLength < 5 || sideLength % 2 == 0){
@@ -77,12 +79,12 @@ public class GoBoard extends AbstractBoardManager {
 
 		/******************* Check for captures   ***********************************/
 		// Pieces that are confirmed as captured go in this list
-		LinkedList<PieceLocationDescriptor> capturePieces = new LinkedList<PieceLocationDescriptor>();
+		final List<PieceLocationDescriptor> capturePieces = new LinkedList<PieceLocationDescriptor>();
 		// All non-null pieces that are visited go here
-		LinkedList<PieceLocationDescriptor> nodesVisited  = new LinkedList<PieceLocationDescriptor>();
+		final List<PieceLocationDescriptor> nodesVisited  = new LinkedList<PieceLocationDescriptor>();
 
 		//////////////////////   Find captures based on the piece just placed.
-		Iterator<PieceLocationDescriptor> fourPossibleCaptureGroups = get4Adjacent( l).iterator();
+		final Iterator<PieceLocationDescriptor> fourPossibleCaptureGroups = get4Adjacent( l).iterator();
 		while (fourPossibleCaptureGroups.hasNext()){
 			// The start of the current cluster search
 			PieceLocationDescriptor groupSeed = fourPossibleCaptureGroups.next();
@@ -137,7 +139,7 @@ public class GoBoard extends AbstractBoardManager {
 		}
 
 		// Remove the pieces
-		Iterator<PieceLocationDescriptor> toRemove = capturePieces.iterator();
+		final Iterator<PieceLocationDescriptor> toRemove = capturePieces.iterator();
 		while (toRemove.hasNext()){
 			this.removePiece(toRemove.next().getLocation());
 		}
@@ -161,8 +163,8 @@ public class GoBoard extends AbstractBoardManager {
 	 */
 	@Override
 	public Piece getPieceAt(Location l) {
-		int x = l.getCoordinate(Coordinate.X_COORDINATE);
-		int y = l.getCoordinate(Coordinate.Y_COORDINATE);
+		final int x = l.getCoordinate(Coordinate.X_COORDINATE);
+		final int y = l.getCoordinate(Coordinate.Y_COORDINATE);
 
 		// Make sure its on the board
 		if (x >= boardSize || x < 0 || y < 0 || y >= boardSize){
@@ -177,13 +179,13 @@ public class GoBoard extends AbstractBoardManager {
 	 * @return
 	 */
 	private Collection<PieceLocationDescriptor> get4Adjacent(Location l){
-		Collection<PieceLocationDescriptor> fourAdj = new LinkedList<PieceLocationDescriptor>();
-		int x = l.getCoordinate(Coordinate.X_COORDINATE);
-		int y = l.getCoordinate(Coordinate.Y_COORDINATE);
+		final Collection<PieceLocationDescriptor> fourAdj = new LinkedList<PieceLocationDescriptor>();
+		final int x = l.getCoordinate(Coordinate.X_COORDINATE);
+		final int y = l.getCoordinate(Coordinate.Y_COORDINATE);
 
 		// The change in x/y to get to 4adj
-		int [] dx = { 0, 0, -1, 1};
-		int [] dy = { -1, 1, 0 ,0 };
+		final int [] dx = { 0, 0, -1, 1};
+		final int [] dy = { -1, 1, 0 ,0 };
 
 		// Find the four adjacent pieces
 		for (int i = 0; i < 4; i++ ){
@@ -194,7 +196,7 @@ public class GoBoard extends AbstractBoardManager {
 				Piece adjPiece = getPieceAt(adjLoc);
 				fourAdj.add(new PieceLocationDescriptor( adjPiece, adjLoc ) );
 			} catch (StrategyRuntimeException sre){
-				// don't add... 
+				continue; 
 			}
 		}
 

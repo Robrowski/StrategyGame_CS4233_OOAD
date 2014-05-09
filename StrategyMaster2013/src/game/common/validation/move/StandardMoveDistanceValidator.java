@@ -82,7 +82,7 @@ public class StandardMoveDistanceValidator implements IMoveDistanceValidator {
 	 * @param location to convert
 	 * @return a converted location
 	 */
-	static private Location2D convertLocationTo2D(Location location){
+	private static Location2D convertLocationTo2D(Location location){
 		// Check that the given location is usable - A runtime exception is thrown if not
 		return new Location2D(location.getCoordinate(Coordinate.X_COORDINATE), 
 								location.getCoordinate(Coordinate.Y_COORDINATE));

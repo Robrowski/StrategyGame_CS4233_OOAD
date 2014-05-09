@@ -80,7 +80,7 @@ public class PieceLocationDescriptor
 			piece = this.piece.toString();
 		}
 		
-		return piece + " " + this.location.toString();
+		return piece + " " + location.toString();
 		
 		
 	}

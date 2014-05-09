@@ -18,6 +18,7 @@ import game.common.turnResult.ITurnResult;
 import java.util.Collection;
 import java.util.HashMap;
 
+
 import common.PlayerColor;
 import common.StrategyException;
 import common.StrategyRuntimeException;
@@ -26,11 +27,12 @@ import common.StrategyRuntimeException;
  * 
  * @author Dabrowski
  *
+ * @version $Revision: 1.0 $
  */
 public abstract class AbstractScoreKeeper implements IScoreKeeper {
 
 	/** A hashmap holding the scores of all the players */
-	private HashMap<PlayerColor, Integer> scores;
+	private final HashMap<PlayerColor, Integer> scores;
 	
 	/** Basic constructor that puts a new hash map in to hold the scores
 	 * 
@@ -46,7 +48,7 @@ public abstract class AbstractScoreKeeper implements IScoreKeeper {
 	 * @param toUpdate the new score
 	 */
 	protected void updateScore(PlayerColor player, int toUpdate){
-		this.scores.put(player, toUpdate);
+		scores.put(player, toUpdate);
 	}
 	
 	/** Add to the player's score
@@ -55,7 +57,7 @@ public abstract class AbstractScoreKeeper implements IScoreKeeper {
 	 * @param toAdd points to add
 	 */
 	protected void addToScore(PlayerColor player, int toAdd ){
-		int oldScore = this.getPlayerScore(player);
+		final int oldScore = this.getPlayerScore(player);
 		
 		updateScore(player, toAdd + oldScore);		
 	}

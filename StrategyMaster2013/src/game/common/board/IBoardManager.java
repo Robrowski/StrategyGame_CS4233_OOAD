@@ -54,8 +54,8 @@ public interface IBoardManager {
 	 * 
 	 * @param from the location to start at
 	 * @param to   the location to get to
-	 * @return a list of the pieces in the path, cannot contain null
-	 */
+	
+	 * @return a list of the pieces in the path, cannot contain null */
 	Collection<Piece> getPiecesInPath(Location from, Location to); 
 	
 	/** Adds a piece to the board. In certain implementations, piece removal
@@ -63,8 +63,9 @@ public interface IBoardManager {
 	 * 
 	 * @param piece to add
 	 * @param loc   at location
-	 * @return 
-	 * @throws StrategyException thrown upon error
-	 */
+	
+	
+	 * @return ITurnResult
+	 * @throws StrategyException thrown upon error */
 	ITurnResult placePiece(Piece piece, Location loc) throws StrategyException;
 }

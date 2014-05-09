@@ -44,7 +44,7 @@ import common.observer.GameObserver;
 public class GameFactory
 {
 	/** An instance of the factory */
-	private final static GameFactory instance = new GameFactory();
+	private static final GameFactory instance = new GameFactory();
 
 	/**
 	 * Default private constructor to ensure this is a singleton.

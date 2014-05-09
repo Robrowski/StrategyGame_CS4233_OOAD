@@ -18,21 +18,17 @@ import java.util.Collection;
 
 import common.PlayerColor;
 import common.StrategyException;
+import common.StrategyRuntimeException;
 
 /** Observer used to keep score for a game of Go
  * 
  * 
  * @author Dabrowski
  *
+ * @version $Revision: 1.0 $
  */
 public class GoScoreKeeper extends AbstractScoreKeeper {
 
-	/** Basic constructor. Sets up data structures
-	 * 
-	 */
-	GoScoreKeeper() {
-		super();
-	}
 
 	/* (non-Javadoc)
 	 * @see common.observer.GameObserver#gameStart(java.util.Collection, java.util.Collection)
@@ -62,20 +58,19 @@ public class GoScoreKeeper extends AbstractScoreKeeper {
 	@Override
 	public void notifyPlacement(ITurnResult result, StrategyException fault) {
 		if (result != null &&     !result.getPiecesRemoved().isEmpty()){
-			PlayerColor losingPieces = result.getPiecesRemoved().iterator().next().getPiece().getOwner();
+			final PlayerColor losingPieces = result.getPiecesRemoved().iterator().next().getPiece().getOwner();
 			
 			// Give points to the other player based on the number of pieces captured
 			switch (losingPieces){
-			default: // shhhhh
 			case BLACK:
 				addToScore(PlayerColor.WHITE, result.getPiecesRemoved().size());
 				break;
 			case WHITE:
 				addToScore(PlayerColor.BLACK, result.getPiecesRemoved().size());
 				break;
+			default:  // no-op
+				throw new StrategyRuntimeException(losingPieces.toString() + " isn't playing...");			
 			}
-			
-			
 		}
 	}
 	

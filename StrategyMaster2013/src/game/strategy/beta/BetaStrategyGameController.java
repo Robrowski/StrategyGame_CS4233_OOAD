@@ -62,7 +62,7 @@ public class BetaStrategyGameController implements GameController {
 	/** Boolean flag for whether the game is over or not */
 	private boolean gameOver;
 	/** Configuration for all the pieces */
-	final private Collection<PieceLocationDescriptor>  fieldConfiguration;
+	private final Collection<PieceLocationDescriptor>  fieldConfiguration;
 	/** The current turn = the next move is expected by */
 	PlayerColor currentTurn = PlayerColor.RED;
 	/** The number of moves left */

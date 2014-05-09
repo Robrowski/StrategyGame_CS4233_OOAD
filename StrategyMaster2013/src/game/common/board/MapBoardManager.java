@@ -25,7 +25,6 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import common.PlayerColor;
-import common.StrategyException;
 import common.StrategyRuntimeException;
 
 
@@ -87,11 +86,7 @@ public class MapBoardManager extends AbstractBoardManager {
 		}
 		// Add the winner back in (if there was one)
 		if (theDMove.getBattleWinner() != null){
-			try {
-				this.placePiece(theDMove.getBattleWinner().getPiece(),theDMove.getBattleWinner().getLocation() );
-			} catch (StrategyException e) {
-				e.printStackTrace();
-			}
+			this.placePiece(theDMove.getBattleWinner().getPiece(),theDMove.getBattleWinner().getLocation() );
 		}
 		
 		// Have to check field for bombs and flags
@@ -143,7 +138,7 @@ public class MapBoardManager extends AbstractBoardManager {
 	 * @see game.common.board.IBoardManager#placePiece(game.common.Piece, game.common.Location)
 	 */
 	@Override
-	public ITurnResult placePiece(Piece piece, Location loc) throws StrategyException {
+	public ITurnResult placePiece(Piece piece, Location loc) {
 		fieldConfiguration.put(loc.toString(), new PieceLocationDescriptor( piece, loc));
 		return null;	
 	}

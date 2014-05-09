@@ -45,6 +45,7 @@ public class MoveResult implements ITurnResult
 	 * @param status the move result status
 	 * @param battleWinner if there were a strike, this contains the information
 	 * 		about the winner.
+	 * @param piecesRemoved Collection<PieceLocationDescriptor>
 	 */
 	public MoveResult(MoveResultStatus status, PieceLocationDescriptor battleWinner, Collection<PieceLocationDescriptor> piecesRemoved)
 	{

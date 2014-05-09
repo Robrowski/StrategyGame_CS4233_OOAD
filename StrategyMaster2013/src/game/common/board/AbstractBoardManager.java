@@ -25,6 +25,7 @@ import common.StrategyRuntimeException;
  * 
  * @author Dabrowski
  *
+ * @version $Revision: 1.0 $
  */
 public abstract class AbstractBoardManager implements IBoardManager {
 
@@ -42,7 +43,7 @@ public abstract class AbstractBoardManager implements IBoardManager {
 				this.placePiece(next.getPiece(), next.getLocation()  );
 			} catch (StrategyException e) {
 				e.printStackTrace();
-				throw new StrategyRuntimeException("Unable to place pieces in configuration");
+				throw new StrategyRuntimeException("Unable to place pieces in configuration: " + e.getMessage());
 			}
 		}
 	}

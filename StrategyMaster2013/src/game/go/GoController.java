@@ -33,6 +33,7 @@ import common.observer.GameObserver;
  * 
  * @author Dabrowski
  * @author Catt Mosti
+ * @version $Revision: 1.0 $
  */
 public class GoController implements GameController, GameObservable {
 
@@ -54,10 +55,11 @@ public class GoController implements GameController, GameObservable {
 
 	/** Makes a Go controller
 	 * @param boardSize the size of the board
+	 * @throws StrategyException
 	 */
 	public GoController(int boardSize) throws StrategyException {
 		this.boardSize = boardSize;
-		this.board = new GoBoard(boardSize);
+		board = new GoBoard(boardSize);
 	}
 
 	/* (non-Javadoc)
@@ -127,7 +129,7 @@ public class GoController implements GameController, GameObservable {
 	 */
 	@Override
 	public Piece getPieceAt(Location location) {
-		return this.board.getPieceAt(location);
+		return board.getPieceAt(location);
 	}
 
 

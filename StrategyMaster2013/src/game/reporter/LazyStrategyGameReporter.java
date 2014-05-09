@@ -38,7 +38,7 @@ public class LazyStrategyGameReporter implements GameObserver {
 		System.out.println("A new game has started!");
 		printConfig(redConfiguration);
 		printConfig(blueConfiguration);
-		System.out.println(" ");
+		System.out.println(' ');
 	}
 
 	/** Prints the given configuration
@@ -62,7 +62,7 @@ public class LazyStrategyGameReporter implements GameObserver {
 		// Catch resignation
 		if (piece == null && from == null && to == null){
 			System.out.println("Dishonorable resignation: " + result.getStatus().toString());
-			System.out.println(" ");
+			System.out.println(' ');
 			return;
 		}
 
@@ -86,7 +86,7 @@ public class LazyStrategyGameReporter implements GameObserver {
 			System.out.println( ", Game Status: " + result.getStatus().toString());
 		}
 		if (fault != null)	System.out.println("Fault :" + fault.getMessage());
-		System.out.println(" ");
+		System.out.println(' ');
 	}
 
 	/* (non-Javadoc)

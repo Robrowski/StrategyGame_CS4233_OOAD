@@ -18,14 +18,15 @@ import common.observer.GameObserver;
  * 
  * @author Dabrowski
  *
+ * @version $Revision: 1.0 $
  */
 public interface IScoreKeeper extends GameObserver{
 
 	/** Gets the current score for the given player
 	 * 
 	 * @param player the player
-	 * @return an integer score
-	 */
+	
+	 * @return an integer score */
 	int getPlayerScore(PlayerColor player);
 	
 

@@ -387,11 +387,40 @@ public class GoControllerTest {
 		whiteConfig[lastRow][x] = 15;
 		whiteConfig[lastRow][y] = lastRow;
 
-		runCaptureTest(blackConfig, whiteConfig, whiteConfig, new Location2D( 16 ,  18 ));
+		runCaptureTest(blackConfig, whiteConfig, whiteConfig, new Location2D( 16, 18));
 	}
 	
+	//********************    Suicides *********************/
+	int [][] blackSuicideConfig = { { 0, 3},{ 2, 3},{ 3, 3}   };
+	int [][] whiteSuicideConfig = { {0 ,1 },{1 ,0 },{0 ,4 },{1 ,2 },{1 ,3 },{1 ,5 },{2 ,2 },{2 ,4 },{3 ,2 },{3 ,4 },{4 ,2 },{4 ,4 },{ 5, 3}};
 	
+	@Test
+	public void suicide1() throws StrategyException{
+		int [][] blackPiecesLostToSuicide = {{0 ,0 }};
+				
+		//runCaptureTest(blackSuicideConfig,whiteSuicideConfig,blackPiecesLostToSuicide, new Location2D(0,0));		
+	}
 	
+	@Test
+	public void suicide2() throws StrategyException{
+		int [][] blackPiecesLostToSuicide = {{ 0, 3},{0 ,2 }};
+				
+		//runCaptureTest(blackSuicideConfig,whiteSuicideConfig,blackPiecesLostToSuicide, new Location2D(0,2));		
+	}
+	
+	@Test
+	public void suicide3() throws StrategyException{
+		int [][] blackPiecesLostToSuicide = { {2 ,3 },{ 3,3 },{4 ,3 }};
+				
+		//runCaptureTest(blackSuicideConfig,whiteSuicideConfig,blackPiecesLostToSuicide, new Location2D(4,3));		
+	}
+	
+	@Test
+	public void suicide4() throws StrategyException{
+		int [][] blackPiecesLostToSuicide = {{1 ,4 }};
+				
+		//runCaptureTest(blackSuicideConfig,whiteSuicideConfig,blackPiecesLostToSuicide, new Location2D(1,4));		
+	}
 	
 	///////////////////////////////
 	// Helper functions

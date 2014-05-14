@@ -55,8 +55,8 @@ public class GoControllerTest {
 	// Score Keepers
 	private static IScoreKeeper gameScore;
 	private static IScoreKeeper gameDoubleScore;
-	
-	
+
+
 	final Piece blk = new Piece(PieceType.STONE, PlayerColor.BLACK);
 	final Piece wht = new Piece(PieceType.STONE, PlayerColor.WHITE);
 
@@ -66,8 +66,8 @@ public class GoControllerTest {
 		// Score Keepers
 		gameScore = new GoScoreKeeper();
 		gameDoubleScore = new GoScoreKeeper();
-		
-		
+
+
 		// Basic configuration setup for testing
 		config = new LinkedList<PieceLocationDescriptor>();
 		for (int x = 0; x < boardSize; x++){
@@ -80,8 +80,8 @@ public class GoControllerTest {
 			}
 		}
 	}
-	
-	
+
+
 	@Before
 	public void setup() throws StrategyException{
 
@@ -103,14 +103,14 @@ public class GoControllerTest {
 	public static void afterAllThatTesting(){
 		( (GoController) game).unregister(gameScore);
 		( (GoController) gameDouble).unregister(gameDoubleScore);
-		
-		
+
+
 		// Just try to unregister again
 		try {
 			( (GoController) game).unregister(gameScore);
 			fail();
 		} catch (StrategyRuntimeException sre){
-			
+
 		}
 	}
 
@@ -131,7 +131,7 @@ public class GoControllerTest {
 	@Test
 	public void getBlackorWhiteorNullPieces() throws StrategyException{
 		gameDouble.setBoardConfiguration(config);
-		
+
 		// Expecting Nulls
 		for (int x = 3; x <= 5; x++){
 			for (int y = 0; y < boardSize; y++){
@@ -159,9 +159,9 @@ public class GoControllerTest {
 	// placePiece
 	@Test
 	public void cannotPlacePiecesOnPieces() throws StrategyException{
-		gameDouble.setBoardConfiguration(config);
 		try {
-			gameDouble.placePiece(blk, new Location2D(0,0));
+			game.placePiece(blk, new Location2D(0,0));
+			game.placePiece(wht, new Location2D(0,0));
 			fail();
 		} catch (StrategyException se){
 			assertSame(se.getMessage(), "Cannot place pieces on top of other pieces.");
@@ -337,125 +337,118 @@ public class GoControllerTest {
 		runCaptureTest(complexBlackConfig, complexWhiteConfig, expectedRemoval, new Location2D( 3  ,   2));
 
 	}
-	
+
 	@Test
 	public void complexCaptureB() throws StrategyException{
 		int[][] expectedRemoval = { { 0,4 },{1 ,4 },{2 ,4 },{1 ,5 }  };
 		runCaptureTest(complexBlackConfig, complexWhiteConfig, expectedRemoval, new Location2D( 3  , 4  ));
 
 	}
-	
+
 	@Test
 	public void complexCaptureC() throws StrategyException{
 		int[][] expectedRemoval = {{2 ,0 },{3 ,0 },{4 ,0 },{5 ,0 },{ 6,0 },{ 6, 1},{ 6,2 },{ 5, 2}   };
 		runCaptureTest(complexBlackConfig, complexWhiteConfig, expectedRemoval, new Location2D(  4 ,   2));
 
 	}
-	
+
 	@Test
 	public void complexCaptureD() throws StrategyException{
 		int[][] expectedRemoval = {  { 8,1 }, {9 ,1 },{ 9,0 },{10 ,1 }  };
 		runCaptureTest(complexBlackConfig, complexWhiteConfig, expectedRemoval, new Location2D(  10 ,2   ));
 	}
 
-	
-	
-	
+
+
+
 	//************  MultiCaptures          **************** /
 	// The same starting configuration is used for these tests
 	int[][] multiBlackConfig = { {7,9},{8 ,6 },{ 8, 8},{8 ,10 },{ 9,5 },{9 , 7},{ 9, 11},{10 ,8 },{ 10,10 },{ 11, 5},{11 , 7},{11 , 9},{ 12, 6},{ 12,10 },{12 ,12 },{ 13, 11}  };
 	int[][] multiWhiteConfig = { { 12,11 },{11 ,10 },   {10 , 7},{9 , 6},{11 ,6 },  {8 ,9 },{9 ,10 },{9 ,8 },{ 10, 9} };
-	
+
 	@Test
 	public void multiCapture2() throws StrategyException{
 		int[][] expectedRemoval = {  { 12,11 },{11 ,10 }  };
 		runCaptureTest(multiBlackConfig, multiWhiteConfig, expectedRemoval, new Location2D( 11 ,  11 ));
 	}
-	
+
 	@Test
 	public void multiCapture3() throws StrategyException{
 		int[][] expectedRemoval = { {10 , 7},{9 , 6},{11 ,6 }  };
 		runCaptureTest(multiBlackConfig, multiWhiteConfig, expectedRemoval, new Location2D(10  , 6  ));
 	}	
-	
+
 	@Test
 	public void multiCapture4() throws StrategyException{
 		int[][] expectedRemoval = {   {8 ,9 },{9 ,10 },{9 ,8 },{ 10, 9}  };
 		runCaptureTest(multiBlackConfig, multiWhiteConfig, expectedRemoval, new Location2D( 9 ,  9 ));
 	}	
-	
-	
+
+
 	//*******************  More Complex ***********************8/
 	// The same starting configuration is used for these tests
 	int[][] moreComplexBlackConfig = { { 6,10 },{ 6,11 },{ 7,9 },{7 ,12 },{ 8,9 },{ 9, 10} };
 	int[][] moreComplexWhiteConfig = { { 7,11 },{7 ,10 },{8 ,10 } };
-	
+
 	@Test
 	public void moreComplexCapture1() throws StrategyException{
 		int[][] expectedRemoval = {  { 7,11 },{7 ,10 },{8 ,10 }  };
 		runCaptureTest(moreComplexBlackConfig, moreComplexWhiteConfig, expectedRemoval, new Location2D( 8 ,  11 ));
 	}
-	
-	
+
+
 	@Test
 	public void moreComplexCapture2() throws StrategyException {
 		int [][] blackConfig = new int[boardSize*2 -1][2];
 		int [][] whiteConfig = new int[boardSize][2];
-		
+
 		int x = 0, y = 1;
-		
+
 		for (int i = 0; i < boardSize -1; i++){
 			blackConfig[i][x] = 14;
 			blackConfig[i][y] = i;
-		
+
 			whiteConfig[i][x] = 15;
 			whiteConfig[i][y] = i;
-		
+
 			blackConfig[i + boardSize][x] = 16;
 			blackConfig[i + boardSize][y] = i;
 		}
 		int lastRow = boardSize-1;
 		blackConfig[lastRow][x] = 14;
 		blackConfig[lastRow][y] = lastRow;
-	
+
 		whiteConfig[lastRow][x] = 15;
 		whiteConfig[lastRow][y] = lastRow;
 
 		runCaptureTest(blackConfig, whiteConfig, whiteConfig, new Location2D( 16, 18));
 	}
-	
+
 	//********************    Suicides *********************/
 	int [][] blackSuicideConfig = { { 0, 3},{ 2, 3},{ 3, 3}   };
 	int [][] whiteSuicideConfig = { {0 ,1 },{1 ,0 },{0 ,4 },{1 ,2 },{1 ,3 },{1 ,5 },{2 ,2 },{2 ,4 },{3 ,2 },{3 ,4 },{4 ,2 },{4 ,4 },{ 5, 3}};
-	
-	@Test
-	public void suicide1() throws StrategyException{
-		int [][] blackPiecesLostToSuicide = {{0 ,0 }};
-				
-		//new Location2D(0,0));		
+
+	@Test(expected=StrategyException.class)
+	public void NOsuicide1() throws StrategyException{
+		runCaptureTest(blackSuicideConfig, whiteSuicideConfig, new Location2D(0,0));		
 	}
-	
-	@Test
-	public void suicide2() throws StrategyException{
-		int [][] blackPiecesLostToSuicide = {{ 0, 3},{0 ,2 }};
-				
-		// new Location2D(0,2));		
+
+	@Test(expected=StrategyException.class)
+	public void NOsuicide2() throws StrategyException{
+		runCaptureTest(blackSuicideConfig, whiteSuicideConfig, new Location2D(0,2));		
 	}
-	
-	@Test
-	public void suicide3() throws StrategyException{
-		int [][] blackPiecesLostToSuicide = { {2 ,3 },{ 3,3 },{4 ,3 }};
-				
-		// new Location2D(4,3));		
+
+	@Test(expected=StrategyException.class)
+	public void NOsuicide3() throws StrategyException{
+		runCaptureTest(blackSuicideConfig, whiteSuicideConfig, new Location2D(4,3));		
+
 	}
-	
-	@Test
-	public void suicide4() throws StrategyException{
-		int [][] blackPiecesLostToSuicide = {{1 ,4 }};
-				
-		// new Location2D(1,4));		
+
+	@Test(expected=StrategyException.class)
+	public void NOsuicide4() throws StrategyException{
+		runCaptureTest(blackSuicideConfig, whiteSuicideConfig, new Location2D(1,4));		
 	}
-	
+
 	///////////////////////////////
 	// Helper functions
 
@@ -578,7 +571,7 @@ public class GoControllerTest {
 		// Check the results
 		verifyAccurateTurnResult( expectedRemoved, res);
 		verifyPiecesRemovedFromBoard(expectedRemoved);
-		
+
 		assertEquals(whtExpectedRemoved.length, gameDoubleScore.getPlayerScore(PlayerColor.BLACK));
 	}
 }

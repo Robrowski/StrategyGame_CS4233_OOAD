@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import common.PlayerColor;
 import common.StrategyException;
 import common.StrategyRuntimeException;
 
@@ -44,7 +45,6 @@ public class GoBoard extends AbstractBoardManager {
 
 	/** Creates a Go board. Throws exception for invalid input
 	 * @param sideLength length of one side of a square Go board
-	
 	 * @throws StrategyException for invalid input */
 	public GoBoard(int sideLength) throws StrategyException {
 		// Check that the board is bigger than 5x5 and is odd length
@@ -76,77 +76,114 @@ public class GoBoard extends AbstractBoardManager {
 			throw new StrategyException("Cannot place pieces on top of other pieces.");
 		}
 
+		// Find Captures		
+		Collection<PieceLocationDescriptor> enemyCaptured = this.findCaptures(l, piece.getOwner().opposite());
+		Collection<PieceLocationDescriptor> allyCaptured = this.findCaptures(l, piece.getOwner() );
+
+		// Check for suicides 
+		if (enemyCaptured.isEmpty() && !allyCaptured.isEmpty()){
+			this.removePiece(l); // take the piece back out
+			throw new StrategyException("Can't suicide bub.");
+		}
+
+		// Remove the pieces
+		final Iterator<PieceLocationDescriptor> toRemove = enemyCaptured.iterator();
+		while (toRemove.hasNext()){
+			PieceLocationDescriptor n = toRemove.next();
+			if (n.getPiece().getOwner() == piece.getOwner()){
+				System.err.println("SHit");
+			}
+			this.removePiece(n.getLocation());
+		}
+
+
+		// Return!
+		return new MoveResult(MoveResultStatus.OK, new PieceLocationDescriptor(piece,l), enemyCaptured );
+	}
+
+	/** Finds captures of the given color around the given location. Used for finding 
+	 *  captures as well as detecting suicide moves
+	 * 
+	 * @param l the location
+	 * @param searchingAlong the color of the placed piece
+	 * @return a collection of PieceLocationDescriptors that show captured pieces (pieces without liberties)
+	 */
+	public Collection<PieceLocationDescriptor> findCaptures(Location l, PlayerColor searchingAlong){
 
 		/******************* Check for captures   ***********************************/
-		// Pieces that are confirmed as captured go in this list
-		final List<PieceLocationDescriptor> capturePieces = new LinkedList<PieceLocationDescriptor>();
-		// All non-null pieces that are visited go here
-		final List<PieceLocationDescriptor> nodesVisited  = new LinkedList<PieceLocationDescriptor>();
+		// Pieces that are confirmed as captured go in these lists
+		Collection<PieceLocationDescriptor> captured = new LinkedList<PieceLocationDescriptor>();
 
-		//////////////////////   Find captures based on the piece just placed.
-		final Iterator<PieceLocationDescriptor> fourPossibleCaptureGroups = get4Adjacent( l).iterator();
+		// All non-null pieces that are visited go here
+		List<PieceLocationDescriptor> nodesVisited  = new LinkedList<PieceLocationDescriptor>();
+
+		//////////////////////   Find captures around the piece just placed. Search the piece placed as well
+		Collection<PieceLocationDescriptor>  groupSeeds = get4Adjacent( l);
+		groupSeeds.add(new PieceLocationDescriptor(getPieceAt(l), l  ));
+		final Iterator<PieceLocationDescriptor> fourPossibleCaptureGroups = groupSeeds.iterator();
+		
+		// Conduct the search
 		while (fourPossibleCaptureGroups.hasNext()){
 			// The start of the current cluster search
 			PieceLocationDescriptor groupSeed = fourPossibleCaptureGroups.next();
-			
+
 			// If the group seed is null or allied or visited, ignore the cluster
-			if (groupSeed.getPiece() == null || groupSeed.getPiece().getOwner() == piece.getOwner()  || nodesVisited.contains(groupSeed)){
+			if (groupSeed.getPiece() == null || groupSeed.getPiece().getOwner() != searchingAlong  || nodesVisited.contains(groupSeed)){
 				continue;
 			}
-			
+
 			// BFS along group, searching for "enemies" of piece only. If a null is found, terminate search
 			// If search ends and no "null" is found, the group is to be removed because it is surrounded
 			// by enemies/walls
 			boolean nullFound = false;
-			Collection<PieceLocationDescriptor> enemiesFound = new LinkedList<PieceLocationDescriptor>();
-			
+			Collection<PieceLocationDescriptor> potentialCaptures = new LinkedList<PieceLocationDescriptor>();
+
 			// Use the linked list as a search queue
 			// **This search lets nodes get visited up to 4 times.. not efficient...
 			LinkedList<PieceLocationDescriptor> toSearch = new LinkedList<PieceLocationDescriptor>();
 			toSearch.add(groupSeed);
-			
+
 			// Do the search
 			while (!toSearch.isEmpty()){
 				// The next search
 				PieceLocationDescriptor aPiece = toSearch.pop();
+
+				// Record if a null is found, end the search
+				nullFound |= (aPiece.getPiece() == null);
 				
-				// If null is found, end the search
-				if (aPiece.getPiece() == null ){
-					nullFound = true;
-					break;
-				}
+				/****** This algorithm is not optimized. Theoretically, it could 
+				 *  end as soon as a null is found in a cluster, however the cluster
+				 *  may be connected to a node adjacent to the starting point. If that
+				 *  is the case, ending early will leave the current cluster in the
+				 *  nodes visited, possibly disallowing the the other starting points
+				 *  for the search to find nulls, thus incorrectly finding captures. 
+				 */				
 				
 				// Ignore if visited 
 				if (nodesVisited.contains(aPiece) ){ 
 					continue;
 				}
 				nodesVisited.add(aPiece);
-				
-				// ignore if allied
-				if (aPiece.getPiece().getOwner() == piece.getOwner()){
+
+				// ignore if not part of intended search
+				if (nullFound || aPiece.getPiece().getOwner() != searchingAlong){
 					continue;
 				}
 				
-				// Search the next 4 for more enemies/ replenish the search
-				enemiesFound.add(aPiece);
+				// Search the next 4 for more enemies/replenish the search queue
+				potentialCaptures.add(aPiece);
 				toSearch.addAll(get4Adjacent(aPiece.getLocation()));				
 			}
 			
-			// If null wasn't found, add all found enemies
-			if (!nullFound && toSearch.isEmpty()){
-				capturePieces.addAll(enemiesFound);
-			}	
+			// If null wasn't found, add all found enemies to captured list because there is no liberty
+			if (!nullFound && toSearch.isEmpty() && potentialCaptures.size() > 0){
+				captured.addAll(potentialCaptures);
+			}
 		}
 
-		// Remove the pieces
-		final Iterator<PieceLocationDescriptor> toRemove = capturePieces.iterator();
-		while (toRemove.hasNext()){
-			this.removePiece(toRemove.next().getLocation());
-		}
-
-		// Return!
-		return new MoveResult(MoveResultStatus.OK, new PieceLocationDescriptor(piece,l), capturePieces );
+		return captured;
 	}
+
 
 
 	/** Removes the piece on the board at the given location
@@ -176,9 +213,9 @@ public class GoBoard extends AbstractBoardManager {
 	/** Get the 4 adjacent pieces, along with their locations
 	 * 
 	 * @param l
-	 * @return
+	 * @return could be null
 	 */
-	private Collection<PieceLocationDescriptor> get4Adjacent(Location l){
+	public Collection<PieceLocationDescriptor> get4Adjacent(Location l){
 		final Collection<PieceLocationDescriptor> fourAdj = new LinkedList<PieceLocationDescriptor>();
 		final int x = l.getCoordinate(Coordinate.X_COORDINATE);
 		final int y = l.getCoordinate(Coordinate.Y_COORDINATE);

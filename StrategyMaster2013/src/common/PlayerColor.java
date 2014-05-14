@@ -19,4 +19,22 @@ package common;
 public enum PlayerColor
 {
 	RED, BLUE, BLACK, WHITE;
+	
+	public PlayerColor opposite(){
+		switch(this){
+		case BLACK:
+			return WHITE;
+		case WHITE:
+			return BLACK;
+		
+		
+		case BLUE:
+			return RED;
+		case RED:
+			return BLUE;
+
+		default:
+			return null;
+		}
+	}
 }

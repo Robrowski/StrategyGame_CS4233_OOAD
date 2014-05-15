@@ -9,7 +9,6 @@
  *******************************************************************************/
 package game.common.score;
 
-import game.common.board.IBoardManager;
 import common.PlayerColor;
 import common.observer.GameObserver;
 
@@ -32,10 +31,7 @@ public interface IScoreKeeper extends GameObserver{
 
 	/** Using the final configuration on the board, calculate the 
 	 *  final score.
-	 * 
-	 * @param finalConfiguration the final configuration
 	 */
-	void CalculateFinalScore(IBoardManager finalConfiguration);
-	
+	void CalculateFinalScore();
 		
 }

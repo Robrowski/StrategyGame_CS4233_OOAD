@@ -12,11 +12,11 @@ package game.common.score;
 import game.common.Location;
 import game.common.PieceLocationDescriptor;
 import game.common.PieceType;
-import game.common.board.IBoardManager;
 import game.common.turnResult.ITurnResult;
 
 import java.util.Collection;
 import java.util.HashMap;
+
 
 
 import common.PlayerColor;
@@ -92,9 +92,6 @@ public abstract class AbstractScoreKeeper implements IScoreKeeper {
 	}
 
 
-
-
-
 	/* (non-Javadoc)
 	 * @see common.observer.GameObserver#gameStart(java.util.Collection, java.util.Collection)
 	 */
@@ -105,13 +102,11 @@ public abstract class AbstractScoreKeeper implements IScoreKeeper {
 	}
 
 
-
 	/* (non-Javadoc)
 	 * @see game.common.score.IScoreKeeper#CalculateFinalScore(game.common.board.IBoardManager)
 	 */
 	@Override
-	public void CalculateFinalScore(IBoardManager finalConfiguration) {
+	public void CalculateFinalScore() {
 		// Doesn't have to be used
 	}
-
 }

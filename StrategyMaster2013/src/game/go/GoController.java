@@ -79,10 +79,11 @@ public class GoController implements GameController, GameObservable {
 			if (piece.getType() == PieceType.PASS){
 				if (previousMoveWasPass){
 					gameOver = true;
-					return new MoveResult(MoveResultStatus.DRAW, null);
+					result =  new MoveResult(MoveResultStatus.PASS, null);
+				} else {
+					previousMoveWasPass = true;
+					result = new MoveResult(MoveResultStatus.OK, null);
 				}
-				previousMoveWasPass = true;
-				result = new MoveResult(MoveResultStatus.OK, null);
 			} else {
 				result = board.placePiece(piece, at);
 				previousMoveWasPass = false;
@@ -94,7 +95,7 @@ public class GoController implements GameController, GameObservable {
 			} else {
 				currentTurn = PlayerColor.BLACK;
 			}
-			
+
 			notifyPlacement(result, null);
 			return result;	
 		}catch (StrategyException se){
@@ -159,7 +160,7 @@ public class GoController implements GameController, GameObservable {
 			obsIter.next().gameStart(new HashSet<PieceLocationDescriptor>(), new HashSet<PieceLocationDescriptor>());		
 		}
 	}
-	
+
 	/** Notifies the observers that the game has started  */
 	private void notifyPlacement(ITurnResult res, StrategyException fault) {
 		final Iterator<GameObserver> obsIter = observers.iterator();

@@ -64,8 +64,8 @@ public class GoControllerTest {
 	@BeforeClass 
 	public static void preSetupSetup() throws StrategyException {
 		// Score Keepers
-		gameScore = new GoScoreKeeper();
-		gameDoubleScore = new GoScoreKeeper();
+		gameScore = new GoScoreKeeper(game);
+		gameDoubleScore = new GoScoreKeeper(gameDouble);
 
 
 		// Basic configuration setup for testing
@@ -449,9 +449,44 @@ public class GoControllerTest {
 		runCaptureTest(blackSuicideConfig, whiteSuicideConfig, new Location2D(1,4));		
 	}
 
+	
+	//***********************  Calculate Final Scores **************************/
+	// This is a template for testing end game scores
+	
+	@Test
+	public void finalConfig1()throws StrategyException{
+		int [][] blackFinalConfig1 = { { 0, 3},{ 2, 3},{ 3, 3}   };
+		int [][] whiteFinalConfig1 = { {0 ,1 },{1 ,0 },{0 ,4 },{1 ,2 },{1 ,3 },{1 ,5 },{2 ,2 },{2 ,4 },{3 ,2 },{3 ,4 },{4 ,2 },{4 ,4 },{ 5, 3}};
+		
+		
+		// Set up the configuration
+		runFinalConfigurationTest(blackFinalConfig1,whiteFinalConfig1,0,0);
+	}
+	
+	
+	
+	
 	///////////////////////////////
-	// Helper functions
-
+	// Helper functions	
+	/** Runs a final configuration test, given the black and white configurations as well as expected scores
+	 * 
+	 *  It is expected that configurations are valid
+	 *   
+	 * @param blk configuration
+	 * @param wht configuration
+	 * @param expectedBlkScore   black score
+	 * @param expectedWhtScore   white score
+	 * @throws StrategyException thrown upon error
+	 */
+	void runFinalConfigurationTest( int [][]  blk, int [][] wht, int expectedBlkScore, int expectedWhtScore) throws StrategyException{
+		addBlackAndWhitePieces(blk, wht);
+		
+		gameDouble.setGameOver();
+		
+		assertEquals(gameDoubleScore.getPlayerScore(PlayerColor.BLACK), expectedBlkScore);
+		assertEquals(gameDoubleScore.getPlayerScore(PlayerColor.WHITE), expectedWhtScore);
+	}
+	
 	/** Make a move
 	 * 
 	 * @param c Player color who is playing

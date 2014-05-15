@@ -7,15 +7,24 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
+package game.go;
 
-package game.common.turnResult;
-
-/**
- * This is an enumeration of the possible outcomes of any legal move in Strategy.
- * @author gpollice
- * @version Aug 31, 2013
+/** One implementation of a 2D graph searching algorithm
+ * 
+ * 
+ * 
+ * @author Dabrowski
+ *
  */
-public enum MoveResultStatus
-{
-	OK, BLUE_WINS, RED_WINS, DRAW, FLAG_CAPTURED, WHITE_WINS, BLACK_WINS, PASS;
+public class CaptureFinder {
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

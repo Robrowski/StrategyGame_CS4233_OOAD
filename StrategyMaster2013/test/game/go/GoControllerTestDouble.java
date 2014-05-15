@@ -62,6 +62,6 @@ public class GoControllerTestDouble extends GoController {
 	void setGameOver() throws StrategyException{
 		this.gameOver = true;
 	}
-	
+
 	
 }

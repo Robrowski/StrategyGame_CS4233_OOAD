@@ -7,7 +7,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package game.go;
+package game.go.score;
 
 import game.GameController;
 import game.common.PieceLocationDescriptor;
@@ -21,21 +21,15 @@ import common.PlayerColor;
 import common.StrategyException;
 import common.StrategyRuntimeException;
 
-/** Observer used to keep score for a game of Go. Keeps track of 
- *  when both players pass to calculate the final score at the end 
- *  of the game. 
- * 
- *  Multiple instances may be initialized and registered, but the 
- *  instance used by an AIRunner should not be shared at all to 
- *  protect the score of the game. 
+/** Abstract Go Score keeper to show parts of a score keeper 
+ *  that should be same for all versions, while implementation
+ *  and functionality may vary in final scoring algorithms. 
  * 
  * 
  * @author Dabrowski
  *
- * @version $Revision: 1.0 $
  */
-public class GoScoreKeeper extends AbstractScoreKeeper {
-
+public abstract class AbstractGoScoreKeeper extends AbstractScoreKeeper {
 	/** Keep track of "passes" */
 	protected boolean previousMoveWasPass = false;	
 	/** Reference to the game */
@@ -50,7 +44,7 @@ public class GoScoreKeeper extends AbstractScoreKeeper {
 	 * 
 	 * @param goGame the game being observed
 	 */
-	GoScoreKeeper(GameController goGame){
+	public AbstractGoScoreKeeper(GameController goGame){
 		super();
 		this.goGame = goGame;
 	}
@@ -59,7 +53,6 @@ public class GoScoreKeeper extends AbstractScoreKeeper {
 	/* (non-Javadoc)
 	 * @see common.observer.GameObserver#gameStart(java.util.Collection, java.util.Collection)
 	 */
-	@Override
 	public void gameStart(Collection<PieceLocationDescriptor> redConfiguration,
 			Collection<PieceLocationDescriptor> blueConfiguration) {
 		// Initialize scores
@@ -67,36 +60,11 @@ public class GoScoreKeeper extends AbstractScoreKeeper {
 		updateScore(PlayerColor.WHITE, 0);
 	}
 
-
-
-	/** For this implementation, this function may be called at any time, but is intended for
-	 *  use by an AI runner only. This function will be called automatically if the end of the
-	 *  game is detected. 
-	 *  
-	 *  This function can be called multiple times and will be accurate after moves are made
-	 *  
-	 * @see game.common.score.IScoreKeeper#CalculateFinalScore()
-	 */
-	@Override
-	public void CalculateFinalScore() {
-		// Doesn't have to be used
-		int blackFinalScore = 0;
-		int whiteFinalScore = 0;
-		
-		// Calculate the score
-		
-		
-		
-		// Update the scores
-		updateScore(PlayerColor.BLACK, blackCaptures + blackFinalScore);
-		updateScore(PlayerColor.WHITE, whiteCaptures + whiteFinalScore);
-	}
-
-
+	
+	
 	/* (non-Javadoc)
 	 * @see common.observer.GameObserver#notifyPlacement(game.common.turnResult.ITurnResult, common.StrategyException)
 	 */
-	@Override
 	public void notifyPlacement(ITurnResult result, StrategyException fault) {
 		if (result != null &&     !result.getPiecesRemoved().isEmpty()){
 			final PlayerColor losingPieces = result.getPiecesRemoved().iterator().next().getPiece().getOwner();
@@ -126,4 +94,6 @@ public class GoScoreKeeper extends AbstractScoreKeeper {
 			previousMoveWasPass = true;
 		}	
 	}
+	
+	
 }

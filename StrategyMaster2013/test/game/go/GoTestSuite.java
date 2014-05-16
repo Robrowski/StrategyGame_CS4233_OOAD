@@ -17,6 +17,7 @@ import game.common.Piece;
 import game.common.PieceLocationDescriptor;
 import game.common.PieceType;
 import game.common.score.IScoreKeeper;
+import game.go.score.GoScoreKeeper_Chinese;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -56,8 +57,8 @@ public abstract class GoTestSuite {
 	@BeforeClass 
 	public static void preSetupSetup() throws StrategyException {
 		// Score Keepers
-		gameScore = new GoScoreKeeper(game);
-		gameDoubleScore = new GoScoreKeeper(gameDouble);
+		gameScore = new GoScoreKeeper_Chinese(game);
+		gameDoubleScore = new GoScoreKeeper_Chinese(gameDouble);
 
 
 		// Basic configuration setup for testing

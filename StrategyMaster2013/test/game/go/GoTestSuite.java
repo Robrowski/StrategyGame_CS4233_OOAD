@@ -58,7 +58,7 @@ public abstract class GoTestSuite {
 	public static void preSetupSetup() throws StrategyException {
 		// Score Keepers
 		gameScore = new GoScoreKeeper_Chinese(game);
-		gameDoubleScore = new GoScoreKeeper_Chinese(gameDouble);
+		gameDoubleScore = new GoScoreKeeperTestDouble(gameDouble);
 
 
 		// Basic configuration setup for testing

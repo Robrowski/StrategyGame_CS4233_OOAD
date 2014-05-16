@@ -58,6 +58,9 @@ public abstract class AbstractGoScoreKeeper extends AbstractScoreKeeper {
 		// Initialize scores
 		updateScore(PlayerColor.BLACK, 0);
 		updateScore(PlayerColor.WHITE, 0);
+		whiteCaptures = 0;
+		blackCaptures = 0;
+		previousMoveWasPass = false;	
 	}
 
 	

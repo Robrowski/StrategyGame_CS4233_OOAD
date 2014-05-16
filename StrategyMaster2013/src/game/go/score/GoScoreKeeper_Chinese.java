@@ -13,6 +13,7 @@ import game.GameController;
 import game.common.PieceLocationDescriptor;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
 import common.PlayerColor;
 
@@ -52,6 +53,17 @@ public class GoScoreKeeper_Chinese extends AbstractGoScoreKeeper {
 		int blackFinalScore = 0;
 		int whiteFinalScore = 0;
 		
+		// Find dead pieces
+		
+		
+		// Remove them
+		
+		
+		
+		
+		
+		
+		
 		// Calculate the score
 		
 		
@@ -66,6 +78,9 @@ public class GoScoreKeeper_Chinese extends AbstractGoScoreKeeper {
 	 * @return a collection of dead pieces
 	 */
 	protected Collection<PieceLocationDescriptor> findDeadPieces(){
-		return null;
+		LinkedList<PieceLocationDescriptor> config = new LinkedList<PieceLocationDescriptor>();
+
+		
+		return config;
 	}
 }

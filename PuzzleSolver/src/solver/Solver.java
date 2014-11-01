@@ -100,58 +100,37 @@ public class Solver  {
 //			corner1.rotate();
 //		}
 		
-		for (int x = 1; x < current_chunk.width - 1; x++ ){
-			Piece p = getPieceToFit(Connection.FLAT , current_chunk.getPiece(x - 1 , 0).right(), null , null );
-			current_chunk.placeAt(p, x, 0);
-			NotificationSystem.notifyAll(p, x, 0);
+		// TODO: Solve all edges, then spiral in... 
+		try {
+			for (int x = 1; x < current_chunk.width - 1; x++ ){
+				Piece p = getPieceToFit(Connection.FLAT , current_chunk.getPiece(x - 1 , 0).right(), null , null );
+				current_chunk.placeAt(p, x, 0);
+				NotificationSystem.notifyAll(p, x, 0);
+			}
+			for (int y = 1; y < current_chunk.height - 1; y++ ){
+				Piece p = getPieceToFit(current_chunk.getPiece(0 , y -1).top(), Connection.FLAT  , null , null );
+				current_chunk.placeAt(p, 0, y);
+				NotificationSystem.notifyAll(p, 0, y);
+			}
+		} catch (Exception e){
+			
 		}
-		for (int y = 1; y < current_chunk.height - 1; y++ ){
-			Piece p = getPieceToFit(current_chunk.getPiece(0 , y -1).right(), Connection.FLAT  , null , null );
-			current_chunk.placeAt(p, 0, y);
-			NotificationSystem.notifyAll(p, 0, y);
-		}
-		
 		
 		// 2. Place bottom row (until corner)
 		for (int y = 1; y < current_chunk.height -1; y++){
 			for (int x = 1; x < current_chunk.width - 1; x++ ){
-				Piece p = getPieceToFit(current_chunk.getPiece(x , y-1).top() , current_chunk.getPiece(x - 1 , y).right(), null , null );
+				Piece p = this.getPieceToFit(x, y);
+//				Piece p = getPieceToFit(current_chunk.getPiece(x , y-1).top() , current_chunk.getPiece(x - 1 , y).right(), null , null );
 				current_chunk.placeAt(p, x, y);
 				NotificationSystem.notifyAll(p, x, y);
 			}
 		}
 		
 
-		// current_chunk.getPiece(0, 0).right()
-		// 3. Start placing pieces
-
 
 		// 4. Have we failed? return a few points and try again
 //		Collections.shuffle((List<Piece>) this.inners);
 		NotificationSystem.setStatus(id,"stuff");
-
-		///// A WAY TO ITERATE THROUGH AND CONSIDER SIDES....
-		//		// Generates the puzzle solution row by row
-		//		for (int x = 0; x < width; x++){
-		//			for (int y = 0; y < height; y++){ 
-		//				Connection[] conns = new Connection[4];
-		//				
-		//				// Handle each edge
-		//				if (y == 0) conns[0] = Connection.FLAT; //Bottom
-		//				else conns[0] =  b.getPiece(x, y-1).top();
-		//				if (x == 0) conns[1] = Connection.FLAT; // Left
-		//				else conns[1] =  b.getPiece(x-1, y).right();
-		//				
-		//				if (y == height - 1) conns[2] = Connection.FLAT;
-		//				else conns[2] = Connection.random(colors);
-		//				if (x == width - 1) conns[3] = Connection.FLAT;
-		//				else conns[3] = Connection.random(colors);
-		//
-		//				Piece p = new Piece(conns);
-		//				b.placeAt(p, x, y);
-		//				NotificationSystem.notifyAll(p, x, y);
-		//			}
-		//		}
 
 	}
 	
@@ -168,24 +147,35 @@ public class Solver  {
 	 * @return
 	 */
 	protected Piece getPieceToFit(int x, int y){
-		Piece[] pieces = new Piece[4]; // 
 		Connection[] conns = new Connection[4];
 
+		
 		for (int i = 0; i < conns.length; i++ ){
 		
 			try {
-				pieces[i] = this.current_chunk.getPiece(x_search[i], y_search[i]);
-				if (pieces[i] == null){
+				Piece p = this.current_chunk.getPiece(x + x_search[i], y + y_search[i]);
+				if (p == null){
 					conns[i] = null;
+				} else {
+					switch (i){
+					case 0:
+						conns[i] = p.top();
+						break;
+					case 1:
+						conns[i] = p.right();
+						break;
+					case 2:
+						conns[i] = p.bottom();
+						break;
+					case 3:
+						conns[i] = p.left();
+						break;
+					}
 				}
-				
 			} catch (ArrayIndexOutOfBoundsException aioobe){ 
 				conns[i] = Connection.FLAT;				
 			}
-		
 		}
-		
-		
 		
 		return getPieceToFit(conns[0],conns[1],conns[2],conns[3]);
 	}

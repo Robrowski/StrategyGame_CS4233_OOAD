@@ -100,14 +100,26 @@ public class Solver  {
 //			corner1.rotate();
 //		}
 		
-
-		// 2. Place bottom row (until corner)
-		for (int x = 1; x < current_chunk.width; x++ ){
+		for (int x = 1; x < current_chunk.width - 1; x++ ){
 			Piece p = getPieceToFit(Connection.FLAT , current_chunk.getPiece(x - 1 , 0).right(), null , null );
 			current_chunk.placeAt(p, x, 0);
 			NotificationSystem.notifyAll(p, x, 0);
 		}
+		for (int y = 1; y < current_chunk.height - 1; y++ ){
+			Piece p = getPieceToFit(current_chunk.getPiece(0 , y -1).right(), Connection.FLAT  , null , null );
+			current_chunk.placeAt(p, 0, y);
+			NotificationSystem.notifyAll(p, 0, y);
+		}
 		
+		
+		// 2. Place bottom row (until corner)
+		for (int y = 1; y < current_chunk.height -1; y++){
+			for (int x = 1; x < current_chunk.width - 1; x++ ){
+				Piece p = getPieceToFit(current_chunk.getPiece(x , y-1).top() , current_chunk.getPiece(x - 1 , y).right(), null , null );
+				current_chunk.placeAt(p, x, y);
+				NotificationSystem.notifyAll(p, x, y);
+			}
+		}
 		
 
 		// current_chunk.getPiece(0, 0).right()

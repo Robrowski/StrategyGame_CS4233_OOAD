@@ -1,7 +1,6 @@
 package puzzle;
 
 import java.awt.Color;
-import java.util.regex.Pattern;
 
 
 /** Enums to indicate what type a particular connector is
@@ -79,7 +78,8 @@ public enum Connection {
 	 */
 	public static String makeCRegex(Connection a){
 		if (a == null){
-			return ".*"; // 3 or 4 characters... or more
+			return ".*"; // 3 or 4 characters... 
+			// TODO: make this reject FLAT
 		}
 		return a.toString();
 	}

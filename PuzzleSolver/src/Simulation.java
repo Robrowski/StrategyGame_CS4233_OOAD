@@ -2,6 +2,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import notifications.NotificationSystem;
 import puzzle.Piece;
 import solver.PuzzleGenerator;
 import solver.Solver;
@@ -23,8 +24,8 @@ public class Simulation {
 		Collection<Piece> pieces = PuzzleGenerator.generateRandomPuzzle(width, height, colors, 0);
 		Collections.shuffle((List<Piece>) pieces); /// Can cast because we know it is a linked list
 		 
-//		y = new VisualizationFrame(width, height, "solver");
-//		NotificationSystem.register(y.getPuzzlePanel());
+		y = new VisualizationFrame(width, height, "solver");
+		NotificationSystem.register(y.getPuzzlePanel());
 
 		s = new Solver(new Board(width, height), pieces);
 

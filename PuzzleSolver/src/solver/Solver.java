@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.StringTokenizer;
 
 import notifications.NotificationSystem;
 import puzzle.Connection;
@@ -88,15 +89,9 @@ public class Solver  {
 		
 		// 1. Place a corner
 		// 1.a pick a bottom left corner (starts with FLAT FLAT * * 
-		for (String s: this.s_pieces.keySet()){
-			if (s.startsWith("FLAT FLAT ")){
-				Piece p = getPieceFromSorted(s);
-								
-				current_chunk.placeAt(p, 0, 0);
-				NotificationSystem.notifyAll(p, 0, 0);
-				break;
-			}
-		}
+		Piece px = getPieceToFit(Connection.FLAT , Connection.FLAT, null , null );
+		current_chunk.placeAt(px, 0,0);
+		NotificationSystem.notifyAll(px, 0, 0);
 		
 		
 		// Not needed....
@@ -107,10 +102,15 @@ public class Solver  {
 		
 
 		// 2. Place bottom row (until corner)
-		Piece px = getPieceToFit(Connection.FLAT , null, null , current_chunk.getPiece(0, 0).right() );
+		for (int x = 1; x < current_chunk.width; x++ ){
+			Piece p = getPieceToFit(Connection.FLAT , current_chunk.getPiece(x - 1 , 0).right(), null , null );
+			current_chunk.placeAt(p, x, 0);
+			NotificationSystem.notifyAll(p, x, 0);
+		}
+		
+		
 
-		
-		
+		// current_chunk.getPiece(0, 0).right()
 		// 3. Start placing pieces
 
 
@@ -144,6 +144,41 @@ public class Solver  {
 	}
 	
 	
+	// Search orders
+	int[] x_search = {0, -1, 0, 1};
+	int[] y_search = {-1, 0, 1, 0};
+	
+	/** Gets a piece that fits in the given position. Neighbors that are 
+	 *  null specify "random"
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	protected Piece getPieceToFit(int x, int y){
+		Piece[] pieces = new Piece[4]; // 
+		Connection[] conns = new Connection[4];
+
+		for (int i = 0; i < conns.length; i++ ){
+		
+			try {
+				pieces[i] = this.current_chunk.getPiece(x_search[i], y_search[i]);
+				if (pieces[i] == null){
+					conns[i] = null;
+				}
+				
+			} catch (ArrayIndexOutOfBoundsException aioobe){ 
+				conns[i] = Connection.FLAT;				
+			}
+		
+		}
+		
+		
+		
+		return getPieceToFit(conns[0],conns[1],conns[2],conns[3]);
+	}
+	
+	
 
 	/** For the given connections, finds an available piece that matches them. nulls 
 	 * represent cases where it doesn't matter
@@ -165,6 +200,26 @@ public class Solver  {
 		// Iterate through the keys, pick the first that matches
 		for (String s: this.s_pieces.keySet()){
 			if (s.matches(regex)){
+				///////////////////////////
+				// TODO FIX THIS HACK
+				// If it has a flat to fill a ".*", then its wrong
+				StringTokenizer regex_tok = new StringTokenizer(regex);
+				StringTokenizer     s_tok = new StringTokenizer(s);
+				boolean bad = false;
+				while (regex_tok.hasMoreTokens() && s_tok.hasMoreTokens()){
+					String r = regex_tok.nextToken();
+					String m = s_tok.nextToken();
+					if (r.equals(".*") && m.equals("FLAT")){
+						bad = true;
+						break;
+					}
+				}
+				if (bad){
+					continue;
+				}
+				/////////////////////////////////
+				
+				
 				matched_s = s;
 				break;
 			} 

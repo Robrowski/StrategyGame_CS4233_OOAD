@@ -43,4 +43,10 @@ public class Board implements IBoard {
 		return this.b[x][y];
 	}
 
+	@Override
+	public boolean remove(int x, int y) {
+		this.b[x][y] = null;
+		return true;
+	}
+
 }

@@ -3,7 +3,6 @@ package boards;
 import puzzle.Piece;
 
 public interface IBoard {
-	int width = 0;
 
 	/** Gets the piece at the given location
 	 * 
@@ -21,4 +20,12 @@ public interface IBoard {
 	 * @return
 	 */
 	public boolean placeAt(Piece p, int x, int y);
+	
+	/** Remove the piece at the given location
+	 * 
+	 * @param x
+	 * @param y
+	 * @return true for success, false otherwise
+	 */
+	public boolean remove(int x, int y);
 }

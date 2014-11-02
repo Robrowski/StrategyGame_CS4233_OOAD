@@ -87,18 +87,17 @@ public class Solver  {
 	public void solve(){
 		// 0. Initialize
 		
-		// 1. Place a corner
+		// 1. Place the four corners
 		// 1.a pick a bottom left corner (starts with FLAT FLAT * * 
-		Piece px = getPieceToFit(Connection.FLAT , Connection.FLAT, null , null );
-		current_chunk.placeAt(px, 0,0);
-		NotificationSystem.notifyAll(px, 0, 0);
+		int[] x_corner = {0,0,current_chunk.width-1, current_chunk.width-1};
+		int[] y_corner = {0,current_chunk.height-1,0,current_chunk.height-1};
+		for (int i = 0; i < 4; i++){
+			Piece px = getPieceToFit(x_corner[i], y_corner[i]);
+			current_chunk.placeAt(px, x_corner[i], y_corner[i]);
+			NotificationSystem.notifyAll(px, x_corner[i], y_corner[i]);
+		}
 		
-		
-		// Not needed....
-//		// 1.b rotate until set as bottom left
-//		while (corner1.left() == Connection.FLAT && corner1.bottom() == Connection.FLAT){
-//			corner1.rotate();
-//		}
+
 		
 		// TODO: Solve all edges, then spiral in... 
 		try {

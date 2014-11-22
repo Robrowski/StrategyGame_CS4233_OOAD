@@ -25,7 +25,7 @@ public interface IBoard {
 	 * 
 	 * @param x
 	 * @param y
-	 * @return true for success, false otherwise
+	 * @return returns the piece taken off the board
 	 */
-	public boolean remove(int x, int y);
+	public Piece remove(int x, int y);
 }

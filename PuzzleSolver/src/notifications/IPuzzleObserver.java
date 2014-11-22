@@ -27,6 +27,14 @@ public interface IPuzzleObserver {
 	 * @param y y location (origin bottom)
 	 */
 	public void notifyAttemptedPlacement(Piece p, int x, int y);
+
+	/** Notifies the remove of the piece at the given location. Doesn't care
+	 * if there was something there or not
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public void notifyRemove(int x, int y);
 	
 	
 	

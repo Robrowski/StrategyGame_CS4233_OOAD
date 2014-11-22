@@ -51,7 +51,7 @@ public class PuzzleGenerator  {
 				Piece p = new Piece(conns);
 				b.placeAt(p, x, y); // Place on the board for reference
 				pieces.add(p); // Add the pieces to the list for returns
-				NotificationSystem.notifyAll(p, x, y); // Notification for visualization
+				NotificationSystem.notifyPut(p, x, y); // Notification for visualization
 				NotificationSystem.setStatus(id,"Piece: " + x + ", " + y);
 
 				// Sleep statement for making visualization/animations

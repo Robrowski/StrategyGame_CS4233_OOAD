@@ -31,7 +31,7 @@ public class NotificationSystemTest {
 		NotificationSystem.register(new MockObserver(this.b));
 		for (int x = 0; x < b.width; x++){
 			for (int y = 0; y < b.height; y++){
-				NotificationSystem.notifyAll(new Piece(null,null,null,null), x, y);
+				NotificationSystem.notifyPut(new Piece(null,null,null,null), x, y);
 			}
 		}
 				

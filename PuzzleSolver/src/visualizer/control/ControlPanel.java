@@ -55,4 +55,10 @@ public class ControlPanel extends JPanel implements IPuzzleObserver {
 	public void notifyAttemptedPlacement(Piece p, int x, int y) {
 		updateStatus();		
 	}
+
+	@Override
+	public void notifyRemove(int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
 }

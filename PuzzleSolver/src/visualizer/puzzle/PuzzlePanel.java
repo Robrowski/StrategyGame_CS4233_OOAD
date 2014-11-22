@@ -63,4 +63,10 @@ public class PuzzlePanel extends JPanel implements IPuzzleObserver  {
 		toUpdate.updatePiece(p);
 		toUpdate.highlight(true);
 	}
+
+	@Override
+	public void notifyRemove(int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
 }

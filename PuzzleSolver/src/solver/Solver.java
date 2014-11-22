@@ -1,5 +1,6 @@
 package solver;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
@@ -32,7 +33,7 @@ public class Solver  {
 	public static final String id = "Solver";
 	public  final HashMap<String,Queue<Piece>> s_pieces = new HashMap<String, Queue<Piece>>();
 
-	
+
 	/** Basic constructor to initialize data fields
 	 * 
 	 * @param b
@@ -63,7 +64,7 @@ public class Solver  {
 		this(b);
 		for (Piece p : pieces)	sortPiece(p);
 	}
-	
+
 	/** Sorts and stores a given piece into an appropriate buckets
 	 * 
 	 * @param p
@@ -75,71 +76,98 @@ public class Solver  {
 			q = new LinkedList<Piece>();
 			this.s_pieces.put(p.toString(), q);
 		}
-		
+
 		q.add(p);
-		
+
 	}
-	
+
 
 	/** Solves a puzzle...
 	 *  
 	 */
 	public void solve(){
 		// 0. Initialize
-		
+
 		// 1. Place the four corners
-		// 1.a pick a bottom left corner (starts with FLAT FLAT * * 
 		int[] x_corner = {0,0,current_chunk.width-1, current_chunk.width-1};
 		int[] y_corner = {0,current_chunk.height-1,0,current_chunk.height-1};
 		for (int i = 0; i < 4; i++){
 			Piece px = getPieceToFit(x_corner[i], y_corner[i]);
 			current_chunk.placeAt(px, x_corner[i], y_corner[i]);
-			NotificationSystem.notifyAll(px, x_corner[i], y_corner[i]);
+			NotificationSystem.notifyPut(px, x_corner[i], y_corner[i]);
 		}
-		
 
-		
-		// TODO: Solve all edges, then spiral in... 
-		try {
-			for (int x = 1; x < current_chunk.width - 1; x++ ){
-				Piece p = getPieceToFit(Connection.FLAT , current_chunk.getPiece(x - 1 , 0).right(), null , null );
-				current_chunk.placeAt(p, x, 0);
-				NotificationSystem.notifyAll(p, x, 0);
+		// 2. Try to solve the edges. Retry until a valid edge is finished
+
+		boolean done = false;
+		int attempts = 0;
+		while (!done){
+			try {
+				attempts++;
+
+				for (int x = 1; x < current_chunk.width - 1; x++ ){
+					Piece p = getPieceToFit(Connection.FLAT , current_chunk.getPiece(x - 1 , 0).right(), null , null );
+					current_chunk.placeAt(p, x, 0);
+					NotificationSystem.notifyPut(p, x, 0);
+				}
+				done = true;
+			} catch (Exception e){ 	
+				System.out.println("fail");
+				// Remove the row
+				for (int x = 1; x < current_chunk.width - 1; x++){
+					Piece rp = current_chunk.remove(x, 0); // Take the piece off and put it back...
+					if (rp != null) this.sortPiece(rp);
+				}
+
 			}
-			for (int y = 1; y < current_chunk.height - 1; y++ ){
-				Piece p = getPieceToFit(current_chunk.getPiece(0 , y -1).top(), Connection.FLAT  , null , null );
-				current_chunk.placeAt(p, 0, y);
-				NotificationSystem.notifyAll(p, 0, y);
-			}
-		} catch (Exception e){
-			
 		}
-		
-		// 2. Place bottom row (until corner)
+		System.out.println("attempts: " + attempts);
+		done = false;
+		while (!done){
+			try {
+				for (int y = 1; y < current_chunk.height - 1; y++ ){
+					Piece p = getPieceToFit(current_chunk.getPiece(0 , y -1).top(), Connection.FLAT  , null , null );
+					current_chunk.placeAt(p, 0, y);
+					NotificationSystem.notifyPut(p, 0, y);
+				}
+				done = true;
+
+			} catch (Exception e){ 	
+				System.out.println("fail");
+				// Remove the row
+				for (int y = 1; y < current_chunk.width - 1; y++){
+					Piece rp = current_chunk.remove(y, 0); // Take the piece off and put it back...
+					if (rp != null) this.sortPiece(rp);
+				}
+			}
+		}
+		System.out.println("attempts: " + attempts);
+
+		// 3. Place row by row (until corner)
 		for (int y = 1; y < current_chunk.height -1; y++){
 			for (int x = 1; x < current_chunk.width - 1; x++ ){
 				Piece p = this.getPieceToFit(x, y);
-//				Piece p = getPieceToFit(current_chunk.getPiece(x , y-1).top() , current_chunk.getPiece(x - 1 , y).right(), null , null );
+				//				Piece p = getPieceToFit(current_chunk.getPiece(x , y-1).top() , current_chunk.getPiece(x - 1 , y).right(), null , null );
 				current_chunk.placeAt(p, x, y);
-				NotificationSystem.notifyAll(p, x, y);
+				NotificationSystem.notifyPut(p, x, y);
 			}
 		}
-		
+
 
 
 		// 4. Have we failed? return a few points and try again
-//		Collections.shuffle((List<Piece>) this.inners);
+		//		Collections.shuffle((List<Piece>) this.inners);
 		NotificationSystem.setStatus(id,"stuff");
 
 	}
-	
-	
+
+
 	// Search orders
 	int[] x_search = {0, -1, 0, 1};
 	int[] y_search = {-1, 0, 1, 0};
-	
+
 	/** Gets a piece that fits in the given position. Neighbors that are 
-	 *  null specify "random"
+	 *  null specify "random". Considers all 4 sides.
 	 * 
 	 * @param x
 	 * @param y
@@ -148,9 +176,7 @@ public class Solver  {
 	protected Piece getPieceToFit(int x, int y){
 		Connection[] conns = new Connection[4];
 
-		
 		for (int i = 0; i < conns.length; i++ ){
-		
 			try {
 				Piece p = this.current_chunk.getPiece(x + x_search[i], y + y_search[i]);
 				if (p == null){
@@ -175,11 +201,10 @@ public class Solver  {
 				conns[i] = Connection.FLAT;				
 			}
 		}
-		
 		return getPieceToFit(conns[0],conns[1],conns[2],conns[3]);
 	}
-	
-	
+
+
 
 	/** For the given connections, finds an available piece that matches them. nulls 
 	 * represent cases where it doesn't matter
@@ -193,13 +218,15 @@ public class Solver  {
 	protected Piece getPieceToFit(Connection a, Connection b,Connection c,Connection d){	
 		// Build up a regular expression that represents the "a b c d" with nulls = ****
 		String regex = Connection.makeCRegex(a) + " " 
-					 + Connection.makeCRegex(b) + " " 
-				     + Connection.makeCRegex(c) + " " 
-					 + Connection.makeCRegex(d) + " ";
-		
+				+ Connection.makeCRegex(b) + " " 
+				+ Connection.makeCRegex(c) + " " 
+				+ Connection.makeCRegex(d) + " ";
+
 		String matched_s = "";
+		LinkedList<String> keys = new LinkedList<String>(this.s_pieces.keySet());
+		Collections.shuffle(keys); // Provides randomness in puzzle piece placement
 		// Iterate through the keys, pick the first that matches
-		for (String s: this.s_pieces.keySet()){
+		for (String s: keys){
 			if (s.matches(regex)){
 				///////////////////////////
 				// TODO FIX THIS HACK
@@ -219,16 +246,16 @@ public class Solver  {
 					continue;
 				}
 				/////////////////////////////////
-				
-				
+
+
 				matched_s = s;
 				break;
 			} 
 		}
-		
+
 		return getPieceFromSorted(matched_s); // didn't find it...
 	}
-	
+
 	/** Gets a piece out of the hash map and removes the key if the queue is empty
 	 * 
 	 * @param key
@@ -241,8 +268,8 @@ public class Solver  {
 			this.s_pieces.remove(key); // remove if empty
 			// This might be the cause of a simultaneous access exception
 		}
-				
-	    return p;
+
+		return p;
 	}
-	
+
 }

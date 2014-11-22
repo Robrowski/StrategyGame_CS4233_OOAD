@@ -18,11 +18,19 @@ public class NotificationSystem {
 	 * @param x
 	 * @param y
 	 */
-	public static void notifyAll(Piece p, int x, int y){
+	public static void notifyPut(Piece p, int x, int y){
 		for (IPuzzleObserver ipo: ipo_list){
 			ipo.notifyPlacement(p, x, y);
 		}	
 	}
+
+	public static void notifyRemove(int x, int y){
+		for (IPuzzleObserver ipo: ipo_list){
+			ipo.notifyRemove( x, y);
+		}	
+	}
+	
+	// TODO : add a notifyRemove
 
 	/** List of observers	 */
 	static protected final Collection<IPuzzleObserver> ipo_list = new LinkedList<IPuzzleObserver>();

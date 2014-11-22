@@ -35,4 +35,10 @@ public class MockObserver implements IPuzzleObserver {
 		org.junit.Assert.assertEquals(y, y % ((Board) b).height);
 
 	}
+
+	@Override
+	public void notifyRemove(int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
 }

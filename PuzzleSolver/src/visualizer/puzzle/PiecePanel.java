@@ -4,7 +4,6 @@
 package visualizer.puzzle;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -33,55 +32,48 @@ public class PiecePanel extends JPanel {
 	 *           0 
 	 *   <-- origin
 	 */
+	/** The piece represented by this panel */
+	private Piece p = null;
+	/** Dimensioned polygons to speed up rendering. */
 	private static Polygon bottom, left, top, right;
-	private Piece p = null; // The puzzle piece being visualized
-	private static int s = -1; // side length
+	/** width and height of the panels in pixels */
+	private static int piece_w, piece_h;
 	
 	/** Sets the size for all visualized puzzle pieces
 	 * 
 	 * @param s
 	 */
-	public static void setSize(int s){
-		PiecePanel.s = s;
-		int c = s/2;
-		
-		bottom = new Polygon(
-				new int[]{s, c, 0},
-				new int[]{s, c, s},
-				3);
+	private static void updatePolygons() {
+		// Calculate the center of the box
+		int cx = piece_w / 2;
+		int cy = piece_h / 2;
 
-		left = new Polygon(
-				new int[]{0, c, 0},
-				new int[]{0, c, s},
-				3);
+		bottom = new Polygon(new int[] { piece_w, cx, 0 }, 
+							 new int[] { piece_h, cy, piece_h }, 3);
 
-		top = new Polygon(
-				new int[]{0, c, s},
-				new int[]{0, c, 0},
-				3);
+		left = new Polygon(new int[] { 0, cx, 0 },
+						   new int[] { 0, cy, piece_h }, 3);
 
-		right = new Polygon(
-				new int[]{s, c, s},
-				new int[]{0, c, s},
-				3);
+		top = new Polygon(new int[] { 0, cx, piece_w }, 
+						  new int[] { 0, cy, 0 }, 3);
+
+		right = new Polygon(new int[] { piece_w, cx, piece_w }, 
+							new int[] { 0, cy, piece_h }, 3);
 	}
-	
-	/** Takes a side length, scales the triangles appropriately
+
+	/**
+	 * On PuzzlePanel resize, this is called to set up the PiecePanels for the
+	 * new size
 	 * 
-	 * @param s
+	 * @param piece_w
+	 * @param piece_h
 	 */
-	public PiecePanel(){
-		if (s == -1){
-			PiecePanel.setSize(20);
-		}
+	public static void setPieceSize(int piece_w, int piece_h) {
+		PiecePanel.piece_w = piece_w;
+		PiecePanel.piece_h = piece_h;
+		updatePolygons();
 	}
 
-	public PiecePanel( Piece p){
-		this();
-		this.p = p;
-	}
-
-	
 	/** Highlights the puzzle piece on the board. True gets green, 
 	 * false gets white to indicate visitation
 	 * 
@@ -96,13 +88,6 @@ public class PiecePanel extends JPanel {
 		}
 	}
 	
-	
-
-	@Override
-	public Dimension getPreferredSize() {
-		return new Dimension(s, s);
-	}
-
 	/** Repaints this component with the given puzzle piece
 	 * 
 	 * @param p
@@ -138,9 +123,5 @@ public class PiecePanel extends JPanel {
 			// Cleanup
 			g2d.dispose();
 		}
-	}
-
-	public void flush() {
-		this.repaint();
 	}
 }

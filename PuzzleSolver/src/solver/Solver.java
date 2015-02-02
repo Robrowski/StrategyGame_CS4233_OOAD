@@ -122,8 +122,6 @@ public class Solver  {
 			}
 		}
 
-
-
 		NotificationSystem.setStatus(id,"stuff");
 
 	}

@@ -34,7 +34,6 @@ public class Chunk extends Board implements Comparator<Chunk>{
 		boolean res = super.placeAt(p,x,y);
 		if (res) this.unplaced_pieces--;
 		return res;
-		
 	}
 	
 }

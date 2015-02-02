@@ -4,7 +4,9 @@ import puzzle.Piece;
 
 public interface IBoard {
 
-	/** Gets the piece at the given location
+	/**
+	 * Gets the piece at the given location.
+	 * 
 	 * 
 	 * @param x
 	 * @param y

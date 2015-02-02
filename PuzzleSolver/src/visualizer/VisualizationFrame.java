@@ -18,7 +18,7 @@ import visualizer.puzzle.PuzzlePanel;
  * @author rpdabrowski
  *
  */
-public class VisualizationFrame extends JFrame  {
+public class VisualizationFrame extends JFrame {
 
 	/**
 	 * 
@@ -30,10 +30,11 @@ public class VisualizationFrame extends JFrame  {
 	public VisualizationFrame(int width, int height, String name) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | UnsupportedLookAndFeelException ex) {
 		}
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE );
-		this.setLayout( new BorderLayout());
+		this.setLayout(new BorderLayout());
 		this.setTitle(name);
 		// Controls
 		this.addKeyListener(new KeyControls());
@@ -43,7 +44,8 @@ public class VisualizationFrame extends JFrame  {
 
 		// Left side
 		puzzle_panel = new PuzzlePanel( width,  height); // This will take a Board someday
-		this.add( puzzle_panel, BorderLayout.WEST);
+		this.add(puzzle_panel, BorderLayout.CENTER);
+		// Retarded, but it resizes properly when set to the center
 
 		this.pack(); // Sets the size to the combination of the components
 		this.setVisible(true);
@@ -55,10 +57,4 @@ public class VisualizationFrame extends JFrame  {
 	public PuzzlePanel getPuzzlePanel(){
 		return this.puzzle_panel;
 	}
-
-	public void flush() {
-		puzzle_panel.flush();
-
-	}
-
 }

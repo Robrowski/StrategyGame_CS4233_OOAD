@@ -18,13 +18,7 @@ public class Board implements IBoard {
 		this.b = new Piece[width][height]; 
 	}
 	
-	/** Places the piece at the given location. Returns the success
-	 * 
-	 * @param p
-	 * @param x
-	 * @param y
-	 * @return
-	 */
+	@Override
 	public boolean placeAt(Piece p, int x, int y){
 		if (this.getPiece(x,y) != null){
 			return false;
@@ -33,12 +27,7 @@ public class Board implements IBoard {
 		return true;
 	}
 	
-	/** Gets the piece at the given location
-	 * 
-	 * @param x
-	 * @param y
-	 * @return
-	 */
+	@Override
 	public Piece getPiece(int x, int y){
 		return this.b[x][y];
 	}

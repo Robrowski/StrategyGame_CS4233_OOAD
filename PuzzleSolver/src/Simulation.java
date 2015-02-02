@@ -18,9 +18,9 @@ public class Simulation {
 			"notification");
 	
 	public static void main(String args[]) throws InterruptedException {
-		int width = 20;
-		int height = 12;
-		int colors = 2;
+		int width = 50;
+		int height = 30;
+		int colors = 5;
 //		x = new VisualizationFrame(width, height, "generator");
 
 //		NotificationSystem.register(x.getPuzzlePanel());
@@ -46,6 +46,5 @@ public class Simulation {
 		s.solve();
 		Thread.sleep(2000);
 
-		y.flush();
 	}
 }

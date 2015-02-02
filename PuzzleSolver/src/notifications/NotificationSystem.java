@@ -22,15 +22,20 @@ public class NotificationSystem {
 	 * @param y
 	 */
 	public static void notifyPut(Piece p, int x, int y){
-		for (IPuzzleObserver ipo: ipo_list){
+		for (PuzzleObserver ipo: ipo_list){
 			ipo.notifyPlacement(p, x, y);
 		}	
 		delay();
 	}
 
+	public static void notifyAttempt(Piece p, int x, int y) {
+		for (PuzzleObserver ipo : ipo_list) {
+			ipo.notifyAttemptedPlacement(p, x, y);
+		}
+	}
 
 	public static void notifyRemove(int x, int y){
-		for (IPuzzleObserver ipo: ipo_list){
+		for (PuzzleObserver ipo: ipo_list){
 			ipo.notifyRemove( x, y);
 		}	
 		delay();
@@ -48,13 +53,13 @@ public class NotificationSystem {
 	}
 
 	/** List of observers	 */
-	static protected final Collection<IPuzzleObserver> ipo_list = new LinkedList<IPuzzleObserver>();
+	static protected final Collection<PuzzleObserver> ipo_list = new LinkedList<PuzzleObserver>();
 
 	/** Register an observer to be notified when pieces are added
 	 * 
 	 * @param iso
 	 */
-	static public void register(IPuzzleObserver iso) {
+	static public void register(PuzzleObserver iso) {
 		ipo_list.add(iso);		
 	}
 	

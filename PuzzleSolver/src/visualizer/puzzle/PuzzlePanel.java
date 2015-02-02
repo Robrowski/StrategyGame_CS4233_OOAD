@@ -7,14 +7,14 @@ import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 
-import notifications.IPuzzleObserver;
+import notifications.PuzzleObserver;
 import puzzle.Piece;
 
 /**
  * @author rpdabrowski
  *
  */
-public class PuzzlePanel extends JPanel implements IPuzzleObserver  {
+public class PuzzlePanel extends JPanel implements PuzzleObserver  {
 
 	// TODO could have this extend Board... since this holds a board?
 
@@ -81,5 +81,11 @@ public class PuzzlePanel extends JPanel implements IPuzzleObserver  {
 				this.getPiecePanel(x, y).flush();
 			}
 		}
+	}
+
+	@Override
+	public void notifyStatusUpdate(String id) {
+		// TODO Auto-generated method stub
+
 	}
 }

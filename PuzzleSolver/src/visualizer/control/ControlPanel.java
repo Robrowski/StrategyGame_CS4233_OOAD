@@ -12,9 +12,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 
-import puzzle.Piece;
-import notifications.IPuzzleObserver;
 import notifications.NotificationSystem;
+import notifications.PuzzleObserver;
+import puzzle.Piece;
 import solver.PuzzleGenerator;
 import solver.Solver;
 
@@ -22,7 +22,7 @@ import solver.Solver;
  * @author rpdabrowski
  *
  */
-public class ControlPanel extends JPanel implements IPuzzleObserver {
+public class ControlPanel extends JPanel implements PuzzleObserver {
 
 	private static final long serialVersionUID = 2922161435705130922L;
 	private JLabel status_box = new JLabel("Long-Named JTextField 4");
@@ -58,7 +58,13 @@ public class ControlPanel extends JPanel implements IPuzzleObserver {
 
 	@Override
 	public void notifyRemove(int x, int y) {
-		// TODO Auto-generated method stub
+		updateStatus();
 		
+	}
+
+	@Override
+	public void notifyStatusUpdate(String id) {
+		// TODO Auto-generated method stub
+
 	}
 }

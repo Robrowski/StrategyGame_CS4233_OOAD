@@ -86,69 +86,6 @@ public class Solver  {
 	 *  
 	 */
 	public void solve(){
-		// 0. Initialize
-
-		// 1. Place the four corners
-		// int[] x_corner = {0,0,current_chunk.width-1, current_chunk.width-1};
-		// int[] y_corner = {0,current_chunk.height-1,0,current_chunk.height-1};
-		// for (int i = 0; i < 4; i++){
-		// Piece px = getPieceToFit(x_corner[i], y_corner[i]);
-		// current_chunk.placeAt(px, x_corner[i], y_corner[i]);
-		// NotificationSystem.notifyPut(px, x_corner[i], y_corner[i]);
-		// }
-
-		// 2. Try to solve the edges. Retry until a valid edge is finished
-
-		// boolean done = false;
-		// int attempts = 0;
-		// while (!done){
-		// try {
-		// attempts++;
-		//
-		// for (int x = 1; x < current_chunk.width - 1; x++ ){
-		// Piece p = getPieceToFit(x, 0);
-		//
-		// current_chunk.placeAt(p, x, 0);
-		// NotificationSystem.notifyPut(p, x, 0);
-		// }
-		// done = true;
-		// } catch (Exception e){
-		// System.out.println("fail");
-		// // Remove the row
-		// for (int x = 1; x < current_chunk.width - 1; x++){
-		// Piece rp = current_chunk.remove(x, 0); // Take the piece off and put
-		// it back...
-		// if (rp != null) this.sortPiece(rp);
-		// }
-		//
-		// }
-		// }
-		// System.out.println("attempts: " + attempts);
-		// done = false;
-		// while (!done){
-		// // First Column
-		// try {
-		// for (int y = 1; y < current_chunk.height - 1; y++ ){
-		// Piece p = getPieceToFit(0, y);
-		// current_chunk.placeAt(p, 0, y);
-		// NotificationSystem.notifyPut(p, 0, y);
-		// }
-		// done = true;
-		//
-		// } catch (Exception e){
-		// System.out.println("fail");
-		// // Remove the column
-		// for (int y = 1; y < current_chunk.height - 1; y++) {
-		// Piece rp = current_chunk.remove(0, y); // Take the pieces
-		// // off
-		// NotificationSystem.notifyRemove(0, y);
-		// if (rp != null) this.sortPiece(rp);
-		// }
-		// }
-		// }
-		// System.out.println("attempts: " + attempts);
-
-		// 3. Place row by row (until corner)
 
 		// Place side columns first
 		while (!attemptColumn(0))
@@ -156,35 +93,37 @@ public class Solver  {
 		while (!attemptColumn(current_chunk.width - 1))
 			removeColumn(current_chunk.width - 1);
 
+		int attempts = 1;
 		for (int y = 0; y < current_chunk.height; y++) {
 			boolean done = false;
 			while (!done) {
 				try {
 					for (int x = 1; x < current_chunk.width - 1; x++) {
 						Piece p = this.getPieceToFit(x, y);
-						if (p == null) 
+						if (p == null) {
+							NotificationSystem.notifyAttempt(p, x, y);
 							throw new PlacementException( x, y);
-
+						}
 						current_chunk.placeAt(p, x, y);
 						NotificationSystem.notifyPut(p, x, y);
 					}
 					done = true;
 				} catch (PlacementException e) {
+					attempts++;
+					NotificationSystem.setStatus(Solver.id, "Attempts: "
+							+ attempts);
 					for (int x = 1; x < current_chunk.width - 1; x++) {
 						Piece rp = current_chunk.remove(x, y);
 						NotificationSystem.notifyRemove(x, y);
 						if (rp != null)
 							this.sortPiece(rp);
 					}
-
 				}
 			}
-
 		}
 
 
-		// 4. Have we failed? return a few points and try again
-		//		Collections.shuffle((List<Piece>) this.inners);
+
 		NotificationSystem.setStatus(id,"stuff");
 
 	}
@@ -198,10 +137,13 @@ public class Solver  {
 	boolean attemptColumn(int column) {
 		for (int y = 0; y < current_chunk.height; y++) {
 			Piece p = this.getPieceToFit(column, y);
+
+			if (p == null) {
+				NotificationSystem.notifyAttempt(p, column, y);
+				return false;
+			}
 			current_chunk.placeAt(p, column, y);
 			NotificationSystem.notifyPut(p, column, y);
-			if (p == null)
-				return false;
 		}
 
 		return true;

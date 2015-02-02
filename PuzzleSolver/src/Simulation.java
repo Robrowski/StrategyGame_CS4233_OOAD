@@ -2,6 +2,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import notifications.FileLogger;
 import notifications.NotificationSystem;
 import puzzle.Piece;
 import solver.PuzzleGenerator;
@@ -13,6 +14,8 @@ import boards.Board;
 public class Simulation {
 	private static VisualizationFrame x, y;
 	private static Solver s;
+	private static FileLogger notificationLogger = new FileLogger(
+			"notification");
 	
 	public static void main(String args[]) throws InterruptedException {
 		int width = 20;
@@ -26,6 +29,7 @@ public class Simulation {
 		 
 		y = new VisualizationFrame(width, height, "solver");
 		NotificationSystem.register(y.getPuzzlePanel());
+		NotificationSystem.register(notificationLogger);
 
 		s = new Solver(new Board(width, height), pieces);
 
@@ -43,8 +47,5 @@ public class Simulation {
 		Thread.sleep(2000);
 
 		y.flush();
-		
-		
-
 	}
 }

@@ -1,11 +1,11 @@
 package MockObjects;
 
+import notifications.PuzzleObserver;
+import puzzle.Piece;
 import boards.Board;
 import boards.IBoard;
-import puzzle.Piece;
-import notifications.IPuzzleObserver;
 
-public class MockObserver implements IPuzzleObserver {
+public class MockObserver implements PuzzleObserver {
 
 	IBoard b;
 	
@@ -40,5 +40,11 @@ public class MockObserver implements IPuzzleObserver {
 	public void notifyRemove(int x, int y) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void notifyStatusUpdate(String id) {
+		// TODO Auto-generated method stub
+
 	}
 }

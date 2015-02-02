@@ -89,70 +89,98 @@ public class Solver  {
 		// 0. Initialize
 
 		// 1. Place the four corners
-		int[] x_corner = {0,0,current_chunk.width-1, current_chunk.width-1};
-		int[] y_corner = {0,current_chunk.height-1,0,current_chunk.height-1};
-		for (int i = 0; i < 4; i++){
-			Piece px = getPieceToFit(x_corner[i], y_corner[i]);
-			current_chunk.placeAt(px, x_corner[i], y_corner[i]);
-			NotificationSystem.notifyPut(px, x_corner[i], y_corner[i]);
-		}
+		// int[] x_corner = {0,0,current_chunk.width-1, current_chunk.width-1};
+		// int[] y_corner = {0,current_chunk.height-1,0,current_chunk.height-1};
+		// for (int i = 0; i < 4; i++){
+		// Piece px = getPieceToFit(x_corner[i], y_corner[i]);
+		// current_chunk.placeAt(px, x_corner[i], y_corner[i]);
+		// NotificationSystem.notifyPut(px, x_corner[i], y_corner[i]);
+		// }
 
 		// 2. Try to solve the edges. Retry until a valid edge is finished
 
-		boolean done = false;
-		int attempts = 0;
-		while (!done){
-			try {
-				attempts++;
-
-				for (int x = 1; x < current_chunk.width - 1; x++ ){
-					Piece p = getPieceToFit(Connection.FLAT , current_chunk.getPiece(x - 1 , 0).right(), null , null );
-					current_chunk.placeAt(p, x, 0);
-					NotificationSystem.notifyPut(p, x, 0);
-				}
-				done = true;
-			} catch (Exception e){ 	
-				System.out.println("fail");
-				// Remove the row
-				for (int x = 1; x < current_chunk.width - 1; x++){
-					Piece rp = current_chunk.remove(x, 0); // Take the piece off and put it back...
-					if (rp != null) this.sortPiece(rp);
-				}
-
-			}
-		}
-		System.out.println("attempts: " + attempts);
-		done = false;
-		while (!done){
-			try {
-				for (int y = 1; y < current_chunk.height - 1; y++ ){
-					Piece p = getPieceToFit(current_chunk.getPiece(0 , y -1).top(), Connection.FLAT  , null , null );
-					current_chunk.placeAt(p, 0, y);
-					NotificationSystem.notifyPut(p, 0, y);
-				}
-				done = true;
-
-			} catch (Exception e){ 	
-				System.out.println("fail");
-				// Remove the row
-				for (int y = 1; y < current_chunk.width - 1; y++){
-					Piece rp = current_chunk.remove(y, 0); // Take the piece off and put it back...
-					if (rp != null) this.sortPiece(rp);
-				}
-			}
-		}
-		System.out.println("attempts: " + attempts);
+		// boolean done = false;
+		// int attempts = 0;
+		// while (!done){
+		// try {
+		// attempts++;
+		//
+		// for (int x = 1; x < current_chunk.width - 1; x++ ){
+		// Piece p = getPieceToFit(x, 0);
+		//
+		// current_chunk.placeAt(p, x, 0);
+		// NotificationSystem.notifyPut(p, x, 0);
+		// }
+		// done = true;
+		// } catch (Exception e){
+		// System.out.println("fail");
+		// // Remove the row
+		// for (int x = 1; x < current_chunk.width - 1; x++){
+		// Piece rp = current_chunk.remove(x, 0); // Take the piece off and put
+		// it back...
+		// if (rp != null) this.sortPiece(rp);
+		// }
+		//
+		// }
+		// }
+		// System.out.println("attempts: " + attempts);
+		// done = false;
+		// while (!done){
+		// // First Column
+		// try {
+		// for (int y = 1; y < current_chunk.height - 1; y++ ){
+		// Piece p = getPieceToFit(0, y);
+		// current_chunk.placeAt(p, 0, y);
+		// NotificationSystem.notifyPut(p, 0, y);
+		// }
+		// done = true;
+		//
+		// } catch (Exception e){
+		// System.out.println("fail");
+		// // Remove the column
+		// for (int y = 1; y < current_chunk.height - 1; y++) {
+		// Piece rp = current_chunk.remove(0, y); // Take the pieces
+		// // off
+		// NotificationSystem.notifyRemove(0, y);
+		// if (rp != null) this.sortPiece(rp);
+		// }
+		// }
+		// }
+		// System.out.println("attempts: " + attempts);
 
 		// 3. Place row by row (until corner)
-		for (int y = 1; y < current_chunk.height -1; y++){
-			for (int x = 1; x < current_chunk.width - 1; x++ ){
-				Piece p = this.getPieceToFit(x, y);
-				//				Piece p = getPieceToFit(current_chunk.getPiece(x , y-1).top() , current_chunk.getPiece(x - 1 , y).right(), null , null );
-				current_chunk.placeAt(p, x, y);
-				NotificationSystem.notifyPut(p, x, y);
-			}
-		}
 
+		// Place side columns first
+		while (!attemptColumn(0))
+			removeColumn(0);
+		while (!attemptColumn(current_chunk.width - 1))
+			removeColumn(current_chunk.width - 1);
+
+		for (int y = 0; y < current_chunk.height; y++) {
+			boolean done = false;
+			while (!done) {
+				try {
+					for (int x = 1; x < current_chunk.width - 1; x++) {
+						Piece p = this.getPieceToFit(x, y);
+						if (p == null) 
+							throw new PlacementException( x, y);
+
+						current_chunk.placeAt(p, x, y);
+						NotificationSystem.notifyPut(p, x, y);
+					}
+					done = true;
+				} catch (PlacementException e) {
+					for (int x = 1; x < current_chunk.width - 1; x++) {
+						Piece rp = current_chunk.remove(x, y);
+						NotificationSystem.notifyRemove(x, y);
+						if (rp != null)
+							this.sortPiece(rp);
+					}
+
+				}
+			}
+
+		}
 
 
 		// 4. Have we failed? return a few points and try again
@@ -161,6 +189,77 @@ public class Solver  {
 
 	}
 
+	/**
+	 * Attempt to place pieces in the column
+	 * 
+	 * @param column
+	 * @return
+	 */
+	boolean attemptColumn(int column) {
+		for (int y = 0; y < current_chunk.height; y++) {
+			Piece p = this.getPieceToFit(column, y);
+			current_chunk.placeAt(p, column, y);
+			NotificationSystem.notifyPut(p, column, y);
+			if (p == null)
+				return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Remove the pieces in the column
+	 * 
+	 * @param column
+	 */
+	void removeColumn(int column) {
+		for (int y = 0; y < current_chunk.height; y++) {
+			Piece rp = current_chunk.remove(column, y);
+			NotificationSystem.notifyRemove(column, y);
+			if (rp != null)
+				this.sortPiece(rp);
+		}
+	}
+
+
+	/**
+	 * Attempt to place a line given the starts and ends. Return false on
+	 * failure.
+	 * 
+	 * @param start_x
+	 * @param start_y
+	 * @param end_x
+	 * @param end_y
+	 * @return
+	 */
+	boolean attemptLine(int start_x, int start_y, int end_x, int end_y) {
+
+		for (int i = 0; i < Math.max(end_y - start_y, end_x - start_x); i++) {
+			int x = 1;
+			int y = 1;
+
+			Piece p = this.getPieceToFit(x, y);
+			if (p == null)
+				return false;
+		}
+
+		return true;
+	}
+
+	class PlacementException extends Exception {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -5437667448840094447L;
+
+		int x, y;
+		public PlacementException(int x, int y) {
+			super();
+			this.x = x;
+			this.y = y;
+		}
+
+	}
 
 	// Search orders
 	int[] x_search = {0, -1, 0, 1};

@@ -139,4 +139,8 @@ public class PiecePanel extends JPanel {
 			g2d.dispose();
 		}
 	}
+
+	public void flush() {
+		this.repaint();
+	}
 }

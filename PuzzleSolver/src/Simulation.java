@@ -14,7 +14,7 @@ public class Simulation {
 	private static VisualizationFrame x, y;
 	private static Solver s;
 	
-	public static void main(String args[]) {
+	public static void main(String args[]) throws InterruptedException {
 		int width = 20;
 		int height = 12;
 		int colors = 2;
@@ -38,9 +38,11 @@ public class Simulation {
 //		}
 //		System.out.println("Total: " + i);
 				
-		
+		NotificationSystem.viz_delay = 10;
 		s.solve();
-		
+		Thread.sleep(2000);
+
+		y.flush();
 		
 		
 

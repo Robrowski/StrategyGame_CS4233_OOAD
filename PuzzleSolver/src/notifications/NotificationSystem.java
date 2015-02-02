@@ -12,6 +12,9 @@ import puzzle.Piece;
  */
 public class NotificationSystem {
 	
+	/** How many milliseconds delay during simulation */
+	public static int viz_delay = 0;
+
 	/** Notify all observers of an added piece
 	 * 
 	 * @param p
@@ -22,15 +25,27 @@ public class NotificationSystem {
 		for (IPuzzleObserver ipo: ipo_list){
 			ipo.notifyPlacement(p, x, y);
 		}	
+		delay();
 	}
+
 
 	public static void notifyRemove(int x, int y){
 		for (IPuzzleObserver ipo: ipo_list){
 			ipo.notifyRemove( x, y);
 		}	
+		delay();
 	}
 	
-	// TODO : add a notifyRemove
+	/** If there is a requested delay.. sleep */
+	private static void delay() {
+		if (viz_delay > 0) {
+			try {
+				Thread.sleep(viz_delay);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	/** List of observers	 */
 	static protected final Collection<IPuzzleObserver> ipo_list = new LinkedList<IPuzzleObserver>();

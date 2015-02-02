@@ -56,4 +56,9 @@ public class VisualizationFrame extends JFrame  {
 		return this.puzzle_panel;
 	}
 
+	public void flush() {
+		puzzle_panel.flush();
+
+	}
+
 }

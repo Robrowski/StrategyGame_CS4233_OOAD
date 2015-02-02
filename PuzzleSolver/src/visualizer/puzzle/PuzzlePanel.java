@@ -7,8 +7,8 @@ import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 
-import puzzle.Piece;
 import notifications.IPuzzleObserver;
+import puzzle.Piece;
 
 /**
  * @author rpdabrowski
@@ -66,7 +66,20 @@ public class PuzzlePanel extends JPanel implements IPuzzleObserver  {
 
 	@Override
 	public void notifyRemove(int x, int y) {
-		// TODO Auto-generated method stub
-		
+		PiecePanel toUpdate = this.getPiecePanel(x, y);
+		toUpdate.updatePiece(null);
+		toUpdate.highlight(true);
+	}
+
+	/**
+	 * Updates all pieces
+	 */
+	public void flush() {
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+
+				this.getPiecePanel(x, y).flush();
+			}
+		}
 	}
 }
